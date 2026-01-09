@@ -1,0 +1,196 @@
+{
+  "common": {
+    "close": "Yopish",
+    "schedule": {
+      "daily": "Har kuni {from} dan {to} gacha",
+      "range": "{from} dan {to} gacha"
+    },
+    "experienceYears": "Bundan ortiq {years} yil tajriba",
+    "days": {
+      "monday": "Dushanba",
+      "tuesday": "Seshanba",
+      "wednesday": "Chorshanba",
+      "thursday": "Payshanba",
+      "friday": "Juma",
+      "saturday": "Shanba",
+      "sunday": "Yakshanba"
+    }
+  },
+  "modals": {
+    "doctors": {
+      "title": "Shifokorlar"
+    }
+  },
+  "doctors": {
+    "specialties": {
+      "urologist": "Urolog",
+      "gynecologist": "Ginekolog",
+      "surgeonProctologist": "Xirurg-proktolog",
+      "ultrasoundDoctor": "UZI shifokori",
+      "labDoctor": "Laboratoriya shifokori",
+      "cardiologistTherapist": "Kardiolog-terapevt / Endokrinolog",
+      "entDoctor": "LOR shifokori",
+      "mammologist": "Mammolog / Onkoginekolog"
+    }
+  },
+  "faq": {
+    "badge": "Savol-javob",
+    "title": "Ko'p so'raladigan savollar",
+    "description": "Qabul, navbat va xizmatlar haqida qisqa javoblar.",
+    "questions": [
+      {
+        "question": "Qabulga yozilish mumkinmi?",
+        "answer": "Qabul jonli navbat asosida olib boriladi."
+      },
+      {
+        "question": "Ish vaqti qanday?",
+        "answer": "Dushanba–Shanba: 09:00–16:30"
+      },
+      {
+        "question": "Qayerdasizlar?",
+        "answer": "Samarqand shahri"
+      }
+    ]
+  },
+  "video": {
+    "badge": "Video",
+    "title": "Tibbiy markaz videolari",
+    "description": "Bizning xizmatlarimiz va operatsiyalarimiz haqida videolar"
+  },
+  "header": {
+    "logo": "SHIFOKOR-LDA",
+    "subtitle": "Tibbiy markaz",
+    "nav": {
+      "services": "Xizmatlar",
+      "doctors": "Shifokorlar",
+      "appointment": "Uchrashuv",
+      "contact": "Aloqa"
+    },
+    "appointment": "Uchrashuvga yozilish",
+    "faq": "Savol-javob"
+  },
+  "hero": {
+    "badge": "24/7 Shoshilinch yordam",
+    "title": "Sizning salomatligingiz",
+    "titleHighlight": "bizning ustuvorligimiz",
+    "description": "Samarqand shahridagi zamonaviy tibbiy markaz. 50+ turdagi operatsiyalar, yuqori malakali mutaxassislar va ilg'or texnologiyalar.",
+    "services": "Xizmatlar",
+    "stats": {
+      "operations": "Operatsiya turlari",
+      "doctors": "Tajribali shifokorlar",
+      "experience": "Yil tajriba",
+      "successRate": "Muvaffaqiyat darajasi"
+    },
+    "contact": {
+      "phone": "Telefon",
+      "hours": "Ish vaqti",
+      "address": "Manzil"
+    },
+    "phone": "+998 97 611 06 04 / +998 662 35 33 44",
+    "hours": "Dushanba - Shanba: 9:00 - 16:30",
+    "address": "Samarqand",
+    "menu": {
+      "home": "Bosh sahifa",
+      "doctors": "Shifokorlar",
+      "departments": "Bo'limlar",
+      "video": "Video",
+      "gallery": "Galereya",
+      "reviews": "Tavsiyalar",
+      "contact": "Aloqa"
+    }
+  },
+  "features": {
+    "badge": "Bizning xizmatlar",
+    "title": "Keng tibbiy xizmatlar spektri",
+    "description": "Zamonaviy uskunalar va yuqori malakali mutaxassislar yordamida salomatligingizni saqlang",
+    "more": "Batafsil",
+    "trust": {
+      "ultrasound": "UZI",
+      "ultrasoundSubtitle": "Zamonaviy usullar",
+      "hospital": "Statsionar",
+      "hospitalSubtitle": "24/7 xizmat",
+      "laboratory": "Laboratoriya",
+      "laboratorySubtitle": "To'liq tahlillar",
+      "physiotherapy": "Fizioterapiya",
+      "physiotherapySubtitle": "15+ protsedura"
+    }
+  },
+  "doctors": {
+    "badge": "Bizning jamoa",
+    "title": "Tajribali shifokorlar",
+    "description": "Yuqori malakali mutaxassislar sizning salomatligingiz haqida qayg'uradi",
+    "experience": "tajriba"
+  },
+  "footer": {
+    "subtitle": "Tibbiy markaz",
+    "description": "Zamonaviy uskunalar va yuqori malakali mutaxassislar bilan 50+ turdagi operatsiyalar",
+    "quickLinks": "Tezkor havolalar",
+    "services": "Xizmatlar",
+    "contact": "Aloqa",
+    "links": {
+      "services": "Xizmatlar",
+      "laboratory": "Laboratoriya",
+      "doctors": "Shifokorlar",
+      "appointment": "Uchrashuv"
+    },
+    "serviceLinks": {
+      "urology": "Urologiya",
+      "gynecology": "Ginekologiya",
+      "proctology": "Proktologiya",
+      "neurology": "Nevrologiya"
+    },
+    "contactLabels": {
+      "phone": "Telefon",
+      "email": "Email",
+      "hours": "Ish vaqti",
+      "address": "Manzil"
+    },
+    "hours": "Dushanba - Shanba: 9:00 - 16:30",
+    "labHours": "Laboratoriya: 07:30 - 16:30",
+    "address": "Samarqand shahri, Termezskaya ko'chasi 67А",
+    "landmark": "Mo'ljal: Limonadka",
+    "viewMap": "Yandex xaritada ko'rish →",
+    "copyright": "Barcha huquqlar himoyalangan."
+  },
+  "appointment": {
+    "badge": "Onlayn yozilish",
+    "title": "Shifokorga qabulga yoziling",
+    "description": "Formani to'ldiring va biz siz bilan tez orada bog'lanamiz",
+    "form": {
+      "name": "To'liq ismingiz",
+      "namePlaceholder": "Familiya Ism",
+      "phone": "Telefon raqam",
+      "phonePlaceholder": "+998 XX XXX XX XX",
+      "date": "Sana",
+      "time": "Vaqt",
+      "service": "Xizmat turi",
+      "message": "Qo'shimcha ma'lumot",
+      "messagePlaceholder": "Qo'shimcha ma'lumot yozing...",
+      "submit": "Yuborish"
+    },
+    "services": {
+      "urology": "Urologiya",
+      "gynecology": "Ginekologiya",
+      "surgery": "Xirurgiya",
+      "proctology": "Proktologiya",
+      "neurology": "Nevrologiya",
+      "cardiology": "Kardiologiya-Terapiya",
+      "physiotherapy": "Fizioterapiya",
+      "ent": "LOR",
+      "ultrasound": "UZI",
+      "laboratory": "Laboratoriya"
+    },
+    "selectService": "Xizmatni tanlang",
+    "selectTime": "Vaqtni tanlang",
+    "success": {
+      "title": "Arizangiz qabul qilindi!",
+      "message": "Tez orada mutaxassislarimiz siz bilan bog'lanadi va qabulni tasdiqlaydi."
+    }
+  },
+  "servicesModal": {
+    "title": "Xizmatlar",
+    "more": "Batafsil",
+    "servicesList": "Xizmatlar ro'yxati:",
+    "imageNotFound": "Surat topilmadi"
+  }
+}

@@ -1,0 +1,23 @@
+SURATLARNI QO'YISH YO'RIQNAMASI
+================================
+
+1. Suratlarni quyidagi nomlar bilan saqlang:
+   - tvt-treatment-1.jpg
+   - tvt-treatment-2.jpg
+
+2. Suratlarni shu papkaga (public/images/) qo'ying
+
+3. Nomlar aniq shu bo'lishi kerak:
+   - tvt-treatment-1.jpg (katta harflar bilan TVT)
+   - tvt-treatment-2.jpg
+
+4. Keyin Next.js serverni qayta ishga tushiring:
+   - Ctrl+C (serverni to'xtatish)
+   - npm run dev (qayta ishga tushirish)
+
+5. Browser'da cache'ni tozalang:
+   - Ctrl+Shift+R (hard refresh)
+
+BU SURATLAR "Лечение стрессового недержания мочи у женщин методом TVT" 
+xizmatida ko'rsatiladi.
+
