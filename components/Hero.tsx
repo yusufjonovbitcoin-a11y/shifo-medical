@@ -87,14 +87,14 @@ export function Hero() {
                 };
 
                 return (
-                  <div
-                    key={index}
+                <div
+                  key={index}
                     className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 transition-all duration-300 hover:bg-white/20"
-                  >
+                >
                       <div className="flex items-start gap-2 md:gap-3">
-                        <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <contact.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
-                        </div>
+                      <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <contact.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                      </div>
                       <div className="flex-1 min-w-0">
                           <p className="text-xs text-emerald-100 mb-1">{t(`hero.contact.${contact.key}`)}</p>
                           {contact.key === 'address' ? (
@@ -144,12 +144,12 @@ export function Hero() {
                               </button>
                             </div>
                           ) : contact.key === 'hours' ? (
-                            <div>
+                    <div>
                               <p className="text-white text-xs md:text-sm font-medium">{t(`hero.${contact.key}`)}</p>
                               <p className="text-white text-xs md:text-sm font-medium mt-1 opacity-90">{t('hero.labHours')}</p>
                             </div>
                           ) : (
-                            <p className="text-white text-xs md:text-sm font-medium">{t(`hero.${contact.key}`)}</p>
+                        <p className="text-white text-xs md:text-sm font-medium">{t(`hero.${contact.key}`)}</p>
                           )}
                       </div>
                     </div>

@@ -152,7 +152,7 @@ export function Features() {
                     <circle cx="12" cy="9" r="1.5" fill="currentColor" opacity="0.9" />
                   </svg>
                 ) : item.icon !== 'injection' ? (
-                  <item.icon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                <item.icon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                 ) : null}
               </div>
               <p className="text-sm md:text-base text-gray-900 mb-1 font-semibold">{t(`features.trust.${item.titleKey}`)}</p>

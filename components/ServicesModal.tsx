@@ -229,7 +229,7 @@ export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
                           <p className="text-xs md:text-sm text-gray-600 mb-3 md:mb-4 leading-relaxed">{service.description}</p>
                           {!isExpanded && hasServices && (
                             <div className="flex items-center justify-end pt-3 md:pt-4 border-t border-gray-100">
-                              <span className="text-xs text-gray-500">{t('servicesModal.more')} →</span>
+                                <span className="text-xs text-gray-500">{t('servicesModal.more')} →</span>
                             </div>
                           )}
                         </div>
