@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Menu, X, Phone, MapPin } from 'lucide-react';
-import { Button } from '../ui/Button';
 import { Container } from '../ui/Container';
 import { cn } from '@/src/new-ui/utils/cn';
 
@@ -57,14 +56,12 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* CTA & Mobile Menu Button */}
           <div className="flex items-center gap-4">
-            <Button
-              variant="primary"
-              size="md"
-              className="hidden md:inline-flex"
-              asChild
+            <a
+              href={ctaHref}
+              className="hidden md:inline-flex px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors text-sm font-medium"
             >
-              <a href={ctaHref}>{ctaText}</a>
-            </Button>
+              {ctaText}
+            </a>
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -93,11 +90,13 @@ export const Header: React.FC<HeaderProps> = ({
                 </a>
               ))}
               <div className="px-4 pt-2">
-                <Button variant="primary" size="md" fullWidth asChild>
-                  <a href={ctaHref} onClick={() => setIsMobileMenuOpen(false)}>
-                    {ctaText}
-                  </a>
-                </Button>
+                <a
+                  href={ctaHref}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors text-sm font-medium text-center"
+                >
+                  {ctaText}
+                </a>
               </div>
             </nav>
           </Container>

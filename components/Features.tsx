@@ -1,6 +1,6 @@
 'use client';
 
-import { Microscope, Building2, Pill, Sparkles, Shield, Hand } from 'lucide-react';
+import { Microscope, Building2, Pill, Sparkles, Shield, Hand, LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
@@ -12,6 +12,15 @@ const PhysiotherapyModal = dynamic(() => import('./PhysiotherapyModal').then(mod
 const UltrasoundModal = dynamic(() => import('./UltrasoundModal').then(mod => ({ default: mod.UltrasoundModal })), { ssr: false });
 const MassageModal = dynamic(() => import('./MassageModal').then(mod => ({ default: mod.MassageModal })), { ssr: false });
 
+// Type for feature items
+type FeatureItem = {
+  icon: LucideIcon | 'injection';
+  color: string;
+  titleKey: string;
+  subtitleKey: string;
+  onClick?: () => void; // Optional onClick handler
+};
+
 export function Features() {
   const t = useTranslations();
   const { elementRef, isVisible } = useIntersectionObserver({ threshold: 0.1 });
@@ -19,6 +28,14 @@ export function Features() {
   const [isPhysioModalOpen, setIsPhysioModalOpen] = useState(false);
   const [isUltrasoundModalOpen, setIsUltrasoundModalOpen] = useState(false);
   const [isMassageModalOpen, setIsMassageModalOpen] = useState(false);
+
+  // Trust cards data with optional onClick
+  const trustCards: FeatureItem[] = [
+    { icon: 'injection' as const, color: 'from-emerald-500 to-teal-600', titleKey: 'ultrasound', subtitleKey: 'ultrasoundSubtitle', onClick: () => setIsUltrasoundModalOpen(true) },
+    { icon: Hand, color: 'from-purple-500 to-pink-600', titleKey: 'massage', subtitleKey: 'massageSubtitle', onClick: () => setIsMassageModalOpen(true) },
+    { icon: Microscope, color: 'from-green-500 to-green-600', titleKey: 'laboratory', subtitleKey: 'laboratorySubtitle', onClick: () => setIsLabModalOpen(true) },
+    { icon: Pill, color: 'from-orange-500 to-orange-600', titleKey: 'physiotherapy', subtitleKey: 'physiotherapySubtitle', onClick: () => setIsPhysioModalOpen(true) }
+  ];
 
   return (
     <section id="xizmatlar" className="py-16 md:py-24 bg-gradient-to-b from-white via-emerald-50 to-white relative overflow-hidden">
@@ -87,16 +104,11 @@ export function Features() {
 
         {/* Trust Cards Section */}
         <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 bg-white rounded-2xl md:rounded-3xl p-6 md:p-12 shadow-xl fade-in-on-scroll ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: '700ms' }}>
-          {[
-            { icon: Sparkles, color: 'from-emerald-500 to-teal-600', titleKey: 'ultrasound', subtitleKey: 'ultrasoundSubtitle', onClick: () => setIsUltrasoundModalOpen(true) },
-            { icon: Hand, color: 'from-purple-500 to-pink-600', titleKey: 'massage', subtitleKey: 'massageSubtitle', onClick: () => setIsMassageModalOpen(true) },
-            { icon: Microscope, color: 'from-green-500 to-green-600', titleKey: 'laboratory', subtitleKey: 'laboratorySubtitle', onClick: () => setIsLabModalOpen(true) },
-            { icon: Pill, color: 'from-orange-500 to-orange-600', titleKey: 'physiotherapy', subtitleKey: 'physiotherapySubtitle', onClick: () => setIsPhysioModalOpen(true) }
-          ].map((item, index) => (
+          {trustCards.map((item, index) => (
             <div
               key={index}
-              onClick={item.onClick || undefined}
-              className={`text-center transition-transform duration-300 hover-scale active:scale-95 ${item.onClick ? 'cursor-pointer' : ''}`}
+              onClick={item.onClick}
+              className="text-center cursor-pointer transition-transform duration-300 hover-scale active:scale-95"
               style={{ transitionDelay: `${800 + index * 100}ms` }}
             >
               <div className={`w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br ${item.color} rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-lg transition-transform duration-300 hover:rotate-12`}>
@@ -139,9 +151,9 @@ export function Features() {
                     {/* Markazda nuqta (sensor markazi) */}
                     <circle cx="12" cy="9" r="1.5" fill="currentColor" opacity="0.9" />
                   </svg>
-                ) : (
+                ) : item.icon !== 'injection' ? (
                   <item.icon className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                )}
+                ) : null}
               </div>
               <p className="text-sm md:text-base text-gray-900 mb-1 font-semibold">{t(`features.trust.${item.titleKey}`)}</p>
               <p className="text-xs md:text-sm text-gray-600">{t(`features.trust.${item.subtitleKey}`)}</p>

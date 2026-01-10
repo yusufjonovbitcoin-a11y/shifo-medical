@@ -6,8 +6,6 @@ import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { StructuredData } from '@/components/StructuredData';
 
-export const runtime = 'edge'; // Edge Runtime for minimal latency
-
 type Props = {
   children: ReactNode;
   params: Promise<{ locale: string }>;

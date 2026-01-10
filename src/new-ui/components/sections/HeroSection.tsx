@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { ArrowRight, Check } from 'lucide-react';
-import { Button } from '../ui/Button';
 import { Container } from '../ui/Container';
 import { Heading } from '../ui/Heading';
 import { Text } from '../ui/Text';
@@ -79,25 +78,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               {primaryCTA && (
-                <Button
-                  variant="primary"
-                  size="lg"
-                  rightIcon={<ArrowRight size={20} />}
-                  className="bg-white text-primary-600 hover:bg-neutral-100"
-                  asChild
+                <a
+                  href={primaryCTA.href}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary-600 hover:bg-neutral-100 rounded-lg font-medium transition-colors"
                 >
-                  <a href={primaryCTA.href}>{primaryCTA.label}</a>
-                </Button>
+                  {primaryCTA.label}
+                  <ArrowRight size={20} />
+                </a>
               )}
               {secondaryCTA && (
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-white text-white hover:bg-white/10"
-                  asChild
+                <a
+                  href={secondaryCTA.href}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-transparent border border-white text-white hover:bg-white/10 rounded-lg font-medium transition-colors"
                 >
-                  <a href={secondaryCTA.href}>{secondaryCTA.label}</a>
-                </Button>
+                  {secondaryCTA.label}
+                </a>
               )}
             </div>
 
