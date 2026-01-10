@@ -12,6 +12,99 @@ interface ServicesModalProps {
   onClose: () => void;
 }
 
+// KidneyIcon component for Urologiya service
+const KidneyIcon = ({ className = "w-7 h-7 md:w-8 md:h-8" }: { className?: string }) => (
+  <svg
+    viewBox="0 0 100 100"
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {/* Left Kidney - White color for gradient background */}
+    <path
+      d="M25 30c-6 0-10 5-10 12c0 4 1 8 3 11.5c1.5 3 3.5 5.5 5.5 7.5c2.5 2.5 5 4 8 5c1.5.5 3 .6 4.5.6c3 0 5.5-.8 7.5-2.5c1.5-1.2 2.8-3 3.5-5c.8-2 1.2-4.5 1.2-7v-10c0-1.6-.4-3-1.2-4.5c-.8-1.4-2-2.6-3.5-3.5c-2-1.2-4.5-2-7-3c-4-1.2-8-1.8-11.5-1.8z"
+      fill="white"
+      stroke="white"
+      strokeWidth="1"
+      opacity="0.95"
+    />
+    
+    {/* Right Kidney - White color for gradient background */}
+    <path
+      d="M75 30c6 0 10 5 10 12c0 4-1 8-3 11.5c-1.5 3-3.5 5.5-5.5 7.5c-2.5 2.5-5 4-8 5c-1.5.5-3 .6-4.5.6c-3 0-5.5-.8-7.5-2.5c-1.5-1.2-2.8-3-3.5-5c-.8-2-1.2-4.5-1.2-7v-10c0-1.6.4-3 1.2-4.5c.8-1.4 2-2.6 3.5-3.5c2-1.2 4.5-2 7-3c4-1.2 8-1.8 11.5-1.8z"
+      fill="white"
+      stroke="white"
+      strokeWidth="1"
+      opacity="0.95"
+    />
+    
+    {/* Left Ureter - White color */}
+    <rect 
+      x="42" 
+      y="44" 
+      width="6" 
+      height="22" 
+      rx="1" 
+      fill="white"
+      stroke="white"
+      strokeWidth="0.5"
+      opacity="0.9"
+    />
+    
+    {/* Right Ureter - White color */}
+    <rect 
+      x="52" 
+      y="44" 
+      width="6" 
+      height="22" 
+      rx="1" 
+      fill="white"
+      stroke="white"
+      strokeWidth="0.5"
+      opacity="0.9"
+    />
+    
+    {/* Left Kidney Inner Shadow - Lighter white for depth */}
+    <ellipse
+      cx="35"
+      cy="45"
+      rx="8"
+      ry="10"
+      fill="white"
+      opacity="0.3"
+    />
+    
+    {/* Right Kidney Inner Shadow - Lighter white for depth */}
+    <ellipse
+      cx="65"
+      cy="45"
+      rx="8"
+      ry="10"
+      fill="white"
+      opacity="0.3"
+    />
+    
+    {/* Left Kidney Highlight - Brighter white */}
+    <ellipse
+      cx="28"
+      cy="38"
+      rx="4"
+      ry="6"
+      fill="white"
+      opacity="0.6"
+    />
+    
+    {/* Right Kidney Highlight - Brighter white */}
+    <ellipse
+      cx="72"
+      cy="38"
+      rx="4"
+      ry="6"
+      fill="white"
+      opacity="0.6"
+    />
+  </svg>
+);
+
 export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
   const t = useTranslations();
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
@@ -103,30 +196,9 @@ export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-start gap-3 md:gap-4 flex-1">
                         <div className={`w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br ${service.gradient} rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}>
-                          {service.title === "Urologiya" ? (
-                            <svg 
-                              className="w-7 h-7 md:w-8 md:h-8 text-white" 
-                              viewBox="0 0 100 70" 
-                              fill="white" 
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              {/* Left kidney */}
-                              <path d="M20 15 C15 15, 10 20, 10 27 C10 35, 15 40, 20 42 C22 43, 22 42, 22 40 C22 35, 22 30, 20 27 C18 23, 18 18, 20 15 Z" 
-                                    fill="white"/>
-                              {/* Right kidney */}
-                              <path d="M80 15 C85 15, 90 20, 90 27 C90 35, 85 40, 80 42 C78 43, 78 42, 78 40 C78 35, 78 30, 80 27 C82 23, 82 18, 80 15 Z" 
-                                    fill="white"/>
-                              {/* Vessels from left kidney to center */}
-                              <line x1="22" y1="30" x2="35" y2="30" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-                              <line x1="22" y1="35" x2="35" y2="35" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-                              {/* Vessels from right kidney to center */}
-                              <line x1="78" y1="30" x2="65" y2="30" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-                              <line x1="78" y1="35" x2="65" y2="35" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-                              {/* Central vertical vessels (aorta/vena cava) */}
-                              <line x1="35" y1="18" x2="35" y2="52" stroke="white" strokeWidth="3.5" strokeLinecap="round"/>
-                              <line x1="65" y1="18" x2="65" y2="52" stroke="white" strokeWidth="3.5" strokeLinecap="round"/>
-                            </svg>
-                          ) : service.title === "Ginekologiya" ? (
+                          {service.title === "Урология" ? (
+                            <KidneyIcon className="w-7 h-7 md:w-8 md:h-8" />
+                          ) : service.title === "Гинекология" ? (
                             <svg 
                               className="w-7 h-7 md:w-8 md:h-8 text-white" 
                               viewBox="0 0 100 100" 
@@ -155,14 +227,9 @@ export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
                         <div className="flex-1">
                           <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 md:mb-3">{service.title}</h3>
                           <p className="text-xs md:text-sm text-gray-600 mb-3 md:mb-4 leading-relaxed">{service.description}</p>
-                          {!isExpanded && (
-                            <div className="flex items-center justify-between pt-3 md:pt-4 border-t border-gray-100">
-                              <span className={`text-xs md:text-sm text-transparent bg-clip-text bg-gradient-to-r ${service.gradient} font-medium`}>
-                                {service.price}
-                              </span>
-                              {hasServices && (
-                                <span className="text-xs text-gray-500">{t('servicesModal.more')} →</span>
-                              )}
+                          {!isExpanded && hasServices && (
+                            <div className="flex items-center justify-end pt-3 md:pt-4 border-t border-gray-100">
+                              <span className="text-xs text-gray-500">{t('servicesModal.more')} →</span>
                             </div>
                           )}
                         </div>
@@ -269,10 +336,7 @@ export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
                           })}
                         </ul>
                       </div>
-                      <div className="flex items-center justify-between pt-3 md:pt-4 border-t border-gray-100">
-                        <span className={`text-xs md:text-sm text-transparent bg-clip-text bg-gradient-to-r ${service.gradient} font-medium`}>
-                          {service.price}
-                        </span>
+                      <div className="flex items-center justify-end pt-3 md:pt-4 border-t border-gray-100">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();

@@ -21,11 +21,11 @@ export function LanguageSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-white hover:bg-white/30 active:scale-95 transition-all"
+        className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-white hover:bg-white/30 active:scale-95 transition-all font-medium text-sm"
         aria-label="Tilni o'zgartirish"
         title="Tilni o'zgartirish"
       >
-        <Globe size={20} />
+        {locale.toUpperCase()}
       </button>
 
       {isOpen && (

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": [
+    "app/**/*.{js,ts,tsx}",
+    "components/**/*.{js,ts,tsx}",
+    "next.config.{js,mjs}",
+    "tailwind.config.{js,ts}",
+    "postcss.config.{js,mjs}",
+    "messages/**/*.json"
+  ],
+  "project": [
+    "app/**/*.{js,ts,tsx}",
+    "components/**/*.{js,ts,tsx}",
+    "messages/**/*.json"
+  ],
+  "ignore": [
+    "src/**",
+    "components/icons/**",
+    "app/[locale]/globals.css",
+    "i18n.ts",
+    "navigation.ts",
+    "vite.config.ts",
+    "routing.ts"
+  ],
+  "ignoreDependencies": [
+    "@radix-ui/react-slot",
+    "dotenv",
+    "clsx",
+    "tailwind-merge",
+    "framer-motion",
+    "tsx"
+  ],
+  "ignoreExportsUsedInFile": true
+}
+

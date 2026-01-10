@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { ArrowRight, Check } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Container } from '../ui/Container';
@@ -80,27 +79,25 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               {primaryCTA && (
-                <Link href={primaryCTA.href}>
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    rightIcon={<ArrowRight size={20} />}
-                    className="bg-white text-primary-600 hover:bg-neutral-100"
-                  >
-                    {primaryCTA.label}
-                  </Button>
-                </Link>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  rightIcon={<ArrowRight size={20} />}
+                  className="bg-white text-primary-600 hover:bg-neutral-100"
+                  asChild
+                >
+                  <a href={primaryCTA.href}>{primaryCTA.label}</a>
+                </Button>
               )}
               {secondaryCTA && (
-                <Link href={secondaryCTA.href}>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="border-white text-white hover:bg-white/10"
-                  >
-                    {secondaryCTA.label}
-                  </Button>
-                </Link>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-white text-white hover:bg-white/10"
+                  asChild
+                >
+                  <a href={secondaryCTA.href}>{secondaryCTA.label}</a>
+                </Button>
               )}
             </div>
 

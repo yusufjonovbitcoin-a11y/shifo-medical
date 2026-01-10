@@ -83,9 +83,6 @@ export function LaboratoryModal({ isOpen, onClose }: LaboratoryModalProps) {
                 className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 border border-gray-100 hover:shadow-lg transition-shadow fade-in-on-scroll visible"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <div className={`w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br ${category.color} rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-4 shadow-md`}>
-                  <category.icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
-                </div>
                 <h3 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">{category.category}</h3>
                 <ul className="space-y-1.5 md:space-y-2">
                   {category.tests.map((test, testIndex) => (
@@ -97,22 +94,6 @@ export function LaboratoryModal({ isOpen, onClose }: LaboratoryModalProps) {
                 </ul>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Footer - Fixed at bottom */}
-        <div className="p-4 md:p-6 border-t border-gray-200 bg-gray-50 flex-shrink-0">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs md:text-sm text-gray-600 text-center sm:text-left">
-              Для подробной информации свяжитесь с нами
-            </p>
-            <a
-              href="#uchrashuv"
-              onClick={onClose}
-              className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 md:px-8 py-2 md:py-3 rounded-xl hover:shadow-lg transition-all text-sm md:text-base font-medium active:scale-95"
-            >
-              Записаться на приём
-            </a>
           </div>
         </div>
       </div>

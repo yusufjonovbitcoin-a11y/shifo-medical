@@ -4,6 +4,8 @@ import { routing } from '@/routing';
 import "./globals.css";
 import "@/src/new-ui/styles/globals.css";
 
+export const runtime = 'edge'; // Edge Runtime - minimal latency for global users
+
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
   display: "swap",
@@ -15,7 +17,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SHIFOKOR-LDA | Медицинский Центр - Самарканд",
+  metadataBase: new URL('https://shifokor-lda.uz'),
+  title: {
+    default: "SHIFOKOR-LDA | Медицинский Центр - Самарканд",
+    template: "%s | SHIFOKOR-LDA"
+  },
   description: "Современный медицинский центр в Самарканде. Более 50 видов операций, высококвалифицированные специалисты и передовые технологии.",
   keywords: [
     "медицинский центр",
@@ -28,13 +34,62 @@ export const metadata: Metadata = {
     "проктология",
     "ЛОР",
     "неврология",
-    "маммология"
+    "маммология",
+    "лазерная хирургия",
+    "лапароскопия",
+    "лаборатория",
+    "УЗИ",
+    "физиотерапия"
   ],
   authors: [{ name: "SHIFOKOR-LDA" }],
+  creator: "SHIFOKOR-LDA Medical Center",
+  publisher: "SHIFOKOR-LDA",
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
+  openGraph: {
+    type: 'website',
+    locale: 'uz_UZ',
+    alternateLocale: ['ru_RU'],
+    url: 'https://shifokor-lda.uz',
+    siteName: 'SHIFOKOR-LDA Medical Center',
+    title: 'SHIFOKOR-LDA | Медицинский Центр - Самарканд',
+    description: 'Современный медицинский центр в Самарканде. Более 50 видов операций, высококвалифицированные специалисты и передовые технологии.',
+    images: [
+      {
+        url: '/images/lobaratoriya/shifokor-logo.jpg.png',
+        width: 1200,
+        height: 630,
+        alt: 'SHIFOKOR-LDA Medical Center Logo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SHIFOKOR-LDA | Медицинский Центр',
+    description: 'Современный медицинский центр в Самарканде',
+    images: ['/images/lobaratoriya/shifokor-logo.jpg.png'],
+  },
+  alternates: {
+    canonical: 'https://shifokor-lda.uz',
+    languages: {
+      'uz': 'https://shifokor-lda.uz/uz',
+      'ru': 'https://shifokor-lda.uz/ru',
+    },
+  },
+  verification: {
+    google: 'your-google-verification-code',
+    yandex: 'your-yandex-verification-code',
+  },
+  category: 'Medical',
 };
 
 // Root layout - Next.js 15 requires html and body tags

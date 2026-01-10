@@ -83,8 +83,8 @@ export function UltrasoundModal({ isOpen, onClose }: UltrasoundModalProps) {
               <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </div>
             <div>
-              <h2 id="modal-title" className="text-xl md:text-2xl font-bold text-white">UZИ tadqiqotlar</h2>
-              <p className="text-xs md:text-sm text-blue-200 mt-1">Har kuni 09:00 - 16:30 soat oralig&apos;ida</p>
+              <h2 id="modal-title" className="text-xl md:text-2xl font-bold text-white">УЗИ исследования</h2>
+              <p className="text-xs md:text-sm text-blue-200 mt-1">Ежедневно с 09:00 до 16:30</p>
             </div>
           </div>
           <button
@@ -113,22 +113,6 @@ export function UltrasoundModal({ isOpen, onClose }: UltrasoundModalProps) {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Footer - Fixed at bottom */}
-        <div className="p-4 md:p-6 border-t border-gray-200 bg-gray-50 flex-shrink-0">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs md:text-sm text-gray-600 text-center sm:text-left">
-              Для подробной информации и записи на приём свяжитесь с нами
-            </p>
-            <a
-              href="#uchrashuv"
-              onClick={onClose}
-              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 md:px-8 py-2 md:py-3 rounded-xl hover:shadow-lg transition-all text-sm md:text-base font-medium active:scale-95"
-            >
-              Записаться на приём
-            </a>
           </div>
         </div>
       </div>

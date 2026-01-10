@@ -1,6 +1,6 @@
 'use client';
 
-import { Phone, Clock, MapPin, Home, Users, Building2, Video, Images, Star } from 'lucide-react';
+import { Phone, Clock, MapPin, Home, Users, Building2, Video, Images, Star, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -13,6 +13,11 @@ const ServicesModal = dynamic(() => import('./ServicesModal').then(mod => ({ def
 export function Hero() {
   const t = useTranslations();
   const [isServicesModalOpen, setIsServicesModalOpen] = useState(false);
+  const [address, setAddress] = useState(() => t('hero.address'));
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setAddress(e.target.value);
+  };
   return (
     <section className="relative bg-gradient-to-br from-emerald-500 via-teal-600 to-green-700 overflow-hidden">
       {/* Static Background Elements - replaced animated ones with CSS */}
@@ -75,22 +80,82 @@ export function Hero() {
                 { icon: Phone, key: 'phone' },
                 { icon: Clock, key: 'hours' },
                 { icon: MapPin, key: 'address' }
-              ].map((contact, index) => (
-                <div
-                  key={index}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 transition-all duration-300 hover:bg-white/20 active:scale-95"
-                >
-                    <div className="flex items-center gap-2 md:gap-3">
-                      <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <contact.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
+              ].map((contact, index) => {
+                const handleYandexMapClick = (e: React.MouseEvent) => {
+                  e.stopPropagation();
+                  window.open('https://yandex.uz/maps/-/CDRIEJYF', '_blank', 'noopener,noreferrer');
+                };
+
+                return (
+                  <div
+                    key={index}
+                    className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 transition-all duration-300 hover:bg-white/20"
+                  >
+                      <div className="flex items-start gap-2 md:gap-3">
+                        <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <contact.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                        </div>
+                      <div className="flex-1 min-w-0">
+                          <p className="text-xs text-emerald-100 mb-1">{t(`hero.contact.${contact.key}`)}</p>
+                          {contact.key === 'address' ? (
+                            <div className="flex items-start gap-2">
+                              <textarea
+                                value={address}
+                                onChange={handleAddressChange}
+                                placeholder={t('hero.address')}
+                                rows={3}
+                                className="flex-1 bg-transparent text-white text-xs md:text-sm font-medium border-none outline-none placeholder-white/70 focus:placeholder-white/50 focus:ring-2 focus:ring-white/30 focus:ring-inset rounded px-1 resize-none transition-all duration-200 cursor-text"
+                              />
+                              <button
+                                onClick={handleYandexMapClick}
+                                title={t('hero.openMap')}
+                                className="relative mt-0.5 w-8 h-8 md:w-9 md:h-9 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95 group"
+                                aria-label={t('hero.openMap')}
+                              >
+                                {/* Yandex Maps Logo SVG */}
+                                <svg
+                                  width="20"
+                                  height="20"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="text-white group-hover:text-emerald-200 transition-colors"
+                                >
+                                  {/* Map Pin Shape */}
+                                  <path
+                                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 10c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                                    fill="currentColor"
+                                  />
+                                  {/* Yandex "Я" letter */}
+                                  <text
+                                    x="12"
+                                    y="13"
+                                    fontSize="9"
+                                    fontWeight="900"
+                                    fill="currentColor"
+                                    textAnchor="middle"
+                                    dominantBaseline="middle"
+                                    fontFamily="Arial, sans-serif"
+                                    className="opacity-100"
+                                  >
+                                    Я
+                                  </text>
+                                </svg>
+                              </button>
+                            </div>
+                          ) : contact.key === 'hours' ? (
+                            <div>
+                              <p className="text-white text-xs md:text-sm font-medium">{t(`hero.${contact.key}`)}</p>
+                              <p className="text-white text-xs md:text-sm font-medium mt-1 opacity-90">{t('hero.labHours')}</p>
+                            </div>
+                          ) : (
+                            <p className="text-white text-xs md:text-sm font-medium">{t(`hero.${contact.key}`)}</p>
+                          )}
                       </div>
-                    <div>
-                        <p className="text-xs text-emerald-100">{t(`hero.contact.${contact.key}`)}</p>
-                        <p className="text-white text-xs md:text-sm font-medium">{t(`hero.${contact.key}`)}</p>
                     </div>
                   </div>
-                  </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           
@@ -104,7 +169,7 @@ export function Hero() {
                   { key: 'departments', icon: Building2, href: '#xizmatlar', onClick: () => setIsServicesModalOpen(true) },
                   { key: 'video', icon: Video, href: '#video', onClick: null },
                   { key: 'gallery', icon: Images, href: '#galereya', onClick: null },
-                  { key: 'reviews', icon: Star, href: '#tavsiyalar', onClick: null },
+                  { key: 'faq', icon: Star, href: '#tavsiyalar', onClick: null },
                   { key: 'contact', icon: Phone, href: '#aloqa', onClick: null }
                 ].map((item) => (
                   item.onClick ? (
@@ -181,3 +246,4 @@ export function Hero() {
     </section>
   );
 }
+

@@ -21,18 +21,6 @@
       "title": "Shifokorlar"
     }
   },
-  "doctors": {
-    "specialties": {
-      "urologist": "Urolog",
-      "gynecologist": "Ginekolog",
-      "surgeonProctologist": "Xirurg-proktolog",
-      "ultrasoundDoctor": "UZI shifokori",
-      "labDoctor": "Laboratoriya shifokori",
-      "cardiologistTherapist": "Kardiolog-terapevt / Endokrinolog",
-      "entDoctor": "LOR shifokori",
-      "mammologist": "Mammolog / Onkoginekolog"
-    }
-  },
   "faq": {
     "badge": "Savol-javob",
     "title": "Ko'p so'raladigan savollar",
@@ -43,12 +31,40 @@
         "answer": "Qabul jonli navbat asosida olib boriladi."
       },
       {
-        "question": "Ish vaqti qanday?",
-        "answer": "Dushanba–Shanba: 09:00–16:30"
+        "question": "Sizda statsionar ishlaydimi?",
+        "answer": "Ha, bizda 24/7 statsionar ishlaydi, shuningdek kunduzgi statsionar ham bor."
       },
       {
-        "question": "Qayerdasizlar?",
-        "answer": "Samarqand shahri"
+        "question": "1 statsionar kuni qancha turadi?",
+        "answer": "Statsionar kunlik narxi 450.000 so'm. Narxga tomir ichiga yuborish, in'ektsiyalar va 3 marta ovqatlanish kiradi"
+      },
+      {
+        "question": "Sizda tomir ichiga yuborish yoki in'ektsiya qilish mumkinmi?",
+        "answer": "Ha, mumkin. Har kuni 08:30 dan 16:30 gacha tomir ichiga yuborish, shuningdek tomir ichiga va mushak ichiga in'ektsiyalar qilish mumkin. Shifokorning original tavsiyanomasini o'zingiz bilan olib kelishingiz shart."
+      },
+      {
+        "question": "Bu yoki boshqa operatsiya qancha turadi?",
+        "answer": "Narx operatsiyaning murakkabligiga va ishlatiladigan asbob-uskunalariga bog'liq"
+      },
+      {
+        "question": "Operatsiya narxiga nima kiradi?",
+        "answer": "Operatsiya narxiga operatsiyaning o'zi, statsionarda yotish, dori-darmonlar va 3 marta ovqatlanish kiradi."
+      },
+      {
+        "question": "Operatsiyadan oldin qanday tahlillar kerak?",
+        "answer": "Umumiy klinik qon va siydik tahlillari\nKoagulogramma\nGepatit B, S va OIV\nQon guruhi\nBuyrak va jigar biokimyosi\nGlyukoza darajasi uchun qon\nEKG\nKo'krak qafasi rentgen\nIchki a'zolar UZI\nKardiolog – Terapevt ko'rigi\nAnesteziolog ko'rigi"
+      },
+      {
+        "question": "Konsultatsiyaga qanday tayyorgarlik ko'rish kerak?",
+        "answer": "Klinika mutaxassisining xulosasini tezroq olish uchun shifokorlarga ko'proq ma'lumot taqdim etish kerak. Shuning uchun qabulga davolanish bilan bog'liq barcha tibbiy hujjatlarni olish kerak: ambulatoriya kartasi; statsionar davolanishdan keyin olingan chiqimlar; barcha oldingi diagnostik tekshiruvlar natijalari: UZI, KT, MRT; oldindan dori-darmon bilan davolash sxemalari"
+      },
+      {
+        "question": "Klinikada profilaktik ko'rik o'tkaziladimi?",
+        "answer": "Ha, albatta. Bizning mutaxassislarimizning tajribasi va malakasi insonning salomatlik holati haqida professional va asoslangan xulosalar berishga imkon beradi. Agar murojaat qilgan paytda davolanishga ehtiyoj bo'lmasa, salomatlikni saqlash va yaxshilash bo'yicha professional maslahatlar beramiz. Axir bizning maqsadimiz har doim qimmat aralashuvlarni o'tkazish emas, balki bemorlarga haqiqatan ham kerak bo'lganda yordam ko'rsatishdir."
+      },
+      {
+        "question": "Sizda uyga chaqiruv xizmati bormi?",
+        "answer": "Ha, SHIFOKOR – LDA tibbiy markazida UZI, EKG va Laboratoriya xizmatlarini uyga chaqirish imkoniyati mavjud. Batafsil ma'lumot olish uchun +998 97 611 06 04 / +998 66 235 33 44 raqamiga qo'ng'iroq qiling."
       }
     ]
   },
@@ -88,27 +104,39 @@
     },
     "phone": "+998 97 611 06 04 / +998 662 35 33 44",
     "hours": "Dushanba - Shanba: 9:00 - 16:30",
-    "address": "Samarqand",
+    "labHours": "Laboratoriya: 07:30 - 16:30",
+    "address": "Samarqand shahri, Termezskaya ko'chasi 67A. Mo'ljal: Limonadka",
     "menu": {
       "home": "Bosh sahifa",
       "doctors": "Shifokorlar",
       "departments": "Bo'limlar",
       "video": "Video",
       "gallery": "Galereya",
-      "reviews": "Tavsiyalar",
+      "faq": "Savol-javob",
       "contact": "Aloqa"
-    }
+    },
+    "openMap": "Yandex xaritada ochish"
   },
   "features": {
     "badge": "Bizning xizmatlar",
-    "title": "Keng tibbiy xizmatlar spektri",
+    "title": "SHIFOKOR-LDR",
     "description": "Zamonaviy uskunalar va yuqori malakali mutaxassislar yordamida salomatligingizni saqlang",
+    "mainDescription": "SHIFOKOR-LDR bu ko'p yillik tajriba va zamonaviy texnologiyalar uyg'unlashgan tibbiyot maskani. Bizning klinikada har bir bemorga alohida yondashuv va yuqori malakali shifokorlar nazorati kafolatlanadi. Biz nafaqat kasallikni davolaymiz, balki sizning hayot sifatingizni yaxshilashga intilamiz.",
     "more": "Batafsil",
+    "keyFeatures": {
+      "diagnosis": "Aniq tashxis",
+      "diagnosisDesc": "Eng so'nggi rusumdagi laboratoriya va UZI uskunalari.",
+      "specialists": "Tajribali mutaxassislar",
+      "specialistsDesc": "O'z sohasining yetuk ustalari.",
+      "care": "G'amxo'r xizmat",
+      "careDesc": "Sizning qulayligingiz biz uchun muhim. Sizga shifo, oilangizga xotirjamlik ulashamiz."
+    },
+    "closingStatement": "Har bir inson sog'lom yashashga loyiq. Bizning shifokorlarimiz sizni eshitishga, tushunishga va eng qiyin vaziyatlarda ham to'g'ri yechim topishga doim tayyor. Biz bilan o'zingizni xuddi uyingizdagidek xavfsiz va qadrdon his qilasiz.",
     "trust": {
       "ultrasound": "UZI",
       "ultrasoundSubtitle": "Zamonaviy usullar",
-      "hospital": "Statsionar",
-      "hospitalSubtitle": "24/7 xizmat",
+      "massage": "Massaj",
+      "massageSubtitle": "Barcha massaj turlari",
       "laboratory": "Laboratoriya",
       "laboratorySubtitle": "To'liq tahlillar",
       "physiotherapy": "Fizioterapiya",
@@ -119,7 +147,17 @@
     "badge": "Bizning jamoa",
     "title": "Tajribali shifokorlar",
     "description": "Yuqori malakali mutaxassislar sizning salomatligingiz haqida qayg'uradi",
-    "experience": "tajriba"
+    "experience": "tajriba",
+    "specialties": {
+      "urologist": "Urolog",
+      "gynecologist": "Ginekolog",
+      "surgeonProctologist": "Xirurg-proktolog",
+      "ultrasoundDoctor": "UZI shifokori",
+      "labDoctor": "Laboratoriya shifokori",
+      "cardiologistTherapist": "Kardiolog-terapevt / Endokrinolog",
+      "entDoctor": "LOR shifokori",
+      "mammologist": "Mammolog / Onkoginekolog"
+    }
   },
   "footer": {
     "subtitle": "Tibbiy markaz",
@@ -192,5 +230,9 @@
     "more": "Batafsil",
     "servicesList": "Xizmatlar ro'yxati:",
     "imageNotFound": "Surat topilmadi"
+  },
+  "logoImage": {
+    "alt": "SHIFOKOR-LDA Tibbiy markaz - Diagnostika va davolash Samarqandda",
+    "tagline": "Professional tibbiy markaz"
   }
 }

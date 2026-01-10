@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, HelpCircle } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useIntersectionObserver } from './utils/useIntersectionObserver';
 
@@ -29,11 +29,7 @@ export function FAQ() {
 
       <div ref={elementRef} className="container mx-auto px-4 relative z-10">
         <div className={`text-center mb-12 md:mb-20 fade-in-on-scroll ${isVisible ? 'visible' : ''}`}>
-          <div className="inline-flex items-center gap-2 bg-emerald-100 px-3 md:px-4 py-1.5 md:py-2 rounded-full mb-3 md:mb-4 animate-scale-in">
-            <HelpCircle className="w-4 h-4 md:w-5 md:h-5 text-emerald-600" />
-            <span className="text-emerald-600 uppercase tracking-wide text-xs md:text-sm">{t('faq.badge')}</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl text-gray-900 mt-4 md:mt-6 mb-4 md:mb-6 px-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl text-gray-900 mb-4 md:mb-6 px-4">
             {t('faq.title')}
           </h2>
           <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed px-4">

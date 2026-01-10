@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { Menu, X, Phone, MapPin } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Container } from '../ui/Container';
@@ -58,15 +57,14 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* CTA & Mobile Menu Button */}
           <div className="flex items-center gap-4">
-            <Link href={ctaHref}>
-              <Button
-                variant="primary"
-                size="md"
-                className="hidden md:inline-flex"
-              >
-                {ctaText}
-              </Button>
-            </Link>
+            <Button
+              variant="primary"
+              size="md"
+              className="hidden md:inline-flex"
+              asChild
+            >
+              <a href={ctaHref}>{ctaText}</a>
+            </Button>
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -95,11 +93,11 @@ export const Header: React.FC<HeaderProps> = ({
                 </a>
               ))}
               <div className="px-4 pt-2">
-                <Link href={ctaHref} onClick={() => setIsMobileMenuOpen(false)}>
-                  <Button variant="primary" size="md" fullWidth>
+                <Button variant="primary" size="md" fullWidth asChild>
+                  <a href={ctaHref} onClick={() => setIsMobileMenuOpen(false)}>
                     {ctaText}
-                  </Button>
-                </Link>
+                  </a>
+                </Button>
               </div>
             </nav>
           </Container>
