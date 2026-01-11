@@ -144,7 +144,7 @@ export async function StructuredData({ locale }: StructuredDataProps) {
   // Doctor Schema (aggregate)
   const doctorsList = doctorsData.map((doctor) => ({
     "@type": "Physician",
-    "name": doctor.name,
+    "name": locale === 'ru' ? doctor.nameRu : doctor.nameUz,
     "medicalSpecialty": {
       "@type": "MedicalSpecialty",
       "name": doctor.specialtyKey
@@ -165,7 +165,7 @@ export async function StructuredData({ locale }: StructuredDataProps) {
       "position": index + 1,
       "item": {
         "@type": "Physician",
-        "name": doctor.name,
+        "name": locale === 'ru' ? doctor.nameRu : doctor.nameUz,
         "medicalSpecialty": {
           "@type": "MedicalSpecialty",
           "name": doctor.specialtyKey

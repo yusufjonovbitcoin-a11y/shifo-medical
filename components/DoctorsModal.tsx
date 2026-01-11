@@ -4,7 +4,7 @@ import { X, Award, Clock } from 'lucide-react';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { doctorsData } from '@/data/doctors';
 
 interface DoctorsModalProps {
@@ -14,6 +14,7 @@ interface DoctorsModalProps {
 
 export function DoctorsModal({ isOpen, onClose }: DoctorsModalProps) {
   const t = useTranslations();
+  const locale = useLocale();
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -97,6 +98,9 @@ export function DoctorsModal({ isOpen, onClose }: DoctorsModalProps) {
             // Format experience text
             const experienceText = t('common.experienceYears', { years: doctor.experienceYears });
 
+            // Get doctor name based on locale
+            const doctorName = locale === 'ru' ? doctor.nameRu : doctor.nameUz;
+
             return (
               <div
                 key={index}
@@ -109,27 +113,27 @@ export function DoctorsModal({ isOpen, onClose }: DoctorsModalProps) {
                 <div className="relative z-10">
                   {/* Photo or Icon */}
                   {doctor.image ? (
-                    <div className="w-32 h-32 md:w-36 md:h-36 rounded-xl md:rounded-2xl overflow-hidden mb-4 shadow-md transition-transform duration-300 group-hover:scale-110 relative border-2 border-transparent group-hover:border-emerald-400 mx-auto">
+                    <div className="w-56 h-56 md:w-64 md:h-64 rounded-xl md:rounded-2xl overflow-hidden mb-4 shadow-md transition-transform duration-300 group-hover:scale-110 relative border-2 border-transparent group-hover:border-emerald-400 mx-auto">
                       <Image
                         src={doctor.image}
-                        alt={doctor.name}
+                        alt={doctorName}
                         fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 128px, 144px"
+                        className="object-cover object-top"
+                        sizes="(max-width: 768px) 224px, 256px"
                       />
                     </div>
                   ) : (
-                    <div className={`w-32 h-32 md:w-36 md:h-36 bg-gradient-to-br ${doctor.gradient} rounded-xl md:rounded-2xl flex items-center justify-center mb-4 shadow-md transition-transform duration-300 group-hover:scale-110 mx-auto`}>
-                      <Award className="w-12 h-12 md:w-14 md:h-14 text-white" />
+                    <div className={`w-56 h-56 md:w-64 md:h-64 bg-gradient-to-br ${doctor.gradient} rounded-xl md:rounded-2xl flex items-center justify-center mb-4 shadow-md transition-transform duration-300 group-hover:scale-110 mx-auto`}>
+                      <Award className="w-24 h-24 md:w-28 md:h-28 text-white" />
                     </div>
                   )}
 
                   {/* Doctor Info */}
                   <h3 className="text-base md:text-lg text-gray-900 mb-2 font-bold group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-emerald-600 group-hover:to-teal-600 transition-all duration-300">
-                    {doctor.name}
+                    {doctorName}
                   </h3>
                   
-                  <p className={`text-sm md:text-base font-medium mb-3 text-transparent bg-clip-text bg-gradient-to-r ${doctor.gradient}`}>
+                  <p className="text-sm md:text-base font-medium mb-3 text-emerald-600">
                     {specialty}
                   </p>
 

@@ -1,12 +1,14 @@
 'use client';
 
 import { Award, Clock, Calendar } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useTranslations, useLocale } from 'next-intl';
 import { useIntersectionObserver } from './utils/useIntersectionObserver';
 import { doctorsData } from '@/data/doctors';
 
 export function Doctors() {
   const t = useTranslations();
+  const locale = useLocale();
   const { elementRef, isVisible } = useIntersectionObserver({ threshold: 0.1 });
 
   const formatSchedule = (schedule: typeof doctorsData[0]['schedule']) => {
@@ -48,7 +50,11 @@ export function Doctors() {
 
         {/* Doctors Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {doctorsData.map((doctor, index) => (
+          {doctorsData.map((doctor, index) => {
+            // Get doctor name based on locale
+            const doctorName = locale === 'ru' ? doctor.nameRu : doctor.nameUz;
+            
+            return (
             <div
               key={index}
               className={`group bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-transparent relative overflow-hidden hover-lift fade-in-on-scroll ${isVisible ? 'visible' : ''}`}
@@ -58,14 +64,26 @@ export function Doctors() {
               <div className={`absolute inset-0 bg-gradient-to-br ${doctor.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
               
               <div className="relative z-10">
-                {/* Icon */}
-                <div className={`w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br ${doctor.gradient} rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 shadow-lg transition-transform duration-300 group-hover:scale-110`}>
-                  <Award className="w-8 h-8 md:w-10 md:h-10 text-white" />
-                </div>
+                {/* Doctor Photo */}
+                {doctor.image ? (
+                  <div className="relative w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-6 rounded-xl md:rounded-2xl overflow-hidden shadow-lg transition-transform duration-300 group-hover:scale-110">
+                    <Image
+                      src={doctor.image}
+                      alt={doctorName}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 64px, 80px"
+                    />
+                  </div>
+                ) : (
+                  <div className={`w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br ${doctor.gradient} rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 shadow-lg transition-transform duration-300 group-hover:scale-110`}>
+                    <Award className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                  </div>
+                )}
 
                 {/* Doctor Info */}
                 <h3 className="text-lg md:text-xl text-gray-900 mb-2 md:mb-3 font-bold group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-emerald-600 group-hover:to-teal-600 transition-all duration-300">
-                  {doctor.name}
+                  {doctorName}
                 </h3>
                 
                 <p className={`text-sm md:text-base font-medium mb-3 md:mb-4 text-transparent bg-clip-text bg-gradient-to-r ${doctor.gradient}`}>
@@ -94,7 +112,8 @@ export function Doctors() {
                 </div>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

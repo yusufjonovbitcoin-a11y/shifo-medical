@@ -96,10 +96,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     icons: {
       icon: [
         { url: '/favicon.svg', type: 'image/svg+xml' },
-        { url: '/favicon.ico', sizes: 'any' },
       ],
-      shortcut: '/favicon.ico',
-      apple: '/favicon.ico',
+      shortcut: '/favicon.svg',
+      apple: '/favicon.svg',
     },
   };
 }

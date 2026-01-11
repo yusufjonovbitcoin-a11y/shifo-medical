@@ -194,22 +194,25 @@ export function AIChat() {
     setIsTyping(true);
 
     try {
-      // Real-time typing delay - 2 soniya kutish (haqiqiy suhbatga o'xshash)
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Get API URL - replace localhost with current hostname for network access
-      let API_URL = process.env.NEXT_PUBLIC_AI_CHAT_API_URL || 'http://localhost:3002/ai-chat';
-      
-      // If using localhost and accessing from network device, use current hostname
-      if (typeof window !== 'undefined' && API_URL.includes('localhost')) {
-        const currentHost = window.location.hostname;
-        // Only replace if not localhost (i.e., accessing from network device)
-        if (currentHost !== 'localhost' && currentHost !== '127.0.0.1') {
-          API_URL = API_URL.replace('localhost', currentHost);
-        }
-      }
-      
-      const res = await fetch(API_URL, {
+            // Real-time typing delay - 2 soniya kutish (haqiqiy suhbatga o'xshash)
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Get API URL - replace localhost with current hostname for network access
+            const baseUrl = process.env.NEXT_PUBLIC_AI_CHAT_API_URL || 'http://localhost:3002/ai-chat';
+            
+            // Ensure /ai-chat endpoint is included (xavfsizlik uchun)
+            let API_URL = baseUrl.includes('/ai-chat') ? baseUrl : `${baseUrl.replace(/\/$/, '')}/ai-chat`;
+            
+            // If using localhost and accessing from network device, use current hostname
+            if (typeof window !== 'undefined' && API_URL.includes('localhost')) {
+              const currentHost = window.location.hostname;
+              // Only replace if not localhost (i.e., accessing from network device)
+              if (currentHost !== 'localhost' && currentHost !== '127.0.0.1') {
+                API_URL = API_URL.replace('localhost', currentHost);
+              }
+            }
+            
+            const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

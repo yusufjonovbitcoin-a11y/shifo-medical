@@ -13,10 +13,6 @@ const FAQ = dynamic(() => import("@/components/FAQ").then(mod => ({ default: mod
   loading: () => <div className="py-16 md:py-24 bg-white" />,
 });
 
-const Doctors = dynamic(() => import("@/components/Doctors").then(mod => ({ default: mod.Doctors })), {
-  loading: () => <div className="py-16 md:py-24 bg-white" />,
-});
-
 export default function Home() {
   return (
     <main className="min-h-screen bg-white">

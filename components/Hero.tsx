@@ -7,17 +7,14 @@ import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 import { services } from '@/data/services';
 
-// Lazy load modal - only load when user clicks
+// Lazy load modals - only load when user clicks
 const ServicesModal = dynamic(() => import('./ServicesModal').then(mod => ({ default: mod.ServicesModal })), { ssr: false });
+const DoctorsModal = dynamic(() => import('./DoctorsModal').then(mod => ({ default: mod.DoctorsModal })), { ssr: false });
 
 export function Hero() {
   const t = useTranslations();
   const [isServicesModalOpen, setIsServicesModalOpen] = useState(false);
-  const [address, setAddress] = useState(() => t('hero.address'));
-
-  const handleAddressChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setAddress(e.target.value);
-  };
+  const [isDoctorsModalOpen, setIsDoctorsModalOpen] = useState(false);
   return (
     <section className="relative bg-gradient-to-br from-emerald-500 via-teal-600 to-green-700 overflow-hidden">
       {/* Static Background Elements - replaced animated ones with CSS */}
@@ -100,11 +97,11 @@ export function Hero() {
                           {contact.key === 'address' ? (
                             <div className="flex items-start gap-2">
                               <textarea
-                                value={address}
-                                onChange={handleAddressChange}
+                                value={t('hero.address')}
+                                readOnly
                                 placeholder={t('hero.address')}
                                 rows={3}
-                                className="flex-1 bg-transparent text-white text-xs md:text-sm font-medium border-none outline-none placeholder-white/70 focus:placeholder-white/50 focus:ring-2 focus:ring-white/30 focus:ring-inset rounded px-1 resize-none transition-all duration-200 cursor-text"
+                                className="flex-1 bg-transparent text-white text-xs md:text-sm font-medium border-none outline-none placeholder-white/70 focus:placeholder-white/50 focus:ring-2 focus:ring-white/30 focus:ring-inset rounded px-1 resize-none transition-all duration-200 cursor-default"
                               />
                               <button
                                 onClick={handleYandexMapClick}
@@ -165,33 +162,49 @@ export function Hero() {
               <nav className="flex items-center justify-center gap-2 md:gap-3 lg:gap-4 flex-wrap">
                   {[
                   { key: 'home', icon: Home, href: '/', onClick: null },
-                  { key: 'doctors', icon: Users, href: '#shifokorlar', onClick: null },
+                  { key: 'doctors', icon: Users, href: '#shifokorlar', onClick: () => setIsDoctorsModalOpen(true) },
                   { key: 'departments', icon: Building2, href: '#xizmatlar', onClick: () => setIsServicesModalOpen(true) },
                   { key: 'video', icon: Video, href: '#video', onClick: null },
                   { key: 'gallery', icon: Images, href: '#galereya', onClick: null },
                   { key: 'faq', icon: Star, href: '#tavsiyalar', onClick: null },
                   { key: 'contact', icon: Phone, href: '#aloqa', onClick: null }
-                ].map((item) => (
-                  item.onClick ? (
-                    <button
-                      key={item.key}
-                      onClick={item.onClick}
-                      className="bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 rounded-lg md:rounded-xl px-3 md:px-4 py-2 md:py-2.5 transition-all duration-200 hover:scale-105 active:scale-95 flex items-center gap-1.5 md:gap-2 shadow-lg group/item"
-                    >
-                      <item.icon className="w-4 h-4 md:w-5 md:h-5 text-emerald-600 group-hover/item:scale-110 transition-transform" />
-                      <span className="text-xs md:text-sm font-medium whitespace-nowrap">{t(`hero.menu.${item.key}`)}</span>
-                    </button>
-                  ) : (
+                ].map((item) => {
+                  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+                    if (item.href.startsWith('#')) {
+                      e.preventDefault();
+                      const targetId = item.href.substring(1);
+                      const element = document.getElementById(targetId);
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }
+                  };
+
+                  if (item.onClick) {
+                    return (
+                      <button
+                        key={item.key}
+                        onClick={item.onClick}
+                        className="bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 rounded-lg md:rounded-xl px-3 md:px-4 py-2 md:py-2.5 transition-all duration-200 hover:scale-105 active:scale-95 flex items-center gap-1.5 md:gap-2 shadow-lg group/item"
+                      >
+                        <item.icon className="w-4 h-4 md:w-5 md:h-5 text-emerald-600 group-hover/item:scale-110 transition-transform" />
+                        <span className="text-xs md:text-sm font-medium whitespace-nowrap">{t(`hero.menu.${item.key}`)}</span>
+                      </button>
+                    );
+                  }
+                  
+                  return (
                     <a
                       key={item.key}
                       href={item.href}
+                      onClick={handleAnchorClick}
                       className="bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 rounded-lg md:rounded-xl px-3 md:px-4 py-2 md:py-2.5 transition-all duration-200 hover:scale-105 active:scale-95 flex items-center gap-1.5 md:gap-2 shadow-lg group/item"
                     >
                       <item.icon className="w-4 h-4 md:w-5 md:h-5 text-emerald-600 group-hover/item:scale-110 transition-transform" />
                       <span className="text-xs md:text-sm font-medium whitespace-nowrap">{t(`hero.menu.${item.key}`)}</span>
                     </a>
-                  )
-                ))}
+                  );
+                })}
               </nav>
             </div>
             
@@ -242,6 +255,9 @@ export function Hero() {
       {/* Services Modal - conditionally rendered for better performance */}
       {isServicesModalOpen && (
         <ServicesModal isOpen={isServicesModalOpen} onClose={() => setIsServicesModalOpen(false)} />
+      )}
+      {isDoctorsModalOpen && (
+        <DoctorsModal isOpen={isDoctorsModalOpen} onClose={() => setIsDoctorsModalOpen(false)} />
       )}
     </section>
   );

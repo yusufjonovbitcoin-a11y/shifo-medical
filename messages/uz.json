@@ -156,7 +156,10 @@
       "labDoctor": "Laboratoriya shifokori",
       "cardiologistTherapist": "Kardiolog-terapevt / Endokrinolog",
       "entDoctor": "LOR shifokori",
-      "mammologist": "Mammolog / Onkoginekolog"
+      "mammologist": "Mammolog / Onkoginekolog",
+      "dentist": "Stomatolog",
+      "neurologist": "Nevrolog",
+      "anesthesiologistReanimatologist": "Anesteziolog - Reanimatolog"
     }
   },
   "footer": {

@@ -156,7 +156,10 @@
       "labDoctor": "Врач-лаборант",
       "cardiologistTherapist": "Кардиолог-терапевт / Эндокринолог",
       "entDoctor": "ЛОР врач",
-      "mammologist": "Маммолог / Онко-гинеколог"
+      "mammologist": "Маммолог / Онко-гинеколог",
+      "dentist": "Стоматолог",
+      "neurologist": "Невролог",
+      "anesthesiologistReanimatologist": "Анестезиолог - Реаниматолог"
     }
   },
   "footer": {
