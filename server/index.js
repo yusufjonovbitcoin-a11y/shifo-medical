@@ -14,9 +14,16 @@ const clinicData = JSON.parse(readFileSync(join(__dirname, 'clinic-data.json'), 
 
 const app = express();
 
-// CORS sozlamalari - production uchun
+// CORS sozlamalari - universal (barcha Vercel manzillariga ruxsat beradi)
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "https://shifo-medical.vercel.app", // Saytingizning asosiy manzili
+  origin: function (origin, callback) {
+    // Ham localhost, ham barcha vercel manzillariga ruxsat berish
+    if (!origin || origin.includes('vercel.app') || origin.includes('localhost')) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS xatosi: Bu manzilga ruxsat berilmagan'));
+    }
+  },
   methods: ["GET", "POST"],
   credentials: true
 }));
