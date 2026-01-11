@@ -6,7 +6,10 @@
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server:dev": "cd server && npm run dev",
+    "server:start": "cd server && npm start",
+    "server:install": "cd server && npm install"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",

@@ -5,6 +5,7 @@ import { routing } from '@/routing';
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { StructuredData } from '@/components/StructuredData';
+import { AIChatWrapper } from '@/components/chat/AIChatWrapper';
 
 type Props = {
   children: ReactNode;
@@ -113,6 +114,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <StructuredData locale={locale} />
       <NextIntlClientProvider locale={locale} messages={messages}>
         {children}
+        <AIChatWrapper />
       </NextIntlClientProvider>
     </>
   );

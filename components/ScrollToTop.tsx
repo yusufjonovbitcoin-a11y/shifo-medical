@@ -5,11 +5,45 @@ import { useState, useEffect } from 'react';
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
-  // Show button when page is scrolled down 300px
+  // Check if chat is open
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const checkChatState = () => {
+      const chatOpen = sessionStorage.getItem('chat-open') === 'true' || document.body.classList.contains('chat-open');
+      setIsChatOpen(chatOpen);
+    };
+
+    // Initial check
+    checkChatState();
+
+    // Watch for body class changes
+    const observer = new MutationObserver(checkChatState);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
+    // Watch for storage changes (when chat is opened/closed in another component)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'chat-open') {
+        checkChatState();
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  // Show button when page is scrolled down 300px and chat is not open
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
+      if (window.pageYOffset > 300 && !isChatOpen) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -17,11 +51,12 @@ export function ScrollToTop() {
     };
 
     window.addEventListener('scroll', toggleVisibility);
+    toggleVisibility(); // Initial check
 
     return () => {
       window.removeEventListener('scroll', toggleVisibility);
     };
-  }, []);
+  }, [isChatOpen]);
 
   // Scroll to top function
   const scrollToTop = () => {
