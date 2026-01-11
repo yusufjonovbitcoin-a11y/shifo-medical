@@ -13,7 +13,14 @@ const __dirname = dirname(__filename);
 const clinicData = JSON.parse(readFileSync(join(__dirname, 'clinic-data.json'), 'utf-8'));
 
 const app = express();
-app.use(cors());
+
+// CORS sozlamalari - production uchun
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "https://shifo-medical.vercel.app", // Saytingizning asosiy manzili
+  methods: ["GET", "POST"],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Root GET route - API ma'lumotlari
@@ -475,12 +482,10 @@ app.post('/ai-chat', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || '0.0.0.0'; // Allow network access
+const PORT = process.env.PORT || 3002;
 
-app.listen(PORT, HOST, () => {
-  console.log(`✅ Server running on ${HOST}:${PORT}`);
-  console.log(`🌐 Open: http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Server is running on port ${PORT}`);
   
   // API key tekshiruvi
   if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your-openai-api-key-here') {

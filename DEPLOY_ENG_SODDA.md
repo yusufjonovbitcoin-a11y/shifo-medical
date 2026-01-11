@@ -16,7 +16,7 @@
    - **Name**: `shifo-backend` (ixtiyoriy)
    - **Root Directory**: `server` ✨ (MUHIM!)
    - **Start Command**: `npm start`
-   - **Build Command**: bo'sh qoldiring
+   - **Build Command**: `npm install` ⚠️ (bo'sh qoldirmang!)
    - **Plan**: Free tanlang (bepul)
 
 6. **"Create Web Service" tugmasini bosing**
