@@ -41,9 +41,9 @@
 
 ### Qadam 1: Backend Serverni Deploy Qilish
 
-- [ ] Railway/Render/VPS'da account yaratildi
+- [ ] Render/VPS'da account yaratildi
 - [ ] Repository GitHub'ga push qilindi
-- [ ] Backend service yaratildi (Railway/Render/VPS)
+- [ ] Backend service yaratildi (Render/VPS)
 - [ ] Root directory: `server` sozlandi
 - [ ] Environment variables qo'shildi:
   - [ ] `PORT=3002`
@@ -51,7 +51,7 @@
   - [ ] `TELEGRAM_BOT_TOKEN=...`
   - [ ] `TELEGRAM_ADMIN_ID=...`
 - [ ] Backend deploy qilindi
-- [ ] Backend URL olingan (masalan: `https://your-backend.railway.app`)
+- [ ] Backend URL olingan (masalan: `https://your-backend.onrender.com`)
 - [ ] Backend URL browser'da tekshirildi (JSON response ko'rinishi kerak)
 
 ### Qadam 2: Frontend'ni Deploy Qilish
@@ -61,7 +61,7 @@
 - [ ] Vercel'da yangi project yaratildi
 - [ ] Framework Preset: Next.js tanlandi
 - [ ] Environment variables qo'shildi:
-  - [ ] `NEXT_PUBLIC_AI_CHAT_API_URL=https://your-backend.railway.app/ai-chat`
+  - [ ] `NEXT_PUBLIC_AI_CHAT_API_URL=https://your-backend.onrender.com/ai-chat`
   - [ ] (Agar kerak bo'lsa) `DATABASE_URL=...`
   - [ ] (Agar kerak bo'lsa) `NEXTAUTH_URL=...`
   - [ ] (Agar kerak bo'lsa) `NEXTAUTH_SECRET=...`
@@ -83,7 +83,7 @@
 ## 🌐 Custom Domain (Ixtiyoriy)
 
 - [ ] Frontend domain qo'shildi (Vercel)
-- [ ] Backend domain qo'shildi (Railway/Render)
+- [ ] Backend domain qo'shildi (Render)
 - [ ] DNS sozlamalari to'g'rilandi
 - [ ] SSL sertifikat avtomatik o'rnatildi
 - [ ] Domain'lar ishlayotganini tekshirildi
@@ -92,7 +92,7 @@
 
 ## 📝 Environment Variables Ro'yxati
 
-### Backend (Railway/Render/VPS)
+### Backend (Render/VPS)
 
 ```
 PORT=3002
@@ -104,7 +104,7 @@ TELEGRAM_ADMIN_ID=YOUR_TELEGRAM_ADMIN_ID_HERE
 ### Frontend (Vercel)
 
 ```
-NEXT_PUBLIC_AI_CHAT_API_URL=https://your-backend.railway.app/ai-chat
+NEXT_PUBLIC_AI_CHAT_API_URL=https://your-backend.onrender.com/ai-chat
 ```
 
 (Agar kerak bo'lsa):
@@ -120,7 +120,7 @@ NODE_ENV=production
 ## 🆘 Muammolar bo'lsa
 
 - [ ] Build loglarini tekshirish (Vercel Dashboard > Deployments)
-- [ ] Backend loglarini tekshirish (Railway/Render Dashboard)
+- [ ] Backend loglarini tekshirish (Render Dashboard)
 - [ ] Browser console'da xatolarni ko'rish
 - [ ] Network tab'da API so'rovlarini tekshirish
 - [ ] Environment variables to'g'ri qo'shilganini tekshirish
@@ -133,7 +133,7 @@ Agar barcha qadamlarni bajarsangiz, saytingiz endi internetda! 🎉
 
 **Deploy qilingan URL'lar:**
 - Frontend: `https://your-project.vercel.app`
-- Backend: `https://your-backend.railway.app`
+- Backend: `https://your-backend.onrender.com`
 
 Batafsil ko'rsatmalar: `DEPLOYMENT_GUIDE.md` faylini o'qing.
 

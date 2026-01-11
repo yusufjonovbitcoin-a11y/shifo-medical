@@ -115,7 +115,7 @@ Database yaratilgandan keyin, admin user yaratish uchun seed script yaratish mum
 
 ## Production Deployment
 
-Production'da environment variables'ni platform'ingiz (Vercel, Railway, Heroku) orqali sozlang:
+Production'da environment variables'ni platform'ingiz (Vercel, Render, Heroku) orqali sozlang:
 
 - `DATABASE_URL` - Production database URL
 - `NEXTAUTH_SECRET` - Random secret key (32+ characters)

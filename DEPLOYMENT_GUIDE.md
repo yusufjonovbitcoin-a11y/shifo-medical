@@ -12,40 +12,7 @@ Bu loyiha 2 qismdan iborat:
 
 Backend serverni avval deploy qilish kerak, chunki frontend unga bog'lanishi kerak.
 
-### Variant A: Railway (Tavsiya etiladi - Bepul va Oson) 🚂
-
-1. **Railway Account Yaratish**
-   - [railway.app](https://railway.app) ga kiring
-   - GitHub orqali ro'yxatdan o'ting
-
-2. **Yangi Project Yaratish**
-   - "New Project" tugmasini bosing
-   - "Deploy from GitHub repo" ni tanlang
-   - Repository ni tanlang
-
-3. **Server Papkasini Deploy Qilish**
-   - "Add Service" > "GitHub Repo"
-   - Repository ni tanlang
-   - **Root Directory**: `server` ni tanlang
-   - **Start Command**: `npm start`
-   - **Build Command**: `npm install`
-
-4. **Environment Variables Qo'shish**
-   Railway Dashboard > Project > Service > Variables ga kiring va quyidagilarni qo'shing:
-
-   ```
-   PORT=3002
-   OPENAI_API_KEY=your-openai-api-key-here
-   TELEGRAM_BOT_TOKEN=your-telegram-bot-token
-   TELEGRAM_ADMIN_ID=your-telegram-admin-id
-   ```
-
-5. **Deploy**
-   - Railway avtomatik deploy qiladi
-   - Deploy bo'lgandan keyin, sizga URL beriladi (masalan: `https://your-project.railway.app`)
-   - Bu URL ni eslab qoling - frontend'da ishlatamiz!
-
-### Variant B: Render (Alternative) ☁️
+### Variant A: Render (Tavsiya etiladi - Bepul va Oson) 🚀
 
 1. **Render Account Yaratish**
    - [render.com](https://render.com) ga kiring
@@ -55,11 +22,12 @@ Backend serverni avval deploy qilish kerak, chunki frontend unga bog'lanishi ker
    - "New +" > "Web Service"
    - GitHub repository ni tanlang
    - Settings:
-     - **Name**: `shifo-ai-chat-backend`
-     - **Root Directory**: `server`
+     - **Name**: `shifo-backend` (ixtiyoriy)
+     - **Root Directory**: `server` ✨ (MUHIM!)
      - **Environment**: Node
      - **Build Command**: `npm install`
      - **Start Command**: `npm start`
+     - **Plan**: Free tanlang (bepul)
 
 3. **Environment Variables Qo'shish**
    Render Dashboard > Service > Environment ga kiring:
@@ -73,7 +41,9 @@ Backend serverni avval deploy qilish kerak, chunki frontend unga bog'lanishi ker
 
 4. **Deploy**
    - "Create Web Service" tugmasini bosing
-   - Deploy bo'lgandan keyin URL ni oladi (masalan: `https://shifo-ai-chat-backend.onrender.com`)
+   - Render avtomatik deploy qiladi
+   - Deploy bo'lgandan keyin, sizga URL beriladi (masalan: `https://shifo-medical-1.onrender.com`)
+   - Bu URL ni eslab qoling - frontend'da ishlatamiz!
 
 ### Variant C: VPS (Agar o'zingizning serveringiz bo'lsa) 🖥️
 
@@ -132,10 +102,10 @@ server {
    Vercel Dashboard > Project > Settings > Environment Variables ga kiring:
 
    ```
-   NEXT_PUBLIC_AI_CHAT_API_URL=https://your-backend-url.railway.app/ai-chat
+   NEXT_PUBLIC_AI_CHAT_API_URL=https://your-backend-url.onrender.com/ai-chat
    ```
 
-   ⚠️ **MUHIM**: `your-backend-url.railway.app` o'rniga o'zingizning backend URL'ingizni qo'ying!
+   ⚠️ **MUHIM**: `your-backend-url.onrender.com` o'rniga o'zingizning backend URL'ingizni qo'ying!
 
    Qo'shimcha environment variables (agar kerak bo'lsa):
    ```
@@ -161,7 +131,7 @@ Backend deploy bo'lgandan keyin, frontend'dagi `NEXT_PUBLIC_AI_CHAT_API_URL` env
 **Vercel Dashboard'da:**
 1. Project > Settings > Environment Variables
 2. `NEXT_PUBLIC_AI_CHAT_API_URL` ni toping
-3. Value'ni backend URL'ingizga o'zgartiring (masalan: `https://your-backend.railway.app/ai-chat`)
+3. Value'ni backend URL'ingizga o'zgartiring (masalan: `https://your-backend.onrender.com/ai-chat`)
 4. "Redeploy" tugmasini bosing
 
 ---
@@ -174,7 +144,7 @@ Backend deploy bo'lgandan keyin, frontend'dagi `NEXT_PUBLIC_AI_CHAT_API_URL` env
    - Mobile qurilmalarda ham tekshiring
 
 2. **Backend'ni Tekshirish**
-   - Backend URL'ini browser'da oching (masalan: `https://your-backend.railway.app/`)
+   - Backend URL'ini browser'da oching (masalan: `https://your-backend.onrender.com/`)
    - JSON response ko'rinishi kerak: `{"message": "Shifo AI Chat API", ...}`
 
 3. **AI Chat'ni Tekshirish**
@@ -194,9 +164,9 @@ Backend deploy bo'lgandan keyin, frontend'dagi `NEXT_PUBLIC_AI_CHAT_API_URL` env
    - A record yoki CNAME record qo'shing
    - Vercel'ning ko'rsatgan IP yoki CNAME'ini ishlating
 
-### Backend Domain (Railway/Render)
+### Backend Domain (Render)
 
-1. Railway/Render Dashboard > Project > Settings > Domains
+1. Render Dashboard > Service > Settings > Custom Domain
 2. Custom domain qo'shing
 3. DNS sozlamalarini to'g'rilang (masalan: `api.shifokor.uz`)
 
@@ -213,9 +183,9 @@ NEXT_PUBLIC_AI_CHAT_API_URL=https://api.shifokor.uz/ai-chat
 - GitHub'ga push qilsangiz, Vercel avtomatik deploy qiladi (auto-deploy)
 - Yoki manual: Vercel Dashboard > Project > Deployments > "Redeploy"
 
-### Backend (Railway/Render)
-- GitHub'ga push qilsangiz, Railway/Render avtomatik deploy qiladi
-- Yoki manual: Dashboard'dan "Redeploy" tugmasini bosing
+### Backend (Render)
+- GitHub'ga push qilsangiz, Render avtomatik deploy qiladi
+- Yoki manual: Dashboard'dan "Manual Deploy" tugmasini bosing
 
 ---
 
@@ -273,7 +243,7 @@ server/.env
 **Sabab**: Environment variables to'g'ri sozlanmagan
 
 **Yechim**:
-1. Vercel/Railway Dashboard'da environment variables ni tekshiring
+1. Vercel/Render Dashboard'da environment variables ni tekshiring
 2. Barcha kerakli variable'lar qo'shilganini tekshiring
 3. Build loglarni o'qing va xatolarni tuzating
 
@@ -285,15 +255,15 @@ server/.env
 1. Backend URL'ini browser'da ochib ko'ring
 2. `OPENAI_API_KEY` to'g'ri ekanligini tekshiring
 3. Browser console'da xatolarni ko'ring
-4. Backend loglarini tekshiring (Railway/Render Dashboard'da)
+4. Backend loglarini tekshiring (Render Dashboard > Service > Logs)
 
 ---
 
 ## 📊 Monitoring (Ixtiyoriy)
 
-### Railway
-- Railway Dashboard'da avtomatik monitoring mavjud
-- Loglar, metrics va alerts ko'rish mumkin
+### Render
+- Render Dashboard'da avtomatik monitoring mavjud
+- Loglar va metrics ko'rish mumkin (Service > Logs)
 
 ### Vercel
 - Vercel Dashboard'da analytics va monitoring mavjud
@@ -307,7 +277,7 @@ Agar barcha qadamlarni bajarsangiz, saytingiz endi internetda! 🚀
 
 **Deploy qilingan URL'lar:**
 - Frontend: `https://your-project.vercel.app`
-- Backend: `https://your-backend.railway.app`
+- Backend: `https://your-backend.onrender.com`
 
 Savollar bo'lsa, hujjatlarni qayta ko'rib chiqing yoki hosting platform'larning qo'llanmalariga qarang.
 

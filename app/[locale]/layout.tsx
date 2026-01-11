@@ -93,6 +93,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: locale === 'uz' ? 'uz_UZ' : 'ru_RU',
       alternateLocale: locale === 'uz' ? 'ru_RU' : 'uz_UZ',
     },
+    icons: {
+      icon: [
+        { url: '/favicon.svg', type: 'image/svg+xml' },
+        { url: '/favicon.ico', sizes: 'any' },
+      ],
+      shortcut: '/favicon.ico',
+      apple: '/favicon.ico',
+    },
   };
 }
 

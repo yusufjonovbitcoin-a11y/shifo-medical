@@ -6,7 +6,7 @@
 
 ## 📌 Qadam 1: Backend (Render - 3 daqiqa)
 
-### Render'da (Railway'dan osonroq!)
+### Render'da
 
 1. **Kirish**: [render.com](https://render.com) ga kiring
 2. **Ro'yxatdan o'tish**: "Get Started" → GitHub bilan ro'yxatdan o'ting
@@ -83,7 +83,7 @@
 
 ## 🎯 Nima Farqi?
 
-- **Render**: Railway'dan sodda (kamroq sozlash)
+- **Render**: Sodda va bepul (kamroq sozlash)
 - **Vercel**: Frontend uchun eng yaxshi (1 tugma bilan deploy)
 - **Jami vaqt**: 5-6 daqiqa
 

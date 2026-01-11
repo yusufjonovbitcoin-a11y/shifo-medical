@@ -85,6 +85,14 @@ export const metadata: Metadata = {
       'ru': 'https://shifokor-lda.uz/ru',
     },
   },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
   verification: {
     google: 'your-google-verification-code',
     yandex: 'your-yandex-verification-code',

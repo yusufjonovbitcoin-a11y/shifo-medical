@@ -4,7 +4,7 @@
 
 Loyiha 2 qismdan iborat:
 1. **Frontend** (Veb-sayt) - Vercel'da
-2. **Backend** (AI Chat serverni) - Railway'da
+2. **Backend** (AI Chat serverni) - Render'da
 
 ---
 
@@ -12,18 +12,20 @@ Loyiha 2 qismdan iborat:
 
 ### 1️⃣ Backend Serverni Chiqarish (Avval bu!)
 
-#### Railway'da (5 daqiqa)
+#### Render'da (5 daqiqa)
 
-1. **Kirish**: [railway.app](https://railway.app) → GitHub bilan ro'yxatdan o'ting
+1. **Kirish**: [render.com](https://render.com) → GitHub bilan ro'yxatdan o'ting
 
-2. **Yangi loyiha**: "New Project" → "Deploy from GitHub repo" → Repository tanlang
+2. **Yangi Service**: "New +" → "Web Service" → Repository tanlang
 
 3. **Server sozlash**:
-   - "Add Service" → "GitHub Repo"
-   - **Root Directory**: `server` ni tanlang
+   - **Name**: `shifo-backend` (ixtiyoriy)
+   - **Root Directory**: `server` ni tanlang ✨
    - **Start Command**: `npm start`
+   - **Build Command**: `npm install`
+   - **Plan**: Free tanlang
 
-4. **Kalitlar qo'shish** (Settings > Variables):
+4. **Kalitlar qo'shish** (Settings > Environment):
    ```
    PORT=3002
    OPENAI_API_KEY=YOUR_OPENAI_API_KEY_HERE
@@ -31,7 +33,7 @@ Loyiha 2 qismdan iborat:
    TELEGRAM_ADMIN_ID=YOUR_TELEGRAM_ADMIN_ID_HERE
    ```
 
-5. **Kutish**: 2-3 daqiqa → URL olasiz (masalan: `https://shifo-backend.railway.app`)
+5. **Kutish**: 2-3 daqiqa → URL olasiz (masalan: `https://shifo-medical-1.onrender.com`)
    - ✅ Bu URL ni yozib qo'ying!
 
 ---
@@ -46,9 +48,9 @@ Loyiha 2 qismdan iborat:
 
 3. **Kalit qo'shish** (Settings > Environment Variables):
    ```
-   NEXT_PUBLIC_AI_CHAT_API_URL=https://shifo-backend.railway.app/ai-chat
+   NEXT_PUBLIC_AI_CHAT_API_URL=https://shifo-medical-1.onrender.com/ai-chat
    ```
-   ⚠️ **`shifo-backend.railway.app` o'rniga o'zingizning Railway URL'ingizni yozing!**
+   ⚠️ **`shifo-medical-1.onrender.com` o'rniga o'zingizning Render URL'ingizni yozing!**
 
 4. **Kutish**: 2 daqiqa → URL olasiz (masalan: `https://shifo-medical.vercel.app`)
    - ✅ Tugadi! Saytingiz internetda!
@@ -92,7 +94,7 @@ Endi saytingiz internetda! 🚀
 
 **URL'lar:**
 - Veb-sayt: `https://your-project.vercel.app`
-- Backend: `https://your-backend.railway.app`
+- Backend: `https://your-backend.onrender.com`
 
 ---
 
@@ -100,5 +102,5 @@ Endi saytingiz internetda! 🚀
 
 - ✅ GitHub'ga kod yuborish kerak (deploy qilishdan oldin)
 - ✅ Backend'ni avval deploy qiling (frontend unga bog'lanadi)
-- ✅ Kalitlarni GitHub'ga yubormang (faqat Railway/Vercel'da qo'shing)
+- ✅ Kalitlarni GitHub'ga yubormang (faqat Render/Vercel'da qo'shing)
 
