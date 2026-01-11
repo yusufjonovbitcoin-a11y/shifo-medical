@@ -26,9 +26,9 @@ Loyiha 2 qismdan iborat:
 4. **Kalitlar qo'shish** (Settings > Variables):
    ```
    PORT=3002
-   OPENAI_API_KEY=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
-   TELEGRAM_BOT_TOKEN=8580856771:AAHovcQPabenL1f9UOAN6bEpcNcOR95-JKA
-   TELEGRAM_ADMIN_ID=7716143588
+   OPENAI_API_KEY=YOUR_OPENAI_API_KEY_HERE
+   TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN_HERE
+   TELEGRAM_ADMIN_ID=YOUR_TELEGRAM_ADMIN_ID_HERE
    ```
 
 5. **Kutish**: 2-3 daqiqa → URL olasiz (masalan: `https://shifo-backend.railway.app`)

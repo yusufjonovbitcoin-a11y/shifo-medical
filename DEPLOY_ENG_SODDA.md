@@ -31,13 +31,13 @@
    Value: 3002
    
    Key: OPENAI_API_KEY  
-   Value: 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
+   Value: YOUR_OPENAI_API_KEY_HERE
    
    Key: TELEGRAM_BOT_TOKEN
-   Value: 8580856771:AAHovcQPabenL1f9UOAN6bEpcNcOR95-JKA
+   Value: YOUR_TELEGRAM_BOT_TOKEN_HERE
    
    Key: TELEGRAM_ADMIN_ID
-   Value: 7716143588
+   Value: YOUR_TELEGRAM_ADMIN_ID_HERE
    ```
 
 8. **Kutish**: 2-3 daqiqa → URL olasiz (masalan: `https://shifo-backend.onrender.com`)
