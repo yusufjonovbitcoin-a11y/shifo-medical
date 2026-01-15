@@ -3,22 +3,39 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { message, locale } = body;
+    const { message, sessionId, locale, userInfo } = body;
 
-    // Kelajakda bu yerga OpenAI yoki boshqa AI mantiqini qo'shish mumkin
-    let botReply = "";
-    
-    if (locale === 'ru') {
-      botReply = `Я получил ваше сообщение: "${message}". Скоро наш оператор свяжется с вами.`;
-    } else if (locale === 'en') {
-      botReply = `I received your message: "${message}". Our operator will contact you soon.`;
-    } else {
-      botReply = `Xabaringiz qabul qilindi: "${message}". Tez orada operatorimiz siz bilan bog'lanadi.`;
+    // Backend server URL - environment variable yoki default localhost
+    const BACKEND_URL = process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_AI_CHAT_API_URL || 'http://localhost:3002';
+    const API_URL = `${BACKEND_URL}/ai-chat`;
+
+    // Backend server'ga so'rov yuborish
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: message,
+        sessionId: sessionId,
+        locale: locale,
+        userInfo: userInfo
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Backend server xatosi: ${response.status}`);
     }
 
-    return NextResponse.json({ reply: botReply });
+    const data = await response.json();
+    
+    return NextResponse.json({ reply: data.reply || 'Javob olindi, lekin xabar mavjud emas.' });
   } catch (error) {
-    return NextResponse.json({ error: 'Xatolik yuz berdi' }, { status: 500 });
+    console.error('API route xatosi:', error);
+    return NextResponse.json({ 
+      error: 'Xatolik yuz berdi',
+      reply: 'Uzr, server bilan bog\'lanishda xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.'
+    }, { status: 500 });
   }
 }
 

@@ -197,8 +197,8 @@ export function AIChat() {
       // Real-time typing delay - 2 soniya kutish (haqiqiy suhbatga o'xshash)
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Vercel-dagi o'zgaruvchini olish, agar u bo'lmasa localhost-ga murojaat qilish
-      const API_URL = process.env.NEXT_PUBLIC_AI_CHAT_API_URL || 'http://localhost:3002/ai-chat';
+      // Next.js API route'ga so'rov yuborish (server-side proxy orqali)
+      const API_URL = process.env.NEXT_PUBLIC_AI_CHAT_API_URL || '/api/chat';
       
       const res = await fetch(API_URL, {
         method: 'POST',
