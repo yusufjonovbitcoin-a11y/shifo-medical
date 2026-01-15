@@ -27,7 +27,25 @@ export async function sendTelegram(userData) {
       name = "Noma'lum (Faqat raqam qoldirgan)";
     }
 
-    const complaint = userData.complaint || userData.problem || "Ko'rsatilmagan";
+    // Shikoyatni tozalash - telefon raqamlarini olib tashlash
+    let complaint = userData.complaint || userData.problem || "Ko'rsatilmagan";
+    
+    // Telefon raqamlarini shikoyatdan olib tashlash
+    complaint = complaint.replace(/\+?998\d{9}/g, ''); // +998XXXXXXXXX format
+    complaint = complaint.replace(/90\d{9}/g, ''); // 90XXXXXXXXX format
+    complaint = complaint.replace(/\d{9,}/g, ''); // Har qanday 9+ raqamli son
+    complaint = complaint.replace(/\s+/g, ' ').trim(); // Ortiqcha bo'shliqlarni olib tashlash
+    
+    // Agar shikoyat bo'sh bo'lib qolsa yoki faqat raqamlar bo'lsa
+    if (!complaint || complaint.length < 3 || /^\d+$/.test(complaint)) {
+      complaint = "Ko'rsatilmagan";
+    }
+    
+    // Shikoyat telefon raqamiga o'xshash bo'lsa, uni "Ko'rsatilmagan"ga o'zgartiramiz
+    if (complaint === phone || complaint.replace(/\+/g, '') === phone.replace(/\+/g, '')) {
+      complaint = "Ko'rsatilmagan";
+    }
+
     const severity = userData.severity_level || '🟡 O\'rta';
     const specialist = userData.specialist_direction || 'Terapevt';
     

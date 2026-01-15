@@ -259,8 +259,11 @@ app.post('/ai-chat', async (req, res) => {
           }
         } 
         
+        // Raqam bor-yo'qligini tekshirish
+        const hasNumber = /\d/.test(message.trim());
+        
         // Agar pattern bilan extract qilinmagan bo'lsa, to'g'ridan-to'g'ri ism sifatida tekshiramiz
-        if (!nameExtracted && !isCommonWord && !isRefusal &&
+        if (!nameExtracted && !isCommonWord && !isRefusal && !hasNumber &&
             message.trim().length >= 2 && 
             message.trim().length <= 50 &&
             /^[А-Яа-яА-ӯа-ӯA-Za-z\s\-]+$/i.test(message.trim()) &&
@@ -391,6 +394,24 @@ app.post('/ai-chat', async (req, res) => {
           }
         }
         
+        // Shikoyatni tozalash - telefon raqamlarini olib tashlash
+        if (complaintText && complaintText !== 'Ko\'rsatilmagan') {
+          complaintText = complaintText.replace(/\+?998\d{9}/g, ''); // +998XXXXXXXXX format
+          complaintText = complaintText.replace(/90\d{9}/g, ''); // 90XXXXXXXXX format
+          complaintText = complaintText.replace(/\d{9,}/g, ''); // Har qanday 9+ raqamli son
+          complaintText = complaintText.replace(/\s+/g, ' ').trim(); // Ortiqcha bo'shliqlarni olib tashlash
+          
+          // Agar shikoyat bo'sh bo'lib qolsa yoki faqat raqamlar bo'lsa
+          if (!complaintText || complaintText.length < 3 || /^\d+$/.test(complaintText)) {
+            complaintText = 'Ko\'rsatilmagan';
+          }
+          
+          // Shikoyat telefon raqamiga o'xshash bo'lsa
+          if (complaintText === phoneStr || complaintText.replace(/\+/g, '') === phoneStr.replace(/\+/g, '')) {
+            complaintText = 'Ko\'rsatilmagan';
+          }
+        }
+        
         // Yo'nalishni aniqlash (AI tashxisidan yoki shikoyatdan)
         let specialistDirection = 'Terapevt'; // Default
         const specialistMapping = {
@@ -408,9 +429,16 @@ app.post('/ai-chat', async (req, res) => {
           }
         }
         
+        // TelegramData tayyorlashdan oldin - userDatani yana bir bor filtrdan o'tkazish
+        let finalName = name || 'Ko\'rsatilmagan';
+        // Agar ism ichida raqam bo'lsa yoki telefon bilan bir xil bo'lsa
+        if (/\d/.test(finalName) || finalName.replace(/\+/g, '') === phoneStr.replace(/\+/g, '')) {
+          finalName = "Noma'lum (Faqat raqam qoldirgan)";
+        }
+        
         // Faqat kerakli ma'lumotlarni tayyorlash (telefon raqami olinganda)
         const telegramData = {
-          name: name || 'Ko\'rsatilmagan',
+          name: finalName,
           phone: phoneStr,
           complaint: complaintText || 'Ko\'rsatilmagan',
           duration: duration || 'Ko\'rsatilmagan',
