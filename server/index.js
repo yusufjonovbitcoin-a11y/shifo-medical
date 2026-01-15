@@ -450,9 +450,10 @@ app.post('/ai-chat', async (req, res) => {
 
     res.json({ reply });
   } catch (error) {
-    console.error('Chat xatosi:', error);
-    res.status(500).json({ 
-      reply: 'Uzr, tizimda kichik texnik nosozlik yuz berdi. Birozdan so\'ng qayta urinib ko\'ring yoki bizga qo\'ng\'iroq qiling.' 
+    console.error("LOG:", error);
+    res.status(200).json({ 
+      reply: `Backend xatosi: ${error.message}. 
+    Kalit mavjudligi: ${process.env.OPENAI_API_KEY ? 'Bor' : 'Yoq'}` 
     });
   }
 });
