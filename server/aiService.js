@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import 'dotenv/config';
+import { clinicData } from './clinic-data.js';
 
 // OpenAI API key tekshiruvi
 if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your-openai-api-key-here') {
@@ -20,9 +21,13 @@ try {
   console.error('⚠️ OpenAI client yaratishda xatolik:', error.message);
 }
 
-export async function handleAIMessage(message, clinicData, chatHistory = []) {
+export async function handleAIMessage(message, chatHistory = []) {
   const systemPrompt = `
 Siz SHIFOKOR-LDA tibbiy markazining yuqori malakali, samimiy va insonparvar qabul bo'limi operatorisiz.
+
+**MUHIM:** Quyidagi ma'lumotlar sizga shifoxona haqida to'liq ma'lumot beradi. Bemor savol bersa, bu ma'lumotlardan foydalanib aniq javob bering:
+
+${JSON.stringify(clinicData, null, 2)}
 
 **MUOMALA MADANIYATI:**
 - ⚠️ ROBOT EMAS, ODAM BO'LING: Bemor "oyoqlarim og'riyapti" desa, darrov "Ismingiz nima?" deb so'ramang. Avval "Sizni tushundim, bu og'riq yurishingizga qiyinchilik tug'dirayotgan bo'lsa kerak, keling buni aniqlashtirib olamiz" deb hamdardlik bildiring.

@@ -6,11 +6,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { handleAIMessage } from './aiService.js';
 import { sendTelegram } from './telegram.js';
-
-// JSON faylni o'qish (barcha Node.js versiyalarida ishlaydi)
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const clinicData = JSON.parse(readFileSync(join(__dirname, 'clinic-data.json'), 'utf-8'));
+import { clinicData } from './clinic-data.js';
 
 const app = express();
 
@@ -131,7 +127,7 @@ app.post('/ai-chat', async (req, res) => {
     }
 
     // AI javobini olish
-    const reply = await handleAIMessage(message, clinicData, chatHistory);
+    const reply = await handleAIMessage(message, chatHistory);
 
     // Tarixni yangilash
     chatHistory.push(
