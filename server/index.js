@@ -296,35 +296,45 @@ app.post('/ai-chat', async (req, res) => {
     
     // AI javobidan taxminiy tashxisni ajratish (yaxshiroq versiya)
     // AI javobida tashxisga ishora bo'lsa, saqlash
+    // MUHIM: "kuzatayapman" va "alomatlarini" so'zlari mavjud bo'lishi kerak
     const diagnosisKeywords = ['kuzatayapman', 'alomatlarini', 'taxminan', 'shunday', 'bo\'lishi mumkin', 'tashxis', 'ehtimol', 'o\'xshaydi', 'yo\'naltirish'];
     const hasDiagnosis = diagnosisKeywords.some(keyword => reply.toLowerCase().includes(keyword.toLowerCase()));
     
-    if (hasDiagnosis) {
-      // AI javobidan tashxis qismini ajratish - "Sizda ... alomatlarini kuzatayapman" formatini topish
+    // AI javobidan taxminiy tashxisni ajratish - "kuzatayapman" va "alomatlarini" so'zlarini qidirish
+    const kuzatayapmanIndex = reply.toLowerCase().indexOf('kuzatayapman');
+    const alomatlariniIndex = reply.toLowerCase().indexOf('alomatlarini');
+    
+    if (kuzatayapmanIndex !== -1 || alomatlariniIndex !== -1) {
+      // "kuzatayapman" yoki "alomatlarini" so'zlaridan boshlab, keyingi 2-3 jumlani olish
+      const startIndex = kuzatayapmanIndex !== -1 ? kuzatayapmanIndex : alomatlariniIndex;
+      const extractedText = reply.substring(startIndex);
+      // Keyingi 200 belgini olish (taxminan 2-3 jumla)
+      let tashxis = extractedText.substring(0, 200).trim();
+      
+      // "Lekin bu aniq tashxis emas" dan oldingi qismni olish
+      if (tashxis.includes('Lekin') || tashxis.includes('lekin')) {
+        tashxis = tashxis.split(/Lekin|lekin/)[0].trim();
+      }
+      
+      userData.ai_analysis = tashxis;
+    } else if (hasDiagnosis) {
+      // Agar "kuzatayapman" bo'lmasa, lekin boshqa kalit so'zlar bo'lsa
       const sentences = reply.split(/[.!?]/).filter(s => s.trim().length > 10);
       
       // Tashxis qismini topish
       const diagnosisSentence = sentences.find(s => 
-        s.toLowerCase().includes('kuzatayapman') || 
-        s.toLowerCase().includes('alomatlarini') ||
-        (s.toLowerCase().includes('taxminan') && s.toLowerCase().includes('bo\'lishi'))
+        diagnosisKeywords.some(keyword => s.toLowerCase().includes(keyword.toLowerCase()))
       );
       
       if (diagnosisSentence) {
-        // Faqat tashxis qismini olish, "Lekin bu aniq tashxis emas" dan oldingi qism
         let tashxis = diagnosisSentence.trim();
         if (tashxis.includes('Lekin') || tashxis.includes('lekin')) {
           tashxis = tashxis.split(/Lekin|lekin/)[0].trim();
         }
         userData.ai_analysis = tashxis;
       } else {
-        // Agar aniq format topilmasa, tashxisga o'xshash qismni olish
-        const tashxisParts = sentences.filter(s => 
-          diagnosisKeywords.some(keyword => s.toLowerCase().includes(keyword.toLowerCase()))
-        );
-        if (tashxisParts.length > 0) {
-          userData.ai_analysis = tashxisParts[0].trim().split(/Lekin|lekin/)[0].trim();
-        }
+        // Agar aniq format topilmasa, butun javobning birinchi qismini olish
+        userData.ai_analysis = reply.substring(0, 200).trim();
       }
     }
 
@@ -370,27 +380,26 @@ app.post('/ai-chat', async (req, res) => {
       // Oldin yuborilmaganligini tekshirish (bir telefon raqami uchun faqat 1 marta yuborish)
       if (!telegramSent.has(sentKey)) {
         // Chat history'dan shikoyatni aniqlash (agar saqlanmagan bo'lsa)
-        let complaintText = problem?.trim();
-        if (!complaintText || complaintText === 'Ko\'rsatilmagan' || complaintText.length < 5) {
-          // Chat history'dan birinchi uzun mijoz xabarini olish (shikoyat bo'lishi mumkin)
-          const firstLongUserMessage = chatHistory.find(msg => 
-            msg.role === 'user' && 
-            msg.content?.length > 10 && 
-            !msg.content.match(/\d{9,}/) && // Telefon raqami emas
-            !msg.content.toLowerCase().includes('ismim') && // Ism emas
-            !msg.content.toLowerCase().includes('men') && msg.content.length < 20 // Qisqa ism emas
-          );
-          if (firstLongUserMessage) {
-            complaintText = firstLongUserMessage.content.substring(0, 300); // 300 belgidan oshmasin
-          } else {
-            // Agar hali ham topilmagan bo'lsa, barcha mijoz xabarlarini birgalikda olish
-            const allUserMessages = chatHistory
-              .filter(msg => msg.role === 'user' && msg.content?.length > 5)
-              .map(msg => msg.content)
-              .join('. ');
-            if (allUserMessages.length > 10) {
-              complaintText = allUserMessages.substring(0, 300);
-            }
+        let complaintText = userData.complaint || problem?.trim() || "Ko'rsatilmagan";
+        
+        if (complaintText === "Ko'rsatilmagan" || !complaintText || complaintText.length < 5) {
+          // Agar maxsus maydon bo'sh bo'lsa, suhbat tarixidan barcha USER xabarlarini yig'amiz
+          const allUserWords = chatHistory
+            .filter(m => m.role === 'user' && m.content && m.content.length > 3)
+            .map(m => {
+              // Telefon raqamlarini va ismlarni olib tashlash
+              let content = m.content;
+              content = content.replace(/\+?998\d{9}/g, ''); // +998XXXXXXXXX format
+              content = content.replace(/90\d{9}/g, ''); // 90XXXXXXXXX format
+              content = content.replace(/\d{9,}/g, ''); // Har qanday 9+ raqamli son
+              content = content.replace(/\s+/g, ' ').trim();
+              return content;
+            })
+            .filter(content => content.length > 3 && !/^\d+$/.test(content)) // Faqat raqamlar emas
+            .join(', ');
+          
+          if (allUserWords.length > 5) {
+            complaintText = allUserWords.substring(0, 300); // 300 belgidan oshmasin
           }
         }
         
@@ -420,6 +429,32 @@ app.post('/ai-chat', async (req, res) => {
           'Xirurg (Jarroh)': ['appenditsit', 'appenditsit shubhasi', 'shubhasi', 'xirurg', 'jarroh', 'o\'tkir', 'urg\'un', 'operatsiya'],
           'Terapevt': ['umumiy', 'terapevt', 'birinchi yordam']
         };
+        
+        // AI xulosasini olish (agar saqlanmagan bo'lsa, chat history'dan qidirish)
+        let aiAnalysis = userData.ai_analysis || '';
+        if (!aiAnalysis || aiAnalysis === 'Hali tahlil qilinmadi') {
+          // Chat history'dan AI javoblarini qidirish
+          const aiMessages = chatHistory
+            .filter(msg => msg.role === 'assistant' && msg.content)
+            .map(msg => msg.content)
+            .reverse(); // Oxirgi javobdan boshlab
+          
+          for (const aiReply of aiMessages) {
+            const kuzatayapmanIndex = aiReply.toLowerCase().indexOf('kuzatayapman');
+            const alomatlariniIndex = aiReply.toLowerCase().indexOf('alomatlarini');
+            
+            if (kuzatayapmanIndex !== -1 || alomatlariniIndex !== -1) {
+              const startIndex = kuzatayapmanIndex !== -1 ? kuzatayapmanIndex : alomatlariniIndex;
+              const extractedText = aiReply.substring(startIndex);
+              aiAnalysis = extractedText.substring(0, 200).trim();
+              break;
+            }
+          }
+        }
+        
+        if (!aiAnalysis || aiAnalysis.length < 10) {
+          aiAnalysis = 'Hali tahlil qilinmadi';
+        }
         
         const combinedText = (aiAnalysis + ' ' + complaintText).toLowerCase();
         for (const [specialist, keywords] of Object.entries(specialistMapping)) {
