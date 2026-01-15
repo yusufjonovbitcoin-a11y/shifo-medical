@@ -22,12 +22,12 @@ interface UserData {
 const getInitialBotMessage = (locale: string): string => {
   switch (locale) {
     case 'ru':
-      return 'Здравствуйте! Ваше здоровье очень важно для нас. Скажите, пожалуйста, что именно вас беспокоит?';
+      return 'Здравствуйте! Я помощник оператора регистратуры медицинского центра SHIFOKOR-LDA. Что именно вас беспокоит? Расскажите свободно.';
     case 'en':
-      return 'Hello! Your health is very important to us. Please tell us, what exactly is bothering you?';
+      return 'Hello! I\'m an assistant operator at SHIFOKOR-LDA medical center reception. What exactly is bothering you? Please tell me freely.';
     case 'uz':
     default:
-      return 'Assalomu alaykum! Sizning salomatligingiz biz uchun muhim. Ayting-chi, sizni aynan nima bezovta qilyapti?';
+      return 'Assalomu alaykum! Men SHIFOKOR-LDA tibbiy markazining qabul bo\'limi operatori yordamchisiman. Sizni aynan nima bezovta qilyapti? Erkin gapirib bering.';
   }
 };
 
@@ -35,12 +35,12 @@ const getInitialBotMessage = (locale: string): string => {
 const getChatTitle = (locale: string): string => {
   switch (locale) {
     case 'ru':
-      return 'AI Помощник';
+      return 'Оператор регистратуры';
     case 'en':
-      return 'AI Assistant';
+      return 'Reception Operator';
     case 'uz':
     default:
-      return 'AI Yordamchi';
+      return 'Qabul bo\'limi operatori';
   }
 };
 

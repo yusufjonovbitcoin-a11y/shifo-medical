@@ -395,25 +395,6 @@ app.post('/ai-chat', async (req, res) => {
           }
         }
         
-        // Kasallik darajasini aniqlash (AI tashxisidan)
-        let severityLevel = 'O\'rta'; // Default
-        const severityKeywords = {
-          'Yuqori': ['appenditsit', 'appenditsit shubhasi', 'shubhasi', 'shubha', 'o\'tkir', 'urg\'un', 'tezkor', 'qon ketish', 'qon', 'infarkt', 'stroke', 'yurak xuruji', 'xirurg', 'jarroh'],
-          'O\'rta': ['og\'riq', 'ogriyapti', 'bezovta', 'noqulay', 'xiralik', 'tushkunlik'],
-          'Past': ['kichik', 'mild', 'yengil', 'oddiy', 'tavsiya']
-        };
-        
-        if (aiAnalysis) {
-          const aiAnalysisLower = aiAnalysis.toLowerCase();
-          if (severityKeywords['Yuqori'].some(keyword => aiAnalysisLower.includes(keyword))) {
-            severityLevel = '🔴 Yuqori';
-          } else if (severityKeywords['Past'].some(keyword => aiAnalysisLower.includes(keyword))) {
-            severityLevel = '🟢 Past';
-          } else {
-            severityLevel = '🟡 O\'rta';
-          }
-        }
-        
         // Yo'nalishni aniqlash (AI tashxisidan yoki shikoyatdan)
         let specialistDirection = 'Terapevt'; // Default
         const specialistMapping = {
@@ -431,40 +412,27 @@ app.post('/ai-chat', async (req, res) => {
           }
         }
         
-        // Barcha to'plangan ma'lumotlarni tayyorlash (telefon raqami olinganda)
+        // Faqat kerakli ma'lumotlarni tayyorlash (telefon raqami olinganda)
         const telegramData = {
-          name: name || 'Noma\'lum',
+          name: name || 'Ko\'rsatilmagan',
           phone: phoneStr,
           complaint: complaintText || 'Ko\'rsatilmagan',
           duration: duration || 'Ko\'rsatilmagan',
-          ai_analysis: aiAnalysis || 'Hali tahlil qilinmadi',
-          severity_level: severityLevel,
           specialist_direction: specialistDirection,
-          session_id: sessionKey, // Chat tarixi havolasi uchun (keyinchalik database ID bo'lishi mumkin)
-          time: new Date().toLocaleString('uz-UZ', { 
-            timeZone: 'Asia/Tashkent',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
-          })
+          ai_analysis: aiAnalysis || 'Hali tahlil qilinmadi'
         };
         
         // Telegram'ga yuborish (serverni to'xtatmasligi uchun)
         sendTelegram(telegramData).then(() => {
-          console.log(`✅ Telegram'ga yuborildi (telefon raqami olingandan keyin - BARCHA ma'lumotlar bilan):`);
+          console.log(`✅ Telegram'ga yuborildi (telefon raqami olingandan keyin):`);
           console.log(`   👤 Ism: ${telegramData.name}`);
           console.log(`   📞 Telefon: ${phoneStr}`);
-          console.log(`   🤒 Kasallik/Shikoyat: ${telegramData.complaint.substring(0, 80)}${telegramData.complaint.length > 80 ? '...' : ''}`);
+          console.log(`   🤒 Shikoyat: ${telegramData.complaint.substring(0, 80)}${telegramData.complaint.length > 80 ? '...' : ''}`);
           console.log(`   ⏳ Davomiyligi: ${telegramData.duration}`);
-          console.log(`   👨‍⚕️ AI Tashxisi: ${telegramData.ai_analysis.substring(0, 80)}${telegramData.ai_analysis.length > 80 ? '...' : ''}`);
-          console.log(`   📊 Kasallik darajasi: ${telegramData.severity_level}`);
           console.log(`   🏥 Yo'nalish: ${telegramData.specialist_direction}`);
-          console.log(`   💬 Chat ID: ${telegramData.session_id}`);
-          // Bir telefon raqami uchun faqat 1 marta yuborish (butunlay faqat bir marta)
+          console.log(`   👨‍⚕️ AI Tashxisi: ${telegramData.ai_analysis.substring(0, 80)}${telegramData.ai_analysis.length > 80 ? '...' : ''}`);
+          // Bir telefon raqami uchun faqat 1 marta yuborish
           telegramSent.set(sentKey, Date.now());
-          // Faqat 1 marta yuborish - setTimeout olib tashlandi
         }).catch(err => {
           console.error('❌ Telegram xabar yuborish xatosi:', err);
         });

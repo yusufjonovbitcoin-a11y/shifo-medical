@@ -182,14 +182,14 @@ export function Hero() {
 
                   if (item.onClick) {
                     return (
-                      <button
-                        key={item.key}
-                        onClick={item.onClick}
-                        className="bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 rounded-lg md:rounded-xl px-3 md:px-4 py-2 md:py-2.5 transition-all duration-200 hover:scale-105 active:scale-95 flex items-center gap-1.5 md:gap-2 shadow-lg group/item"
-                      >
-                        <item.icon className="w-4 h-4 md:w-5 md:h-5 text-emerald-600 group-hover/item:scale-110 transition-transform" />
-                        <span className="text-xs md:text-sm font-medium whitespace-nowrap">{t(`hero.menu.${item.key}`)}</span>
-                      </button>
+                    <button
+                      key={item.key}
+                      onClick={item.onClick}
+                      className="bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 rounded-lg md:rounded-xl px-3 md:px-4 py-2 md:py-2.5 transition-all duration-200 hover:scale-105 active:scale-95 flex items-center gap-1.5 md:gap-2 shadow-lg group/item"
+                    >
+                      <item.icon className="w-4 h-4 md:w-5 md:h-5 text-emerald-600 group-hover/item:scale-110 transition-transform" />
+                      <span className="text-xs md:text-sm font-medium whitespace-nowrap">{t(`hero.menu.${item.key}`)}</span>
+                    </button>
                     );
                   }
                   

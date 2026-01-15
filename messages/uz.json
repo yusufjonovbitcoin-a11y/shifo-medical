@@ -232,7 +232,78 @@
     "title": "Xizmatlar",
     "more": "Batafsil",
     "servicesList": "Xizmatlar ro'yxati:",
-    "imageNotFound": "Surat topilmadi"
+    "imageNotFound": "Surat topilmadi",
+    "services": {
+      "urology": {
+        "title": "Urologiya",
+        "description": "TUR operatsiyalari, laparoskopik operatsiyalar, zamonaviy lazer texnologiyalari",
+        "price": "Konsultatsiya",
+        "servicesList": {
+          "tvtTreatment": "Stress inkontinentsiyasini TVT usuli bilan davolash",
+          "tur": "Transuretral prostata rezektsiyasi (TUR)",
+          "bladderBiopsy": "Qovuq biopsiyasi",
+          "varicocele": "Varikosele",
+          "hydrocele": "Gidrosele",
+          "leukoplakia": "Qovuq leyukoplakiyasi",
+          "circumcision": "Sunnat",
+          "inguinalHernia": "Chanoq gerniyasi",
+          "bladderTumorRemoval": "Qovuq o'smasini olib tashlash",
+          "cystolithotripsy": "Sistolitotripsiya",
+          "cystoscopy": "Sistoskopiya",
+          "infusions": "Tomchilatish va venaga kiritish"
+        }
+      },
+      "gynecology": {
+        "title": "Ginekologiya",
+        "description": "Gisteroskopiya, laparoskopiya, ayollar kasalliklarini davolash",
+        "price": "Konsultatsiya"
+      },
+      "neurology": {
+        "title": "Nevrologiya",
+        "description": "Asab tizimi kasalliklari, EEG, manual terapiya",
+        "price": "Konsultatsiya"
+      },
+      "proctology": {
+        "title": "Proktologiya",
+        "description": "Laparoskopik operatsiyalar, proktologiya, lazer texnologiyalari",
+        "price": "Konsultatsiya"
+      },
+      "otolaryngology": {
+        "title": "Otorinolaringologiya",
+        "description": "Burun, quloq, tomoq kasalliklari, endoskopik operatsiyalar",
+        "price": "Konsultatsiya"
+      },
+      "homeVisit": {
+        "title": "Uyga shifokor chaqirish",
+        "description": "Uyga shifokor chaqirish, konsultatsiya, diagnostika",
+        "price": "Konsultatsiya"
+      },
+      "laboratory": {
+        "title": "Laboratoriya",
+        "description": "Laboratoriya tahlillari, tadqiqotlar, diagnostika",
+        "price": "Konsultatsiya"
+      },
+      "mammology": {
+        "title": "Mammologiya",
+        "description": "Mammologiya xizmatlari, ko'krak bezi kasalliklari",
+        "price": "Konsultatsiya"
+      },
+      "dentistry": {
+        "title": "Stomatologiya",
+        "description": "Tish davolash, profilaktika, estetika",
+        "price": "Konsultatsiya"
+      },
+      "ultrasound": {
+        "title": "UZI tadqiqotlari",
+        "description": "Ultraovush diagnostikasi, barcha organlar",
+        "price": "Konsultatsiya"
+      },
+      "electrocardiography": {
+        "title": "Elektrokardiografiya",
+        "description": "Yurak faoliyatini tekshirish, EKG",
+        "price": "Konsultatsiya"
+      }
+    }
   },
   "logoImage": {
     "alt": "SHIFOKOR-LDA Tibbiy markaz - Diagnostika va davolash Samarqandda",

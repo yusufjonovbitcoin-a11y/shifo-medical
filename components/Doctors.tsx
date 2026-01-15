@@ -76,9 +76,9 @@ export function Doctors() {
                     />
                   </div>
                 ) : (
-                  <div className={`w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br ${doctor.gradient} rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 shadow-lg transition-transform duration-300 group-hover:scale-110`}>
-                    <Award className="w-8 h-8 md:w-10 md:h-10 text-white" />
-                  </div>
+                <div className={`w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br ${doctor.gradient} rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 shadow-lg transition-transform duration-300 group-hover:scale-110`}>
+                  <Award className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                </div>
                 )}
 
                 {/* Doctor Info */}

@@ -196,9 +196,9 @@ export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-start gap-3 md:gap-4 flex-1">
                         <div className={`w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br ${service.gradient} rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}>
-                          {service.title === "Урология" ? (
+                          {service.serviceKey === "urology" ? (
                             <KidneyIcon className="w-7 h-7 md:w-8 md:h-8" />
-                          ) : service.title === "Гинекология" ? (
+                          ) : service.serviceKey === "gynecology" ? (
                             <svg 
                               className="w-7 h-7 md:w-8 md:h-8 text-white" 
                               viewBox="0 0 100 100" 
@@ -225,8 +225,12 @@ export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
                           )}
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 md:mb-3">{service.title}</h3>
-                          <p className="text-xs md:text-sm text-gray-600 mb-3 md:mb-4 leading-relaxed">{service.description}</p>
+                          <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 md:mb-3">
+                            {service.serviceKey ? t(`servicesModal.services.${service.serviceKey}.title`) : service.title}
+                          </h3>
+                          <p className="text-xs md:text-sm text-gray-600 mb-3 md:mb-4 leading-relaxed">
+                            {service.serviceKey ? t(`servicesModal.services.${service.serviceKey}.description`) : service.description}
+                          </p>
                           {!isExpanded && hasServices && (
                             <div className="flex items-center justify-end pt-3 md:pt-4 border-t border-gray-100">
                                 <span className="text-xs text-gray-500">{t('servicesModal.more')} →</span>

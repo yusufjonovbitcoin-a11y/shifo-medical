@@ -18,28 +18,18 @@ export async function sendTelegram(userData) {
   }
 
   try {
-    // Kasallik darajasi
-    const severity = userData.severity_level || '🟡 O\'rta';
-    
-    // Yo'nalish (Mutaxassis)
-    const specialist = userData.specialist_direction || 'Terapevt';
-    
-    // Chat tarixi havolasi (agar database ID bo'lsa, keyinroq qo'shish mumkin)
-    const chatLink = userData.session_id ? `\n💬 <b>Chat ID:</b> <code>${userData.session_id}</code>` : '';
-    
+    // Faqat kerakli ma'lumotlar
     const text = `🆕 <b>Yangi murojaat!</b>
 
-👤 <b>Ism:</b> ${userData.name || "Noma'lum"}
-🤒 <b>Kasallik/Shikoyat:</b> ${userData.complaint || userData.problem || "Ko'rsatilmagan"}
+👤 <b>Ism:</b> ${userData.name || "Ko'rsatilmagan"}
+🤒 <b>Shikoyat:</b> ${userData.complaint || userData.problem || "Ko'rsatilmagan"}
 ⏳ <b>Davomiyligi:</b> ${userData.duration || "Ko'rsatilmagan"}
+🏥 <b>Yo'nalish:</b> ${userData.specialist_direction || "Ko'rsatilmagan"}
+📞 <b>Telefon:</b> ${userData.phone || "Ko'rsatilmagan"}
 👨‍⚕️ <b>AI Tashxisi:</b> ${userData.ai_analysis || "Hali tahlil qilinmadi"}
-📊 <b>Kasallik darajasi:</b> ${severity}
-🏥 <b>Yo'nalish:</b> ${specialist}
-📞 <b>Telefon:</b> ${userData.phone || "Noma'lum"}
-⏰ <b>Vaqt:</b> ${userData.time || "Noma'lum"}${chatLink}
 
 ━━━━━━━━━━━━━━━━━━━
-💬 <i>AI Chat (Laylo) orqali</i>`;
+💬 <i>AI Chat orqali</i>`;
     
     const response = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: "POST",
