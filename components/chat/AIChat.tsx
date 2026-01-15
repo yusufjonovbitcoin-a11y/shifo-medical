@@ -198,7 +198,7 @@ export function AIChat() {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Next.js API route'ga so'rov yuborish (server-side proxy orqali)
-      const API_URL = process.env.NEXT_PUBLIC_AI_CHAT_API_URL || '/api/chat';
+      const API_URL = '/api/chat';
       
       const res = await fetch(API_URL, {
         method: 'POST',
