@@ -18,45 +18,32 @@ export async function sendTelegram(userData) {
   }
 
   try {
-    // Ma'lumotlarni tozalash va formatlash
-    const name = (userData.name && userData.name.trim() && userData.name !== 'Ko\'rsatilmagan' && userData.name !== 'Noma\'lum') 
-      ? userData.name.trim() 
-      : "Ko'rsatilmagan";
+    // 1. Ma'lumotlarni tekshirish va filtrlash
+    const phone = userData.phone || "Noma'lum";
     
-    const complaint = (userData.complaint && userData.complaint.trim() && userData.complaint !== 'Ko\'rsatilmagan') 
-      ? (userData.complaint || userData.problem || '').trim() 
-      : (userData.problem && userData.problem.trim() && userData.problem !== 'Ko\'rsatilmagan') 
-        ? userData.problem.trim() 
-        : "Ko'rsatilmagan";
+    // Agar ism raqam bilan bir xil bo'lib qolsa, uni "Noma'lum"ga o'zgartiramiz
+    let name = userData.name || "Noma'lum";
+    if (name === phone || name.replace(/\+/g, '') === phone.replace(/\+/g, '')) {
+      name = "Noma'lum (Faqat raqam qoldirgan)";
+    }
+
+    const complaint = userData.complaint || userData.problem || "Ko'rsatilmagan";
+    const severity = userData.severity_level || '🟡 O\'rta';
+    const specialist = userData.specialist_direction || 'Terapevt';
     
-    const duration = (userData.duration && userData.duration.trim() && userData.duration !== 'Ko\'rsatilmagan') 
-      ? userData.duration.trim() 
-      : "Ko'rsatilmagan";
-    
-    const direction = (userData.specialist_direction && userData.specialist_direction.trim() && userData.specialist_direction !== 'Ko\'rsatilmagan') 
-      ? userData.specialist_direction.trim() 
-      : "Ko'rsatilmagan";
-    
-    const phone = (userData.phone && userData.phone.trim() && userData.phone !== 'Ko\'rsatilmagan' && userData.phone !== 'Noma\'lum') 
-      ? userData.phone.trim() 
-      : "Ko'rsatilmagan";
-    
-    const aiAnalysis = (userData.ai_analysis && userData.ai_analysis.trim() && userData.ai_analysis !== 'Hali tahlil qilinmadi' && userData.ai_analysis !== 'Ko\'rsatilmagan') 
-      ? userData.ai_analysis.trim() 
-      : "Hali tahlil qilinmadi";
-    
-    // Faqat kerakli ma'lumotlar
+    // 2. Chiroyli formatlash
     const text = `🆕 <b>Yangi murojaat!</b>
 
 👤 <b>Ism:</b> ${name}
 🤒 <b>Shikoyat:</b> ${complaint}
-⏳ <b>Davomiyligi:</b> ${duration}
-🏥 <b>Yo'nalish:</b> ${direction}
-📞 <b>Telefon:</b> ${phone}
-👨‍⚕️ <b>AI Tashxisi:</b> ${aiAnalysis}
+⏳ <b>Davomiyligi:</b> ${userData.duration || "Ko'rsatilmagan"}
+👨‍⚕️ <b>AI Xulosasi:</b> <i>${userData.ai_analysis || "Hali tahlil qilinmadi"}</i>
+📊 <b>Daraja:</b> ${severity}
+🏥 <b>Yo'nalish:</b> <b>${specialist}</b>
+📞 <b>Telefon:</b> <code>${phone}</code>
 
 ━━━━━━━━━━━━━━━━━━━
-💬 <i>AI Chat orqali</i>`;
+💬 <i>AI Chat (Laylo) orqali</i>`;
     
     const response = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: "POST",
