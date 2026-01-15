@@ -18,15 +18,42 @@ export async function sendTelegram(userData) {
   }
 
   try {
+    // Ma'lumotlarni tozalash va formatlash
+    const name = (userData.name && userData.name.trim() && userData.name !== 'Ko\'rsatilmagan' && userData.name !== 'Noma\'lum') 
+      ? userData.name.trim() 
+      : "Ko'rsatilmagan";
+    
+    const complaint = (userData.complaint && userData.complaint.trim() && userData.complaint !== 'Ko\'rsatilmagan') 
+      ? (userData.complaint || userData.problem || '').trim() 
+      : (userData.problem && userData.problem.trim() && userData.problem !== 'Ko\'rsatilmagan') 
+        ? userData.problem.trim() 
+        : "Ko'rsatilmagan";
+    
+    const duration = (userData.duration && userData.duration.trim() && userData.duration !== 'Ko\'rsatilmagan') 
+      ? userData.duration.trim() 
+      : "Ko'rsatilmagan";
+    
+    const direction = (userData.specialist_direction && userData.specialist_direction.trim() && userData.specialist_direction !== 'Ko\'rsatilmagan') 
+      ? userData.specialist_direction.trim() 
+      : "Ko'rsatilmagan";
+    
+    const phone = (userData.phone && userData.phone.trim() && userData.phone !== 'Ko\'rsatilmagan' && userData.phone !== 'Noma\'lum') 
+      ? userData.phone.trim() 
+      : "Ko'rsatilmagan";
+    
+    const aiAnalysis = (userData.ai_analysis && userData.ai_analysis.trim() && userData.ai_analysis !== 'Hali tahlil qilinmadi' && userData.ai_analysis !== 'Ko\'rsatilmagan') 
+      ? userData.ai_analysis.trim() 
+      : "Hali tahlil qilinmadi";
+    
     // Faqat kerakli ma'lumotlar
     const text = `🆕 <b>Yangi murojaat!</b>
 
-👤 <b>Ism:</b> ${userData.name || "Ko'rsatilmagan"}
-🤒 <b>Shikoyat:</b> ${userData.complaint || userData.problem || "Ko'rsatilmagan"}
-⏳ <b>Davomiyligi:</b> ${userData.duration || "Ko'rsatilmagan"}
-🏥 <b>Yo'nalish:</b> ${userData.specialist_direction || "Ko'rsatilmagan"}
-📞 <b>Telefon:</b> ${userData.phone || "Ko'rsatilmagan"}
-👨‍⚕️ <b>AI Tashxisi:</b> ${userData.ai_analysis || "Hali tahlil qilinmadi"}
+👤 <b>Ism:</b> ${name}
+🤒 <b>Shikoyat:</b> ${complaint}
+⏳ <b>Davomiyligi:</b> ${duration}
+🏥 <b>Yo'nalish:</b> ${direction}
+📞 <b>Telefon:</b> ${phone}
+👨‍⚕️ <b>AI Tashxisi:</b> ${aiAnalysis}
 
 ━━━━━━━━━━━━━━━━━━━
 💬 <i>AI Chat orqali</i>`;
