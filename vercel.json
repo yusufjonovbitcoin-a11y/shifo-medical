@@ -3,9 +3,6 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["iad1"],
-  "env": {
-    "NEXT_PUBLIC_AI_CHAT_API_URL": "@ai_chat_api_url"
-  }
+  "regions": ["iad1"]
 }
 
