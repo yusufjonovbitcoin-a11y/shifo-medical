@@ -66,31 +66,59 @@ export function updateStateFromMessage(state, message, aiReply) {
   }
 
   if (!updated.name) {
-    const namePatterns = [
-      /(?:ismim|mening ismim|menim ismim|mening ism|mening ismi)\s+(.+)/i,
-      /^([А-Яа-яА-ӯа-ӯA-Za-z]{2,}(?:\s+[А-Яа-яА-ӯа-ӯA-Za-z]{2,}){0,2})$/,
-      /^([А-Яа-яА-ӯа-ӯA-Za-z]+)$/
-    ];
+    // Birinchi: "ismim bonu" kabi formatlarni tekshirish
+    const nameWithPrefix = message.match(/(?:ismim|mening ismim|menim ismim|mening ism|mening ismi)\s+(.+)/i);
+    if (nameWithPrefix && nameWithPrefix[1]) {
+      const potentialName = nameWithPrefix[1].trim();
+      if (potentialName && 
+          potentialName.length >= 2 && 
+          potentialName.length <= 50 &&
+          !/^\d+$/.test(potentialName) &&
+          !potentialName.match(/\d{9,}/) &&
+          !potentialName.match(/^(ha|yoq|yo'q|yes|no|да|нет)$/i)) {
+        updated.name = potentialName.charAt(0).toUpperCase() + potentialName.slice(1).toLowerCase();
+      }
+    }
+    
+    // Ikkinchi: Agar ism pattern ishlamasa, faqat ismni tekshirish
+    if (!updated.name) {
+      const namePatterns = [
+        /^([А-Яа-яА-ӯа-ӯA-Za-z]{2,}(?:\s+[А-Яа-яА-ӯа-ӯA-Za-z]{2,}){0,2})$/,
+        /^([А-Яа-яА-ӯа-ӯA-Za-z]+)$/
+      ];
 
-    for (const pattern of namePatterns) {
-      const match = message.match(pattern);
-      if (match) {
-        const potentialName = match[1]?.trim();
-        if (potentialName && 
-            potentialName.length >= 2 && 
-            potentialName.length <= 50 &&
-            !/^\d+$/.test(potentialName) &&
-            !potentialName.match(/\d{9,}/)) {
-          updated.name = potentialName.charAt(0).toUpperCase() + potentialName.slice(1).toLowerCase();
-          break;
+      for (const pattern of namePatterns) {
+        const match = message.match(pattern);
+        if (match) {
+          const potentialName = match[1]?.trim();
+          if (potentialName && 
+              potentialName.length >= 2 && 
+              potentialName.length <= 50 &&
+              !/^\d+$/.test(potentialName) &&
+              !potentialName.match(/\d{9,}/) &&
+              !potentialName.match(/^(ha|yoq|yo'q|yes|no|да|нет)$/i)) {
+            updated.name = potentialName.charAt(0).toUpperCase() + potentialName.slice(1).toLowerCase();
+            break;
+          }
         }
       }
     }
 
-    // Agar AI "ismingizni" deb so'rasa va bemor javob bersa
+    // Uchinchi: Agar AI "ismingizni" deb so'rasa va bemor javob bersa
     if (!updated.name && aiReply.toLowerCase().includes('ismingizni')) {
       const trimmedMessage = message.trim();
-      if (trimmedMessage.length >= 2 && 
+      // "ismim bonu" formatini qayta tekshirish
+      const nameMatch = trimmedMessage.match(/(?:ismim|mening ismim|menim ismim|mening ism|mening ismi)\s+(.+)/i);
+      if (nameMatch && nameMatch[1]) {
+        const extractedName = nameMatch[1].trim();
+        if (extractedName.length >= 2 && 
+            extractedName.length <= 50 &&
+            /^[А-Яа-яА-ӯа-ӯA-Za-z\s]+$/.test(extractedName) &&
+            !extractedName.match(/\d/) &&
+            !extractedName.match(/^(ha|yoq|yo'q|yes|no|да|нет)$/i)) {
+          updated.name = extractedName.charAt(0).toUpperCase() + extractedName.slice(1).toLowerCase();
+        }
+      } else if (trimmedMessage.length >= 2 && 
           trimmedMessage.length <= 50 &&
           /^[А-Яа-яА-ӯа-ӯA-Za-z\s]+$/.test(trimmedMessage) &&
           !trimmedMessage.match(/\d/) &&
@@ -117,20 +145,36 @@ export function updateStateFromMessage(state, message, aiReply) {
     }
   }
 
+  // Shifokor yo'naltirish - bir nechta shifokor bo'lishi mumkin
+  const doctors = [];
+  
+  if (lowerReply.includes('oftalmolog') || (lowerReply.includes('ko\'z') && lowerReply.includes('shifokor'))) {
+    doctors.push('Oftalmolog');
+  }
   if (lowerReply.includes('lor') || (lowerReply.includes('quloq') && lowerReply.includes('shifokor'))) {
-    updated.suggestedDoctor = 'LOR';
-  } else if (lowerReply.includes('terapevt') || lowerReply.includes('gastroenterolog')) {
-    updated.suggestedDoctor = 'Terapevt / Gastroenterolog';
-  } else if (lowerReply.includes('kardiolog')) {
-    updated.suggestedDoctor = 'Kardiolog';
-  } else if (lowerReply.includes('nevrolog') || lowerReply.includes('ortoped')) {
-    updated.suggestedDoctor = 'Nevrolog / Ortoped';
-  } else if (lowerReply.includes('ginekolog')) {
-    updated.suggestedDoctor = 'Ginekolog';
-  } else if (lowerReply.includes('pediatr')) {
-    updated.suggestedDoctor = 'Pediatr';
-  } else if (lowerReply.includes('oftalmolog') || lowerReply.includes('ko\'z')) {
-    updated.suggestedDoctor = 'Oftalmolog';
+    doctors.push('LOR');
+  }
+  if (lowerReply.includes('terapevt') || lowerReply.includes('gastroenterolog')) {
+    if (!doctors.includes('Terapevt')) {
+      doctors.push('Terapevt / Gastroenterolog');
+    }
+  }
+  if (lowerReply.includes('kardiolog')) {
+    doctors.push('Kardiolog');
+  }
+  if (lowerReply.includes('nevrolog') || lowerReply.includes('ortoped')) {
+    doctors.push('Nevrolog / Ortoped');
+  }
+  if (lowerReply.includes('ginekolog')) {
+    doctors.push('Ginekolog');
+  }
+  if (lowerReply.includes('pediatr')) {
+    doctors.push('Pediatr');
+  }
+  
+  // Agar bir nechta shifokor bo'lsa, ularni "va" bilan birlashtir
+  if (doctors.length > 0 && !updated.suggestedDoctor) {
+    updated.suggestedDoctor = doctors.join(' va ');
   }
 
   if (updated.phone && updated.symptoms.length > 0) {

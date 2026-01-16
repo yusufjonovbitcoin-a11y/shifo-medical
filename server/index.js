@@ -63,8 +63,21 @@ app.post('/ai-chat', async (req, res) => {
     if (extractedData.phone && extractedData.phone !== 'null' && !stateWithExtractedData.phone) {
       stateWithExtractedData.phone = extractedData.phone;
     }
-    if (extractedData.complaint && extractedData.complaint !== 'null' && !stateWithExtractedData.symptoms.length) {
-      stateWithExtractedData.symptoms.push(extractedData.complaint);
+    // Complaint faqat davomiylik yoki raqam bo'lmasa qo'shiladi
+    if (extractedData.complaint && 
+        extractedData.complaint !== 'null' && 
+        !extractedData.complaint.match(/^\d+\s*(?:kundan|kun|haftadan|hafta|oydan|oy|beri|davom)/i) &&
+        !extractedData.complaint.match(/^\d+$/)) {
+      if (!stateWithExtractedData.symptoms.length) {
+        stateWithExtractedData.symptoms.push(extractedData.complaint);
+      } else {
+        // Agar allaqachon shikoyat bo'lsa va yangi shikoyat boshqacha bo'lsa
+        const existingComplaint = stateWithExtractedData.symptoms[0].toLowerCase();
+        if (!existingComplaint.includes(extractedData.complaint.toLowerCase()) &&
+            !extractedData.complaint.toLowerCase().includes(existingComplaint)) {
+          stateWithExtractedData.symptoms.push(extractedData.complaint);
+        }
+      }
     }
     if (extractedData.duration && extractedData.duration !== 'null') {
       if (!stateWithExtractedData.duration) {
