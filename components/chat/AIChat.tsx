@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { X, Send, Bot } from 'lucide-react';
+import { X, Send, Bot, MessageCircle } from 'lucide-react';
 import { useLocale } from 'next-intl';
 
 interface Message {
@@ -10,47 +10,6 @@ interface Message {
   id: number;
 }
 
-const MedicalRobotIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    viewBox="0 0 100 100"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <rect x="25" y="40" width="50" height="55" rx="8" fill="url(#robotGradient)" stroke="#0F172A" strokeWidth="2"/>
-    <rect x="30" y="15" width="40" height="35" rx="12" fill="url(#robotGradient)" stroke="#0F172A" strokeWidth="2"/>
-    <path d="M30 15 L35 10 L40 12 L45 10 L50 12 L55 10 L60 12 L65 10 L70 15 Z" fill="#FFFFFF" stroke="#0F172A" strokeWidth="1.5"/>
-    <rect x="40" y="15" width="20" height="8" fill="#EF4444" rx="2"/>
-    <path d="M48 17 L52 17 M50 15 L50 19" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round"/>
-    <circle cx="42" cy="28" r="4" fill="#0F172A">
-      <animate attributeName="opacity" values="1;0.3;1" dur="3s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="58" cy="28" r="4" fill="#0F172A">
-      <animate attributeName="opacity" values="1;0.3;1" dur="3s" repeatCount="indefinite" />
-    </circle>
-    <rect x="42" y="35" width="16" height="8" rx="2" fill="#0F172A" opacity="0.6"/>
-    <path d="M45 38 L48 41 L51 38" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-    <rect x="35" y="50" width="30" height="20" rx="4" fill="#F8FAFC" stroke="#0F172A" strokeWidth="1.5"/>
-    <path d="M38 58 Q42 54 46 58 T50 58 T54 58 T58 58" stroke="#10B981" strokeWidth="2" fill="none" strokeLinecap="round">
-      <animate attributeName="d" values="M38 58 Q42 54 46 58 T50 58 T54 58 T58 58;M38 60 Q42 56 46 60 T50 60 T54 60 T58 60;M38 58 Q42 54 46 58 T50 58 T54 58 T58 58" dur="2s" repeatCount="indefinite" />
-    </path>
-    <rect x="15" y="50" width="12" height="25" rx="6" fill="url(#robotGradient)" stroke="#0F172A" strokeWidth="2"/>
-    <rect x="73" y="50" width="12" height="25" rx="6" fill="url(#robotGradient)" stroke="#0F172A" strokeWidth="2"/>
-    <circle cx="21" cy="80" r="5" fill="url(#robotGradient)" stroke="#0F172A" strokeWidth="2"/>
-    <circle cx="79" cy="80" r="5" fill="url(#robotGradient)" stroke="#0F172A" strokeWidth="2"/>
-    <rect x="32" y="90" width="12" height="8" rx="4" fill="url(#robotGradient)" stroke="#0F172A" strokeWidth="2"/>
-    <rect x="56" y="90" width="12" height="8" rx="4" fill="url(#robotGradient)" stroke="#0F172A" strokeWidth="2"/>
-    <path d="M48 45 Q52 42 56 45" stroke="#EF4444" strokeWidth="2" fill="none" strokeLinecap="round"/>
-    <circle cx="56" cy="45" r="2" fill="#EF4444"/>
-    <defs>
-      <linearGradient id="robotGradient" x1="25" y1="15" x2="75" y2="95" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#F8FAFC"/>
-        <stop offset="0.5" stopColor="#E2E8F0"/>
-        <stop offset="1" stopColor="#CBD5E1"/>
-      </linearGradient>
-    </defs>
-  </svg>
-);
 
 const getInitialMessage = (locale: string): string => {
   switch (locale) {
@@ -163,7 +122,7 @@ export function AIChat() {
           className="fixed right-6 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-emerald-500 via-teal-600 to-green-700 text-white rounded-full shadow-2xl hover:shadow-emerald-500/50 transition-all duration-300 flex items-center justify-center group hover:scale-110 z-50 bottom-6 md:bottom-8"
           aria-label="AI Chat ochish"
         >
-          <MedicalRobotIcon className="w-8 h-8 md:w-9 md:h-9 group-hover:scale-110 transition-transform" />
+          <MessageCircle className="w-6 h-6 md:w-7 md:h-7 group-hover:scale-110 transition-transform" />
         </button>
       )}
 
