@@ -51,9 +51,29 @@ app.post('/ai-chat', async (req, res) => {
     const chatHistory = conversations.get(sessionKey);
     const state = sessionStates.get(sessionKey);
 
-    const reply = await handleAIMessage(message, chatHistory, state);
+    const aiResponse = await handleAIMessage(message, chatHistory, state);
+    const reply = aiResponse.cleanText;
+    const extractedData = aiResponse.extractedData;
 
-    const updatedState = updateStateFromMessage(state, message, reply);
+    // AI'dan kelgan extractedData'ni state'ga qo'shish
+    const stateWithExtractedData = { ...state };
+    if (extractedData.name && !stateWithExtractedData.name) {
+      stateWithExtractedData.name = extractedData.name;
+    }
+    if (extractedData.phone && !stateWithExtractedData.phone) {
+      stateWithExtractedData.phone = extractedData.phone;
+    }
+    if (extractedData.complaint && !stateWithExtractedData.symptoms.length) {
+      stateWithExtractedData.symptoms.push(extractedData.complaint);
+    }
+    if (extractedData.duration && !stateWithExtractedData.duration) {
+      stateWithExtractedData.duration = extractedData.duration;
+    }
+    if (extractedData.specialist && !stateWithExtractedData.suggestedDoctor) {
+      stateWithExtractedData.suggestedDoctor = extractedData.specialist;
+    }
+
+    const updatedState = updateStateFromMessage(stateWithExtractedData, message, reply);
     sessionStates.set(sessionKey, updatedState);
 
     chatHistory.push(

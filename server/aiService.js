@@ -106,13 +106,28 @@ Yetarli ma'lumot to'planganida (alomatlar, davomiyligi va boshqalar):
 - Ismni olgandan KEYIN differensial diagnostika ber
 
 **IKKINCHI - DIFFERENSIAL DIAGNOSTIKA VA SHIFOKOR YO'NALTIRISH:**
-- Differensial diagnostika bering (tibbiy tashxis):
-  "Sizda [alomatlar] kuzatilmoqda, taxminan bu [kasallik nomi] bo'lishi mumkin."
-  Masalan: "Sizda quloq og'rig'i alomatlarini kuzatayapman, taxminan bu quloq infeksiyasi bo'lishi mumkin."
+Ma'lumotlar yetarli bo'lganda (shikoyat + davomiylik), bemorga quyidagi ANIQ TARTIBDA javob ber:
 
-- Keyin shifokor yo'naltirishini ayt:
-  "Lekin bu aniq tashxis emas va shifokor tekshiruvi shart."
-  "Bunday alomatlar bilan [shifokor nomi]ga murojaat qilish tavsiya etiladi."
+**1. Tashxis taxmini (DIFFERENSIAL DIAGNOSTIKA):**
+   "Sizdagi alomatlar taxminan [kasallik nomi, masalan: o'tkir konyunktivit yoki gastrit] bo'lishi mumkin."
+   Masalan: 
+   - "Sizdagi alomatlar taxminan o'tkir konyunktivit bo'lishi mumkin."
+   - "Sizdagi alomatlar taxminan gastrit bo'lishi mumkin."
+   - "Sizdagi alomatlar taxminan quloq infeksiyasi (otit) bo'lishi mumkin."
+
+**2. Yo'naltirish (MUTAXASSISGA YO'NALTIRISH):**
+   "Aniq tashxis qo'yish uchun [Shifokor nomi, masalan: Oftalmolog yoki Gastroenterolog] ko'rigidan o'tishingizni tavsiya qilaman."
+   Masalan:
+   - "Aniq tashxis qo'yish uchun Oftalmolog ko'rigidan o'tishingizni tavsiya qilaman."
+   - "Aniq tashxis qo'yish uchun Gastroenterolog ko'rigidan o'tishingizni tavsiya qilaman."
+   - "Aniq tashxis qo'yish uchun LOR shifokori ko'rigidan o'tishingizni tavsiya qilaman."
+
+**3. Eslatma (TIBBIY CHEKLOV):**
+   "Bu faqat taxminiy tahlil bo'lib, shifokor ko'rigi majburiydir."
+
+**MUHIM:**
+- Agar bemorda bir nechta alomat bo'lsa (masalan: "ko'zim og'riyapti" va "qornim og'riyapti"), ikkita alohida tashxis taxmini bering va ikkita mutaxassisga yo'naltiring.
+- Tashxis taxmini aniq kasallik nomlari bilan bering (konyunktivit, gastrit, otit, angina va h.k.).
 
 **UCHINCHI - TELEFON RAQAMINI SO'RASH:**
 - Faqat telefon raqamini so'ra:
@@ -145,11 +160,48 @@ SAVOL BERISH QOIDASI:
 - Ism faqat harflardan iborat bo'lsin (raqamlar yo'q)
 - Ism uzunligi 2-50 belgi
 - Agar AI "Ismingizni qoldira olasizmi?" deb so'rasa va bemor javob bersa, bu ismdir
+
+**MUHIM - JSON FORMAT (HAR DOIM):**
+Har bir javobingning oxirida YASHIRINCHA quyidagi formatda JSON ma'lumot qaytarishing SHART.
+
+Format (javobing oxirida, foydalanuvchi ko'rmaydi):
+###JSON_START###
+{
+  "name": "Bemor ismi yoki null",
+  "phone": "Telefon raqami yoki null",
+  "complaint": "Asosiy shikoyat/alomatlar yoki null",
+  "duration": "Kasallik davomiyligi yoki null",
+  "specialist": "Tavsiya etilgan shifokor yoki null",
+  "severity": "Low/Medium/High yoki null"
+}
+###JSON_END###
+
+QOIDALAR:
+- Ma'lumot yo'q bo'lsa "null" deb yoz
+- Ism: faqat ism, hech narsa qo'shma (masalan: "Ahmad" yoki null)
+- Phone: to'liq telefon raqami (+998901234567) yoki null
+- Complaint: asosiy shikoyat qisqa (masalan: "Qorin og'rig'i") yoki null
+- Duration: kasallik davomiyligi (masalan: "3 kundan beri") yoki null
+- Specialist: shifokor nomi (masalan: "Terapevt" yoki "LOR") yoki null
+- Severity: og'riq darajasi ("Low", "Medium", "High") yoki null
+
+Bu JSON blok faqat backend uchun, bemor uni ko'rmaydi!
 `;
 
 export async function handleAIMessage(message, chatHistory = [], state = {}) {
   if (!client) {
-    return "Uzr, AI xizmati hozircha mavjud emas. Iltimos, telefon orqali bog'laning: +998 97 611 06 04";
+    const errorMsg = "Uzr, AI xizmati hozircha mavjud emas. Iltimos, telefon orqali bog'laning: +998 97 611 06 04";
+    return {
+      cleanText: errorMsg,
+      extractedData: {
+        name: null,
+        phone: null,
+        complaint: null,
+        duration: null,
+        specialist: null,
+        severity: null
+      }
+    };
   }
 
   try {
@@ -169,15 +221,68 @@ export async function handleAIMessage(message, chatHistory = [], state = {}) {
       max_tokens: 300
     });
 
-    return response.choices[0].message.content;
+    const fullResponse = response.choices[0].message.content;
+
+    // JSON blokni extract qilish
+    const jsonMatch = fullResponse.match(/###JSON_START###([\s\S]*?)###JSON_END###/);
+    let extractedData = {
+      name: null,
+      phone: null,
+      complaint: null,
+      duration: null,
+      specialist: null,
+      severity: null
+    };
+    let cleanText = fullResponse;
+
+    if (jsonMatch) {
+      try {
+        // JSON blokni o'chirib, toza matnni olish
+        cleanText = fullResponse.replace(/###JSON_START###[\s\S]*?###JSON_END###/, '').trim();
+        
+        // JSON ni parse qilish
+        const jsonContent = jsonMatch[1].trim();
+        const parsed = JSON.parse(jsonContent);
+        
+        // Null va 'null' string'larini tozalash
+        extractedData = {
+          name: parsed.name && parsed.name !== 'null' ? parsed.name : null,
+          phone: parsed.phone && parsed.phone !== 'null' ? parsed.phone : null,
+          complaint: parsed.complaint && parsed.complaint !== 'null' ? parsed.complaint : null,
+          duration: parsed.duration && parsed.duration !== 'null' ? parsed.duration : null,
+          specialist: parsed.specialist && parsed.specialist !== 'null' ? parsed.specialist : null,
+          severity: parsed.severity && parsed.severity !== 'null' ? parsed.severity : null
+        };
+      } catch (parseError) {
+        console.error("JSON parse xatosi:", parseError);
+        // Agar JSON parse xato bo'lsa, faqat toza matnni qaytar
+        cleanText = fullResponse.replace(/###JSON_START###[\s\S]*?###JSON_END###/, '').trim();
+      }
+    }
+
+    return {
+      cleanText: cleanText,
+      extractedData: extractedData
+    };
   } catch (error) {
     console.error("OpenAI Error:", error);
     
+    let errorMsg = "Uzr, texnik nosozlik yuz berdi. Iltimos, telefon orqali bog'laning: +998 97 611 06 04";
     if (error.status === 401) {
-      return "Uzr, AI xizmati hozirda mavjud emas. Iltimos, telefon orqali bog'laning: +998 97 611 06 04";
+      errorMsg = "Uzr, AI xizmati hozirda mavjud emas. Iltimos, telefon orqali bog'laning: +998 97 611 06 04";
     }
     
-    return "Uzr, texnik nosozlik yuz berdi. Iltimos, telefon orqali bog'laning: +998 97 611 06 04";
+    return {
+      cleanText: errorMsg,
+      extractedData: {
+        name: null,
+        phone: null,
+        complaint: null,
+        duration: null,
+        specialist: null,
+        severity: null
+      }
+    };
   }
 }
 
