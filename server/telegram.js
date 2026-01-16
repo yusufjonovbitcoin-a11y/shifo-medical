@@ -15,6 +15,7 @@ export async function sendTelegram(state) {
   }
 
   try {
+    const name = state.name || 'Ko\'rsatilmagan';
     const symptoms = state.symptoms.join(', ') || 'Ko\'rsatilmagan';
     const startedAt = state.startedAt || 'Ko\'rsatilmagan';
     const location = state.location || 'Ko\'rsatilmagan';
@@ -28,6 +29,8 @@ export async function sendTelegram(state) {
     if (state.redFlag) {
       text = `🚨 <b>SHOSHILINCH HOLAT</b>
 
+👤 <b>Bemor:</b> ${name}
+
 Alomatlar:
 ${symptoms}
 
@@ -37,6 +40,8 @@ Bemor zudlik bilan shifokorga murojaat qilishi kerak.
 📞 <b>Telefon:</b> <code>${phone}</code>`;
     } else {
       text = `🧑‍⚕️ <b>Yangi bemor (AI chat)</b>
+
+👤 <b>Bemor:</b> ${name}
 
 🔹 <b>Alomatlar:</b>
 ${symptoms}

@@ -136,8 +136,15 @@ SAVOL BERISH QOIDASI:
 - Faqat STATE ichida yo'q bo'lgan MA'LUMOTNI so'ra
 - Bir javobda faqat BITTA savol
 - Agar yetarli ma'lumot to'plangan bo'lsa:
-  → shifokor yo'naltir
-  → keyin telefon so'ra
+  → AVVAL ismni so'ra (alohida text: "Ismingizni qoldira olasizmi?")
+  → KEYIN differensial diagnostika va shifokor yo'naltir
+  → OXIRIDA telefon so'ra
+
+**ISMNI ANIQLASH:**
+- Agar bemor ismni yozsa (masalan: "Ahmad", "Muhammadamin", "Ro'ziya"), uni STATE'ga saqlang
+- Ism faqat harflardan iborat bo'lsin (raqamlar yo'q)
+- Ism uzunligi 2-50 belgi
+- Agar AI "Ismingizni qoldira olasizmi?" deb so'rasa va bemor javob bersa, bu ismdir
 `;
 
 export async function handleAIMessage(message, chatHistory = [], state = {}) {

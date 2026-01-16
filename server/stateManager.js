@@ -7,6 +7,7 @@ export function createInitialState() {
     location: null,
     extraSymptoms: [],
     age: null,
+    name: null,
     suggestedDoctor: null,
     redFlag: false,
     phone: null,
@@ -61,6 +62,39 @@ export function updateStateFromMessage(state, message, aiReply) {
     const redFlagKeywords = ['to\'satdan kuchli', 'ko\'krak og\'riq', 'nafas qisishi', 'hushdan ket', 'qon ket', 'yuqori isitma', 'chap qo\'lim', 'nutqim buzildi', 'nafasim siq'];
     if (redFlagKeywords.some(kw => lowerMessage.includes(kw))) {
       updated.redFlag = true;
+    }
+  }
+
+  if (!updated.name) {
+    const namePatterns = [
+      /(?:ismim|mening ismim|menim ismim|mening ism|mening ismi)\s+(.+)/i,
+      /^([А-Яа-яА-ӯа-ӯA-Za-z]{2,}(?:\s+[А-Яа-яА-ӯа-ӯA-Za-z]{2,}){0,2})$/,
+      /^([А-Яа-яА-ӯа-ӯA-Za-z]+)$/
+    ];
+
+    for (const pattern of namePatterns) {
+      const match = message.match(pattern);
+      if (match) {
+        const potentialName = match[1]?.trim();
+        if (potentialName && 
+            potentialName.length >= 2 && 
+            potentialName.length <= 50 &&
+            !/^\d+$/.test(potentialName) &&
+            !potentialName.match(/\d{9,}/)) {
+          updated.name = potentialName;
+          break;
+        }
+      }
+    }
+
+    if (!updated.name && aiReply.toLowerCase().includes('ismingizni')) {
+      const trimmedMessage = message.trim();
+      if (trimmedMessage.length >= 2 && 
+          trimmedMessage.length <= 50 &&
+          /^[А-Яа-яА-ӯа-ӯA-Za-z\s]+$/.test(trimmedMessage) &&
+          !trimmedMessage.match(/\d/)) {
+        updated.name = trimmedMessage;
+      }
     }
   }
 
