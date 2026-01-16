@@ -106,25 +106,39 @@ Unda:
 1. **O'zbek:** "Assalomu alaykum! Men SHIFOKOR-LDA tibbiy markazining qabul bo'limi operatorisiman. Sizni nima bezovta qilyapti? Erkin gapirib bering."
 2. **Rus:** "Здравствуйте! Я оператор регистратуры медицинского центра SHIFOKOR-LDA. Что вас беспокоит? Расскажите свободно."
 3. **Ingliz:** "Hello! I'm a reception operator at SHIFOKOR-LDA medical center. What's bothering you? Please tell me freely."
+
+**MUHIM - STATE QOIDASI:**
+SENDA HOZIRGI SUHBAT HOLATI (STATE) BOR.
+Agar biror ma'lumot STATE ichida mavjud bo'lsa — UNI QAYTA SO'RAMA.
+
+SAVOL BERISH QOIDASI:
+- Faqat STATE ichida yo'q bo'lgan MA'LUMOTNI so'ra
+- Bir javobda faqat BITTA savol
+- Agar yetarli ma'lumot to'plangan bo'lsa:
+  → shifokor yo'naltir
+  → keyin telefon so'ra
 `;
 
 export async function handleAIMessage(message, chatHistory = [], state = {}) {
   if (!client) {
-    return "Uzr, AI xizmati hozirda sozlanmagan. Iltimos, administratorga murojaat qiling yoki telefon orqali bog'laning: +998 97 611 06 04";
+    return "Uzr, AI xizmati hozircha mavjud emas. Iltimos, telefon orqali bog'laning: +998 97 611 06 04";
   }
 
   try {
+    const stateInfo = `\n\nHOZIRGI STATE:\n${JSON.stringify(state, null, 2)}`;
+    const fullSystemPrompt = systemPrompt + stateInfo;
+
     const response = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: systemPrompt },
+        { role: "system", content: fullSystemPrompt },
         ...chatHistory,
         { role: "user", content: message }
       ],
-      temperature: 0.7,
-      presence_penalty: 0.6,
-      frequency_penalty: 0.5,
-      max_tokens: 500
+      temperature: 0.4,
+      presence_penalty: 0.3,
+      frequency_penalty: 0.4,
+      max_tokens: 300
     });
 
     return response.choices[0].message.content;
@@ -135,7 +149,7 @@ export async function handleAIMessage(message, chatHistory = [], state = {}) {
       return "Uzr, AI xizmati hozirda mavjud emas. Iltimos, telefon orqali bog'laning: +998 97 611 06 04";
     }
     
-    return "Uzr, tizimda kichik texnik nosozlik yuz berdi. Birozdan so'ng qayta urinib ko'ring yoki bizga qo'ng'iroq qiling: +998 97 611 06 04";
+    return "Uzr, texnik nosozlik yuz berdi. Iltimos, telefon orqali bog'laning: +998 97 611 06 04";
   }
 }
 
