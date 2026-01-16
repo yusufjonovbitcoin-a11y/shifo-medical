@@ -28,14 +28,14 @@ export function updateStateFromMessage(state, message, aiReply) {
   }
 
   if (!updated.startedAt) {
-    const timeMatch = message.match(/(\d+\s*(?:kundan|kun|haftadan|hafta|oydan|oy)\s*beri|\d+\s*(?:kun|hafta|oy)\s*davom|bugun|kecha|ertaga)/i);
+    const timeMatch = message.match(/(\d+\s*(?:kundan|kun|haftadan|hafta|oydan|oy)\s*beri|\d+\s*(?:kun|hafta|oy)\s*davom|bugun|kecha|kechadan\s*beri|ertaga)/i);
     if (timeMatch) {
       updated.startedAt = timeMatch[0];
     }
   }
 
   if (!updated.duration) {
-    const durationMatch = message.match(/(\d+\s*(?:kundan|kun|haftadan|hafta|oydan|oy)\s*beri|\d+\s*(?:kun|hafta|oy)\s*davom)/i);
+    const durationMatch = message.match(/(\d+\s*(?:kundan|kun|haftadan|hafta|oydan|oy)\s*beri|\d+\s*(?:kun|hafta|oy)\s*davom|kechadan\s*beri|bugun|kecha)/i);
     if (durationMatch) {
       updated.duration = durationMatch[0];
     }
@@ -52,7 +52,7 @@ export function updateStateFromMessage(state, message, aiReply) {
   }
 
   if (!updated.location) {
-    const locationKeywords = ['qorin', 'ko\'krak', 'bosh', 'bel', 'bo\'g\'im', 'oyoq', 'qo\'l', 'bo\'yin'];
+    const locationKeywords = ['qorin', 'ko\'krak', 'bosh', 'bel', 'bo\'g\'im', 'oyoq', 'qo\'l', 'bo\'yin', 'quloq', 'qulog', 'burun', 'tomoq'];
     if (locationKeywords.some(kw => lowerMessage.includes(kw))) {
       updated.location = message.match(new RegExp(locationKeywords.find(kw => lowerMessage.includes(kw)), 'i'))?.[0] || message;
     }
@@ -81,19 +81,21 @@ export function updateStateFromMessage(state, message, aiReply) {
             potentialName.length <= 50 &&
             !/^\d+$/.test(potentialName) &&
             !potentialName.match(/\d{9,}/)) {
-          updated.name = potentialName;
+          updated.name = potentialName.charAt(0).toUpperCase() + potentialName.slice(1).toLowerCase();
           break;
         }
       }
     }
 
+    // Agar AI "ismingizni" deb so'rasa va bemor javob bersa
     if (!updated.name && aiReply.toLowerCase().includes('ismingizni')) {
       const trimmedMessage = message.trim();
       if (trimmedMessage.length >= 2 && 
           trimmedMessage.length <= 50 &&
           /^[А-Яа-яА-ӯа-ӯA-Za-z\s]+$/.test(trimmedMessage) &&
-          !trimmedMessage.match(/\d/)) {
-        updated.name = trimmedMessage;
+          !trimmedMessage.match(/\d/) &&
+          !trimmedMessage.match(/^(ha|yoq|yo'q|yes|no|да|нет)$/i)) {
+        updated.name = trimmedMessage.charAt(0).toUpperCase() + trimmedMessage.slice(1).toLowerCase();
       }
     }
   }
@@ -115,7 +117,9 @@ export function updateStateFromMessage(state, message, aiReply) {
     }
   }
 
-  if (lowerReply.includes('terapevt') || lowerReply.includes('gastroenterolog')) {
+  if (lowerReply.includes('lor') || (lowerReply.includes('quloq') && lowerReply.includes('shifokor'))) {
+    updated.suggestedDoctor = 'LOR';
+  } else if (lowerReply.includes('terapevt') || lowerReply.includes('gastroenterolog')) {
     updated.suggestedDoctor = 'Terapevt / Gastroenterolog';
   } else if (lowerReply.includes('kardiolog')) {
     updated.suggestedDoctor = 'Kardiolog';
@@ -125,6 +129,8 @@ export function updateStateFromMessage(state, message, aiReply) {
     updated.suggestedDoctor = 'Ginekolog';
   } else if (lowerReply.includes('pediatr')) {
     updated.suggestedDoctor = 'Pediatr';
+  } else if (lowerReply.includes('oftalmolog') || lowerReply.includes('ko\'z')) {
+    updated.suggestedDoctor = 'Oftalmolog';
   }
 
   if (updated.phone && updated.symptoms.length > 0) {

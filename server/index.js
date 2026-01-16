@@ -57,19 +57,24 @@ app.post('/ai-chat', async (req, res) => {
 
     // AI'dan kelgan extractedData'ni state'ga qo'shish
     const stateWithExtractedData = { ...state };
-    if (extractedData.name && !stateWithExtractedData.name) {
+    if (extractedData.name && extractedData.name !== 'null' && !stateWithExtractedData.name) {
       stateWithExtractedData.name = extractedData.name;
     }
-    if (extractedData.phone && !stateWithExtractedData.phone) {
+    if (extractedData.phone && extractedData.phone !== 'null' && !stateWithExtractedData.phone) {
       stateWithExtractedData.phone = extractedData.phone;
     }
-    if (extractedData.complaint && !stateWithExtractedData.symptoms.length) {
+    if (extractedData.complaint && extractedData.complaint !== 'null' && !stateWithExtractedData.symptoms.length) {
       stateWithExtractedData.symptoms.push(extractedData.complaint);
     }
-    if (extractedData.duration && !stateWithExtractedData.duration) {
-      stateWithExtractedData.duration = extractedData.duration;
+    if (extractedData.duration && extractedData.duration !== 'null') {
+      if (!stateWithExtractedData.duration) {
+        stateWithExtractedData.duration = extractedData.duration;
+      }
+      if (!stateWithExtractedData.startedAt) {
+        stateWithExtractedData.startedAt = extractedData.duration;
+      }
     }
-    if (extractedData.specialist && !stateWithExtractedData.suggestedDoctor) {
+    if (extractedData.specialist && extractedData.specialist !== 'null' && !stateWithExtractedData.suggestedDoctor) {
       stateWithExtractedData.suggestedDoctor = extractedData.specialist;
     }
 
