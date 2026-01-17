@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Play, Youtube } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Play, Youtube, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useIntersectionObserver } from './utils/useIntersectionObserver';
 import Image from 'next/image';
+import { createPortal } from 'react-dom';
 
 interface VideoItem {
   title: string;
@@ -72,7 +73,7 @@ export function Video() {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
   // Lock body scroll when video modal is open
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedVideo) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -84,7 +85,7 @@ export function Video() {
   }, [selectedVideo]);
 
   // Handle ESC key to close video modal
-  React.useEffect(() => {
+  useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && selectedVideo) {
         setSelectedVideo(null);
@@ -161,40 +162,67 @@ export function Video() {
         </div>
       </div>
 
-      {/* Video Modal - Full Screen */}
-      {selectedVideo && (
-        <div 
-          className="fixed inset-0 z-[10000] bg-black flex flex-col animate-fade-in"
-          onClick={() => setSelectedVideo(null)}
-        >
-          {/* Close Button */}
-          <div className="absolute top-4 right-4 z-20">
-            <button
+      {/* Video Modal - Similar to ServicesModal */}
+      {selectedVideo && (() => {
+        const modalContent = (
+          <>
+            {/* Backdrop */}
+            <div
               onClick={() => setSelectedVideo(null)}
-              className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-colors backdrop-blur-sm"
-              aria-label={t('common.close')}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998] animate-fade-in"
+              aria-hidden="true"
+            />
+            
+            {/* Modal - Full Screen */}
+            <div 
+              className="fixed inset-0 z-[9999] bg-white overflow-hidden flex flex-col animate-scale-in"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="video-modal-title"
+              onClick={(e) => e.stopPropagation()}
             >
-              <span className="text-3xl">×</span>
-            </button>
-          </div>
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200 bg-gradient-to-r from-green-500 to-emerald-600 flex-shrink-0">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                    <Youtube className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 id="video-modal-title" className="text-xl md:text-2xl font-bold text-white">{t('video.title')}</h2>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedVideo(null)}
+                  className="w-8 h-8 md:w-10 md:h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition-colors active:scale-95"
+                  aria-label={t('common.close')}
+                >
+                  <X className="w-5 h-5 md:w-6 md:h-6" />
+                </button>
+              </div>
 
-          {/* Video Container - Full Screen */}
-          <div 
-            className="flex-1 flex items-center justify-center p-4 md:p-8"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="relative w-full h-full max-w-7xl aspect-video bg-black">
-              <iframe
-                src={`https://www.youtube.com/embed/${selectedVideo}?autoplay=1&rel=0`}
-                title="Video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                className="absolute inset-0 w-full h-full"
-              />
+              {/* Video Container */}
+              <div className="flex-1 flex items-center justify-center p-4 md:p-6 lg:p-8 overflow-hidden">
+                <div className="relative w-full h-full max-w-6xl aspect-video bg-black rounded-xl md:rounded-2xl overflow-hidden shadow-2xl">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${selectedVideo}?autoplay=1&rel=0`}
+                    title="Video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        );
+
+        // Render modal using portal to document.body
+        if (typeof window !== 'undefined') {
+          return createPortal(modalContent, document.body);
+        }
+
+        return null;
+      })()}
     </section>
   );
 }

@@ -3,27 +3,16 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface MassageModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const massageTypes = [
-  'Массаж лица (30 мин)',
-  'Коррекция фигуры ( Комплекс )',
-  'Точечный позвоночный массаж (30 минут)',
-  'Вытиралка',
-  'Общий массаж (Релакс ) (45 мин)',
-  'Шейная воротниковая зона + голова (30 мин)',
-  'Огненный массаж (60 минут)',
-  'Классический массаж (60 мин)',
-  'Точечный лечебный массаж (60 мин)',
-  'Массаж ног (30 мин)',
-  'Массаж рук (30 мин)',
-];
-
 export function MassageModal({ isOpen, onClose }: MassageModalProps) {
+  const t = useTranslations();
+  const massageTypes = t.raw('servicesModal.services.massage.types') as string[];
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -100,14 +89,14 @@ export function MassageModal({ isOpen, onClose }: MassageModalProps) {
               </svg>
             </div>
             <div>
-              <h2 id="modal-title" className="text-xl md:text-2xl font-bold text-white">Массаж</h2>
-              <p className="text-sm md:text-base text-purple-100">Все виды массажа</p>
+              <h2 id="modal-title" className="text-xl md:text-2xl font-bold text-white">{t('servicesModal.services.massage.title')}</h2>
+              <p className="text-sm md:text-base text-purple-100">{t('servicesModal.services.massage.subtitle')}</p>
             </div>
           </div>
           <button
             onClick={onClose}
             className="w-8 h-8 md:w-10 md:h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition-colors active:scale-95"
-            aria-label="Закрыть"
+            aria-label={t('common.close')}
           >
             <X className="w-5 h-5 md:w-6 md:h-6" />
           </button>

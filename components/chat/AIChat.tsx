@@ -25,11 +25,11 @@ const getInitialMessage = (locale: string): string => {
 const getChatTitle = (locale: string): string => {
   switch (locale) {
     case 'ru':
-      return 'Оператор регистратуры';
+      return 'AI сотрудник';
     case 'en':
-      return 'Reception Operator';
+      return 'AI Staff';
     default:
-      return 'Qabul bo\'limi operatori';
+      return 'AI xodim';
   }
 };
 
@@ -45,6 +45,7 @@ export function AIChat() {
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [scrollToTopVisible, setScrollToTopVisible] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const sessionIdRef = useRef<string>(`session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
 
@@ -58,6 +59,34 @@ export function AIChat() {
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
+
+  // Check if ScrollToTop button is visible
+  useEffect(() => {
+    const checkScrollToTop = () => {
+      const scrollPosition = window.scrollY;
+      setScrollToTopVisible(scrollPosition > 300);
+    };
+
+    // Initial check
+    checkScrollToTop();
+
+    window.addEventListener('scroll', checkScrollToTop, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', checkScrollToTop);
+    };
+  }, []);
+
+  // Badge-ga bosilganda chat-ni ochish
+  useEffect(() => {
+    const handleOpenChat = () => {
+      setIsOpen(true);
+    };
+    
+    window.addEventListener('openAIChat', handleOpenChat);
+    return () => {
+      window.removeEventListener('openAIChat', handleOpenChat);
+    };
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -119,7 +148,9 @@ export function AIChat() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed right-6 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-emerald-500 via-teal-600 to-green-700 text-white rounded-full shadow-2xl hover:shadow-emerald-500/50 transition-all duration-300 flex items-center justify-center group hover:scale-110 z-50 bottom-6 md:bottom-8"
+          className={`fixed right-6 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-emerald-500 via-teal-600 to-green-700 text-white rounded-full shadow-2xl hover:shadow-emerald-500/50 transition-all duration-300 flex items-center justify-center group hover:scale-110 z-50 ${
+            scrollToTopVisible ? 'bottom-20 md:bottom-24' : 'bottom-6 md:bottom-8'
+          }`}
           aria-label="AI Chat ochish"
         >
           <MessageCircle className="w-6 h-6 md:w-7 md:h-7 group-hover:scale-110 transition-transform" />

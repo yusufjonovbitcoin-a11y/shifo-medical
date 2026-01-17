@@ -3,34 +3,16 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface PhysiotherapyModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const physiotherapyProcedures = [
-  'УВЧ (пазухи носа, колленые суставы, раны)',
-  'Соленая комната Дети и Взрослые',
-  'Электрофорез (лекарственный)',
-  'УФО (ультра-фиолетовое облучение носа, носоглотки)',
-  'Парафинотерапия',
-  'Ультразвуковая терапия',
-  'Лимфодренаж ног – прессотерапия',
-  'Электромиостимуляция',
-  'Компьютерное вытяжение позвоночника',
-  'Аутоплазматерапия',
-  'Лимфодренажный массаж рук',
-  'Инфракрасная терапия',
-  'Ультразвуковая ингаляция',
-  'Диатермия',
-  'Ударно-волновая терапия',
-  'Дарсонваль',
-  'Квантовая эндовазальная терапия (КЭТ)',
-  'Озонотерапия',
-];
-
 export function PhysiotherapyModal({ isOpen, onClose }: PhysiotherapyModalProps) {
+  const t = useTranslations();
+  const physiotherapyProcedures = t.raw('servicesModal.services.physiotherapy.procedures') as string[];
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -112,14 +94,14 @@ export function PhysiotherapyModal({ isOpen, onClose }: PhysiotherapyModalProps)
               </svg>
             </div>
             <div>
-              <h2 id="modal-title" className="text-xl md:text-2xl font-bold text-white">Физиотерапевтические процедуры</h2>
-              <p className="text-sm md:text-base text-orange-100">Все доступные услуги физиотерапии</p>
+              <h2 id="modal-title" className="text-xl md:text-2xl font-bold text-white">{t('servicesModal.services.physiotherapy.title')}</h2>
+              <p className="text-sm md:text-base text-orange-100">{t('servicesModal.services.physiotherapy.subtitle')}</p>
             </div>
           </div>
           <button
             onClick={onClose}
             className="w-8 h-8 md:w-10 md:h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition-colors active:scale-95"
-            aria-label="Закрыть"
+            aria-label={t('common.close')}
           >
             <X className="w-5 h-5 md:w-6 md:h-6" />
           </button>

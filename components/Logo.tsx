@@ -451,6 +451,7 @@ export function Logo({ size = 'medium', className = '', animate = true }: LogoPr
           )}
         </motion.div>
       </Link>
+      
     </motion.div>
   );
 }

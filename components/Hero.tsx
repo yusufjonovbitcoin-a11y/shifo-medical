@@ -10,13 +10,15 @@ import { services } from '@/data/services';
 // Lazy load modals - only load when user clicks
 const ServicesModal = dynamic(() => import('./ServicesModal').then(mod => ({ default: mod.ServicesModal })), { ssr: false });
 const DoctorsModal = dynamic(() => import('./DoctorsModal').then(mod => ({ default: mod.DoctorsModal })), { ssr: false });
+const VideoModal = dynamic(() => import('./VideoModal').then(mod => ({ default: mod.VideoModal })), { ssr: false });
 
 export function Hero() {
   const t = useTranslations();
   const [isServicesModalOpen, setIsServicesModalOpen] = useState(false);
   const [isDoctorsModalOpen, setIsDoctorsModalOpen] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   return (
-    <section className="relative bg-gradient-to-br from-emerald-500 via-teal-600 to-green-700 overflow-hidden">
+    <section className="relative bg-white overflow-hidden">
       {/* Static Background Elements - replaced animated ones with CSS */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl opacity-30" />
@@ -27,26 +29,21 @@ export function Hero() {
       <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 md:px-4 py-1.5 md:py-2 rounded-full mb-4 md:mb-6 text-sm md:text-base animate-fade-in-up">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse-slow" />
-              <span className="text-white">{t('hero.badge')}</span>
-            </div>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-4 md:mb-6 leading-tight animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-4 md:mb-6 leading-tight animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
               {t('hero.title')} - <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-white to-teal-200 animate-gradient">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 animate-gradient">
                 {t('hero.titleHighlight')}
               </span>
             </h1>
             
-            <p className="text-lg md:text-xl text-emerald-100 mb-8 md:mb-10 leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <p className="text-lg md:text-xl text-gray-700 mb-8 md:mb-10 leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               {t('hero.description')}
             </p>
             
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 mb-10 md:mb-16 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               <button
                 onClick={() => setIsServicesModalOpen(true)}
-                className="border-2 border-white text-white px-6 md:px-8 py-3 md:py-4 rounded-xl hover:bg-white hover:text-emerald-600 transition-all duration-300 text-center text-sm md:text-base font-medium active:scale-95"
+                className="border-2 border-emerald-600 text-emerald-600 px-6 md:px-8 py-3 md:py-4 rounded-xl hover:bg-emerald-600 hover:text-white transition-all duration-300 text-center text-sm md:text-base font-medium active:scale-95"
               >
                 {t('hero.services')}
               </button>
@@ -63,10 +60,10 @@ export function Hero() {
                   key={index}
                   className="text-center hover-scale transition-transform"
                 >
-                  <div className="text-2xl md:text-3xl text-white mb-1 font-bold">
+                  <div className="text-2xl md:text-3xl text-gray-900 mb-1 font-bold">
                     {stat.number}
                   </div>
-                  <div className="text-emerald-100 text-xs md:text-sm">{t(`hero.stats.${stat.key}`)}</div>
+                  <div className="text-gray-700 text-xs md:text-sm">{t(`hero.stats.${stat.key}`)}</div>
                 </div>
               ))}
             </div>
@@ -86,27 +83,28 @@ export function Hero() {
                 return (
                 <div
                   key={index}
-                    className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 transition-all duration-300 hover:bg-white/20"
+                    className="bg-gray-50 border border-gray-200 rounded-xl p-3 md:p-4 transition-all duration-300 hover:bg-gray-100 hover:shadow-md"
                 >
                       <div className="flex items-start gap-2 md:gap-3">
-                      <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <contact.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                      <div className="w-8 h-8 md:w-10 md:h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <contact.icon className="w-4 h-4 md:w-5 md:h-5 text-emerald-600" />
                       </div>
                       <div className="flex-1 min-w-0">
-                          <p className="text-xs text-emerald-100 mb-1">{t(`hero.contact.${contact.key}`)}</p>
+                          <p className="text-xs text-gray-600 mb-1">{t(`hero.contact.${contact.key}`)}</p>
                           {contact.key === 'address' ? (
                             <div className="flex items-start gap-2">
                               <textarea
                                 value={t('hero.address')}
                                 readOnly
+                                disabled
                                 placeholder={t('hero.address')}
                                 rows={3}
-                                className="flex-1 bg-transparent text-white text-xs md:text-sm font-medium border-none outline-none placeholder-white/70 focus:placeholder-white/50 focus:ring-2 focus:ring-white/30 focus:ring-inset rounded px-1 resize-none transition-all duration-200 cursor-default"
+                                className="flex-1 bg-transparent text-gray-900 text-xs md:text-sm font-medium border-none outline-none placeholder-gray-400 focus:placeholder-gray-400 focus:ring-0 rounded px-1 resize-none transition-all duration-200 cursor-not-allowed pointer-events-none"
                               />
                               <button
                                 onClick={handleYandexMapClick}
                                 title={t('hero.openMap')}
-                                className="relative mt-0.5 w-8 h-8 md:w-9 md:h-9 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95 group"
+                                className="relative mt-0.5 w-8 h-8 md:w-9 md:h-9 bg-emerald-100 hover:bg-emerald-200 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95 group"
                                 aria-label={t('hero.openMap')}
                               >
                                 {/* Yandex Maps Logo SVG */}
@@ -116,7 +114,7 @@ export function Hero() {
                                   viewBox="0 0 24 24"
                                   fill="none"
                                   xmlns="http://www.w3.org/2000/svg"
-                                  className="text-white group-hover:text-emerald-200 transition-colors"
+                                  className="text-emerald-600 group-hover:text-emerald-700 transition-colors"
                                 >
                                   {/* Map Pin Shape */}
                                   <path
@@ -142,11 +140,11 @@ export function Hero() {
                             </div>
                           ) : contact.key === 'hours' ? (
                     <div>
-                              <p className="text-white text-xs md:text-sm font-medium">{t(`hero.${contact.key}`)}</p>
-                              <p className="text-white text-xs md:text-sm font-medium mt-1 opacity-90">{t('hero.labHours')}</p>
+                              <p className="text-gray-900 text-xs md:text-sm font-medium">{t(`hero.${contact.key}`)}</p>
+                              <p className="text-gray-700 text-xs md:text-sm font-medium mt-1 opacity-90">{t('hero.labHours')}</p>
                             </div>
                           ) : (
-                        <p className="text-white text-xs md:text-sm font-medium">{t(`hero.${contact.key}`)}</p>
+                        <p className="text-gray-900 text-xs md:text-sm font-medium">{t(`hero.${contact.key}`)}</p>
                           )}
                       </div>
                     </div>
@@ -162,10 +160,10 @@ export function Hero() {
               <nav className="flex items-center justify-center gap-2 md:gap-3 lg:gap-4 flex-wrap">
                   {[
                   { key: 'home', icon: Home, href: '/', onClick: null },
-                  { key: 'doctors', icon: Users, href: '#shifokorlar', onClick: () => setIsDoctorsModalOpen(true) },
-                  { key: 'departments', icon: Building2, href: '#xizmatlar', onClick: () => setIsServicesModalOpen(true) },
-                  { key: 'video', icon: Video, href: '#video', onClick: null },
                   { key: 'gallery', icon: Images, href: '#galereya', onClick: null },
+                  { key: 'departments', icon: Building2, href: '#xizmatlar', onClick: () => setIsServicesModalOpen(true) },
+                  { key: 'video', icon: Video, href: '#video', onClick: () => setIsVideoModalOpen(true) },
+                  { key: 'doctors', icon: Users, href: '#shifokorlar', onClick: () => setIsDoctorsModalOpen(true) },
                   { key: 'faq', icon: Star, href: '#tavsiyalar', onClick: null },
                   { key: 'contact', icon: Phone, href: '#aloqa', onClick: null }
                 ].map((item) => {
@@ -258,6 +256,12 @@ export function Hero() {
       )}
       {isDoctorsModalOpen && (
         <DoctorsModal isOpen={isDoctorsModalOpen} onClose={() => setIsDoctorsModalOpen(false)} />
+      )}
+      {isVideoModalOpen && (
+        <VideoModal 
+          isOpen={isVideoModalOpen} 
+          onClose={() => setIsVideoModalOpen(false)} 
+        />
       )}
     </section>
   );

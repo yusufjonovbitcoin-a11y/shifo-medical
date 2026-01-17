@@ -3,37 +3,16 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Sparkles, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface UltrasoundModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const ultrasoundStudies = [
-  'Допплерография артерий и вен конечностей',
-  'Допплерография сосудов мошонки',
-  'Исследование шейного отдела',
-  'Сканирование мошонки',
-  'УЗИ матки и придатков (фолликулометрия)',
-  'УЗИ плевральных полостей',
-  'УЗИ комплексное верхний живот – брюшная полость + почки',
-  'УЗИ комплексное органов брюшной полости – печень, ЖП, поджелудочная железа, селезенка',
-  'УЗИ комплексное органов мочеполовой системы у женщин и мужчин',
-  'УЗИ матки и придатков',
-  'УЗИ молочных желез',
-  'УЗИ щитовидной железы',
-  'УЗИ мочевого пузыря',
-  'УЗИ печени и желчного пузыря',
-  'УЗИ беременности 1 триместр (до 12 недель)',
-  'УЗИ беременности 2 триместр ( 13-27 недель)',
-  'УЗИ беременности 3 триместр ( 27 и более недель)',
-  'УЗИ плода с допплерографией',
-  'УЗИ поджелудочной железы',
-  'УЗИ почек и надпочечников',
-  'УЗИ предстательной железы',
-];
-
 export function UltrasoundModal({ isOpen, onClose }: UltrasoundModalProps) {
+  const t = useTranslations();
+  const ultrasoundStudies = t.raw('servicesModal.services.ultrasound.studies') as string[];
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -83,14 +62,14 @@ export function UltrasoundModal({ isOpen, onClose }: UltrasoundModalProps) {
               <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </div>
             <div>
-              <h2 id="modal-title" className="text-xl md:text-2xl font-bold text-white">УЗИ исследования</h2>
-              <p className="text-xs md:text-sm text-blue-200 mt-1">Ежедневно с 09:00 до 16:30</p>
+              <h2 id="modal-title" className="text-xl md:text-2xl font-bold text-white">{t('servicesModal.services.ultrasound.title')}</h2>
+              <p className="text-xs md:text-sm text-blue-200 mt-1">{t('servicesModal.services.ultrasound.schedule')}</p>
             </div>
           </div>
           <button
             onClick={onClose}
             className="w-8 h-8 md:w-10 md:h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition-colors active:scale-95"
-            aria-label="Закрыть"
+            aria-label={t('common.close')}
           >
             <X className="w-5 h-5 md:w-6 md:h-6" />
           </button>

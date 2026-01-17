@@ -1,16 +1,126 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { Microscope, X } from 'lucide-react';
-import { laboratoryTests } from '@/data/laboratoryTests';
+import { useTranslations } from 'next-intl';
+import { 
+  TestTube, 
+  Heart, 
+  Activity, 
+  Droplet, 
+  Microscope,
+  Microscope as MicroscopeIcon,
+  Stethoscope,
+  Shield,
+  AlertCircle,
+  Zap,
+  Pill,
+  X
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface LaboratoryModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+interface LaboratoryTest {
+  category: string;
+  icon: LucideIcon;
+  color: string;
+  tests: string[];
+}
+
 export function LaboratoryModal({ isOpen, onClose }: LaboratoryModalProps) {
+  const t = useTranslations();
+
+  const laboratoryTests: LaboratoryTest[] = useMemo(() => {
+    const categories = [
+      {
+        key: 'expressDiagnostics',
+        icon: Zap,
+        color: 'from-red-500 to-pink-500'
+      },
+      {
+        key: 'hormones',
+        icon: Activity,
+        color: 'from-purple-500 to-indigo-500'
+      },
+      {
+        key: 'thyroid',
+        icon: Shield,
+        color: 'from-cyan-500 to-teal-500'
+      },
+      {
+        key: 'vitaminsMinerals',
+        icon: Pill,
+        color: 'from-green-500 to-emerald-500'
+      },
+      {
+        key: 'liverFunction',
+        icon: Activity,
+        color: 'from-amber-500 to-orange-500'
+      },
+      {
+        key: 'kidneyFunction',
+        icon: Droplet,
+        color: 'from-blue-500 to-cyan-500'
+      },
+      {
+        key: 'coagulation',
+        icon: Heart,
+        color: 'from-rose-500 to-red-500'
+      },
+      {
+        key: 'completeBloodCount',
+        icon: TestTube,
+        color: 'from-red-500 to-rose-500'
+      },
+      {
+        key: 'lipidSpectrum',
+        icon: Heart,
+        color: 'from-purple-500 to-pink-500'
+      },
+      {
+        key: 'diabetes',
+        icon: Activity,
+        color: 'from-blue-500 to-indigo-500'
+      },
+      {
+        key: 'tumorMarkers',
+        icon: AlertCircle,
+        color: 'from-orange-500 to-red-500'
+      },
+      {
+        key: 'infections',
+        icon: Shield,
+        color: 'from-indigo-500 to-purple-500'
+      },
+      {
+        key: 'parasites',
+        icon: MicroscopeIcon,
+        color: 'from-amber-500 to-yellow-500'
+      },
+      {
+        key: 'mensHealth',
+        icon: Stethoscope,
+        color: 'from-blue-500 to-cyan-500'
+      },
+      {
+        key: 'womensHealth',
+        icon: Heart,
+        color: 'from-pink-500 to-rose-500'
+      }
+    ];
+
+    return categories.map(cat => ({
+      category: t(`servicesModal.services.laboratory.categories.${cat.key}.name`),
+      icon: cat.icon,
+      color: cat.color,
+      tests: t.raw(`servicesModal.services.laboratory.categories.${cat.key}.tests`) as string[]
+    }));
+  }, [t]);
+
   useEffect(() => {
     if (isOpen) {
       // Prevent body scroll when modal is open
@@ -61,14 +171,14 @@ export function LaboratoryModal({ isOpen, onClose }: LaboratoryModalProps) {
               <Microscope className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </div>
             <div>
-              <h2 id="modal-title" className="text-xl md:text-2xl font-bold text-white">Лабораторные анализы</h2>
-              <p className="text-xs md:text-sm text-green-200 mt-1">Время работы: 07:30 - 16:30</p>
+              <h2 id="modal-title" className="text-xl md:text-2xl font-bold text-white">{t('servicesModal.services.laboratory.title')}</h2>
+              <p className="text-xs md:text-sm text-green-200 mt-1">{t('servicesModal.services.laboratory.schedule')}</p>
             </div>
           </div>
           <button
             onClick={onClose}
             className="w-8 h-8 md:w-10 md:h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition-colors active:scale-95"
-            aria-label="Закрыть"
+            aria-label={t('common.close')}
           >
             <X className="w-5 h-5 md:w-6 md:h-6" />
           </button>
