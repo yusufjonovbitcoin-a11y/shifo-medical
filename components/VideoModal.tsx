@@ -15,7 +15,6 @@ interface VideoItem {
 
 const videoKeys = [
   'hysteroscopyPolyp',
-  'turAdenoma',
   'medicalServices',
   'hysteroscopyIUD',
   'hysteroscopyLigature',
@@ -28,7 +27,6 @@ const videoKeys = [
 
 const videoIds = [
   '9W58acaBpyE',
-  'Q-P7zBT3ptI',
   '2aeOQVKMdjw',
   'y9OQP48DW_g',
   'Pji6zKZZIbk',
@@ -149,7 +147,7 @@ export function VideoModal({ isOpen, onClose }: VideoModalProps) {
                   <div className="group bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-transparent max-w-4xl mx-auto">
                     {/* Video Thumbnail */}
                     <div 
-                      className="relative aspect-video bg-gradient-to-br from-emerald-500 to-teal-600 cursor-pointer overflow-hidden"
+                      className="relative aspect-video bg-gray-200 cursor-pointer overflow-hidden"
                       onClick={() => setSelectedVideo(videos[0].youtubeId)}
                     >
                       <Image
@@ -194,7 +192,7 @@ export function VideoModal({ isOpen, onClose }: VideoModalProps) {
                   >
                     {/* Video Thumbnail */}
                     <div 
-                      className="relative aspect-video bg-gradient-to-br from-emerald-500 to-teal-600 cursor-pointer overflow-hidden"
+                      className="relative aspect-video bg-gray-200 cursor-pointer overflow-hidden"
                       onClick={() => setSelectedVideo(video.youtubeId)}
                     >
                       <Image

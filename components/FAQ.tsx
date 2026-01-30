@@ -10,13 +10,21 @@ import { useIntersectionObserver } from './utils/useIntersectionObserver';
 export function FAQ() {
   const t = useTranslations();
   const { elementRef, isVisible } = useIntersectionObserver({ threshold: 0.1 });
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndices, setOpenIndices] = useState<Set<number>>(new Set());
 
   // Get FAQ data from translations
   const faqData = t.raw('faq.questions') as Array<{ question: string; answer: string }>;
 
   const toggleQuestion = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
+    setOpenIndices(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
   };
 
   return (
@@ -40,28 +48,53 @@ export function FAQ() {
         <div className="max-w-4xl mx-auto">
           <div className="space-y-4 md:space-y-6">
             {faqData.map((faq, index) => {
-              const isOpen = openIndex === index;
+              const isOpen = openIndices.has(index);
               return (
                 <div
                   key={index}
-                  className={`bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden fade-in-on-scroll ${isVisible ? 'visible' : ''}`}
-                  style={{ transitionDelay: `${index * 50}ms` }}
+                  className={`bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-md md:hover:shadow-lg transition-shadow duration-200 overflow-hidden fade-in-on-scroll ${isVisible ? 'visible' : ''} h-fit`}
+                  style={{ 
+                    transitionDelay: `${index * 50}ms`,
+                    willChange: 'transform'
+                  }}
                 >
                   <button
-                    onClick={() => toggleQuestion(index)}
-                    className="w-full text-left p-4 md:p-6 flex items-center justify-between gap-4 hover:bg-emerald-50/50 transition-colors group"
+                    onClick={(e) => {
+                      toggleQuestion(index);
+                      // Scroll button into view when expanding (only on desktop)
+                      if (!isOpen && window.innerWidth >= 768) {
+                        requestAnimationFrame(() => {
+                          setTimeout(() => {
+                            const buttonElement = e.currentTarget as HTMLElement;
+                            if (buttonElement) {
+                              buttonElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'nearest',
+                                inline: 'nearest'
+                              });
+                            }
+                          }, 100);
+                        });
+                      }
+                    }}
+                    className="w-full text-left p-4 md:p-6 flex items-center justify-between gap-4 active:bg-emerald-50/50 md:hover:bg-emerald-50/50 transition-colors duration-200 group touch-manipulation"
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
                   >
-                    <span className="text-base md:text-lg font-semibold text-gray-900 pr-4 group-hover:text-emerald-600 transition-colors">
+                    <span className="text-base md:text-lg font-semibold text-gray-900 pr-4 md:group-hover:text-emerald-600 transition-colors duration-200">
                       {faq.question}
                     </span>
-                    <div className={`flex-shrink-0 w-8 h-8 md:w-10 md:h-10 bg-emerald-100 rounded-lg flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-emerald-600 rotate-180' : 'group-hover:bg-emerald-200'}`}>
-                      <ChevronDown className={`w-5 h-5 md:w-6 md:h-6 transition-colors ${isOpen ? 'text-white' : 'text-emerald-600'}`} />
+                    <div 
+                      className={`flex-shrink-0 w-8 h-8 md:w-10 md:h-10 bg-emerald-100 rounded-lg flex items-center justify-center transition-all duration-200 ${isOpen ? 'bg-emerald-600 rotate-180' : 'md:group-hover:bg-emerald-200'}`}
+                      style={{ willChange: 'transform' }}
+                    >
+                      <ChevronDown className={`w-5 h-5 md:w-6 md:h-6 transition-colors duration-200 ${isOpen ? 'text-white' : 'text-emerald-600'}`} />
                     </div>
                   </button>
                   <div
-                    className={`overflow-hidden transition-all duration-300 ${
+                    className={`overflow-hidden transition-all duration-200 ease-out ${
                       isOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
                     }`}
+                    style={{ willChange: 'max-height, opacity' }}
                   >
                     <div className="px-4 md:px-6 pb-4 md:pb-6 pt-0">
                       {faq.answer.includes('\n') ? (

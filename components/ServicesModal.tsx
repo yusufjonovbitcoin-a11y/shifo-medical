@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
-import { Sparkles, X, ChevronDown, ChevronRight } from 'lucide-react';
+import { Sparkles, X, ChevronDown, ChevronRight, Microscope } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { services } from '@/data/services';
 
@@ -74,15 +74,7 @@ const HomeVisitIcon = ({ className = "w-7 h-7 md:w-8 md:h-8" }: { className?: st
   </svg>
 );
 
-const LaboratoryIcon = ({ className = "w-7 h-7 md:w-8 md:h-8" }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 100 100" fill="white" xmlns="http://www.w3.org/2000/svg">
-    <rect x="30" y="20" width="40" height="60" rx="3" fill="white"/>
-    <path d="M40 30 L40 70" stroke="white" strokeWidth="2" opacity="0.5"/>
-    <path d="M50 30 L50 70" stroke="white" strokeWidth="2" opacity="0.5"/>
-    <path d="M60 30 L60 70" stroke="white" strokeWidth="2" opacity="0.5"/>
-    <circle cx="50" cy="75" r="5" fill="white" opacity="0.3"/>
-  </svg>
-);
+// LaboratoryIcon removed - using Microscope from lucide-react instead
 
 const MammologyIcon = ({ className = "w-7 h-7 md:w-8 md:h-8" }: { className?: string }) => (
   <svg className={className} viewBox="0 0 100 100" fill="white" xmlns="http://www.w3.org/2000/svg">
@@ -216,29 +208,29 @@ export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-start gap-3 md:gap-4 flex-1">
-                        <div className={`w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br ${service.gradient} rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}>
+                        <div className={`w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br ${service.gradient} rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-300 hover:rotate-12 flex-shrink-0`}>
                           {service.serviceKey === "urology" ? (
-                            <KidneyIcon className="w-7 h-7 md:w-8 md:h-8" />
+                            <KidneyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                           ) : service.serviceKey === "gynecology" ? (
-                            <GynecologyIcon className="w-7 h-7 md:w-8 md:h-8" />
+                            <GynecologyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                           ) : service.serviceKey === "neurology" ? (
-                            <NeurologyIcon className="w-7 h-7 md:w-8 md:h-8" />
+                            <NeurologyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                           ) : service.serviceKey === "proctology" ? (
-                            <ProctologyIcon className="w-7 h-7 md:w-8 md:h-8" />
+                            <ProctologyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                           ) : service.serviceKey === "otolaryngology" ? (
-                            <OtolaryngologyIcon className="w-7 h-7 md:w-8 md:h-8" />
+                            <OtolaryngologyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                           ) : service.serviceKey === "homeVisit" ? (
-                            <HomeVisitIcon className="w-7 h-7 md:w-8 md:h-8" />
+                            <HomeVisitIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                           ) : service.serviceKey === "laboratory" ? (
-                            <LaboratoryIcon className="w-7 h-7 md:w-8 md:h-8" />
+                            <Microscope className="w-6 h-6 md:w-8 md:h-8 text-white" />
                           ) : service.serviceKey === "mammology" ? (
-                            <MammologyIcon className="w-7 h-7 md:w-8 md:h-8" />
+                            <MammologyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                           ) : service.serviceKey === "dentistry" ? (
-                            <DentistryIcon className="w-7 h-7 md:w-8 md:h-8" />
+                            <DentistryIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                           ) : service.serviceKey === "ultrasound" ? (
-                            <UltrasoundIcon className="w-7 h-7 md:w-8 md:h-8" />
+                            <UltrasoundIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                           ) : service.serviceKey === "electrocardiography" ? (
-                            <ElectrocardiographyIcon className="w-7 h-7 md:w-8 md:h-8" />
+                            <ElectrocardiographyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                           ) : (
                             <service.icon className="w-6 h-6 md:w-7 md:h-7 text-white" />
                           )}
