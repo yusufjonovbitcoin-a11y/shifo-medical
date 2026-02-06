@@ -73,6 +73,9 @@ export function Doctors() {
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 64px, 80px"
+                      quality={70}
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                 ) : (

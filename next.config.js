@@ -6,6 +6,7 @@ const nextConfig = {
   
   // Image optimization - AVIF format prioritized for 50-70% size reduction
   images: {
+    qualities: [75, 85],
     remotePatterns: [
       {
         protocol: 'https',
@@ -21,6 +22,8 @@ const nextConfig = {
     // AVIF format prioritized - provides 50-70% size reduction with same quality
     // AVIF automatically uses better compression when supported by browser
     formats: ['image/avif', 'image/webp'],
+    // deviceSizes: available sizes for different viewport widths
+    // sizes prop in Image component controls which size is actually used
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 7, // 7 days cache for images

@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
-import { services } from '@/data/services';
 
 // Lazy load modals - only load when user clicks
 const ServicesModal = dynamic(() => import('./ServicesModal').then(mod => ({ default: mod.ServicesModal })), { ssr: false });
@@ -209,14 +208,15 @@ export function Hero() {
             <div className="relative z-10">
               <div className="aspect-[4/3] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl hover-scale transition-transform gpu-accelerate relative group">
                 <Image
-                  src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&h=600&fit=crop"
+                  src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1200&h=900&fit=crop&q=80"
                   alt="Klinika interyeri"
-                  width={800}
-                  height={600}
+                  width={1200}
+                  height={900}
                   className="w-full h-full object-cover"
                   priority
-                  quality={85}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 800px"
+                  fetchPriority="high"
+                  quality={75}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 1200px"
                   placeholder="blur"
                   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />

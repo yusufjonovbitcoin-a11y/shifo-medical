@@ -1,11 +1,17 @@
 import type { ReactNode } from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
 import { routing } from '@/routing';
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { StructuredData } from '@/components/StructuredData';
-import { AIChatWrapper } from '@/components/chat/AIChatWrapper';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 type Props = {
   children: ReactNode;
@@ -121,7 +127,6 @@ export default async function LocaleLayout({ children, params }: Props) {
       <StructuredData locale={locale} />
       <NextIntlClientProvider locale={locale} messages={messages}>
         {children}
-        <AIChatWrapper />
       </NextIntlClientProvider>
     </>
   );

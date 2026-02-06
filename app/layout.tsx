@@ -4,8 +4,6 @@ import { routing } from '@/routing';
 import "./globals.css";
 import "@/src/new-ui/styles/globals.css";
 
-export const runtime = 'edge'; // Edge Runtime - minimal latency for global users
-
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
   display: "swap",

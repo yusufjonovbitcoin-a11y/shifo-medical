@@ -153,9 +153,13 @@ export function VideoModal({ isOpen, onClose }: VideoModalProps) {
                       <Image
                         src={`https://img.youtube.com/vi/${videos[0].youtubeId}/maxresdefault.jpg`}
                         alt={videos[0].title}
-                        width={640}
-                        height={360}
+                        width={1200}
+                        height={675}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
+                        quality={80}
+                        loading="lazy"
+                        decoding="async"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = `https://img.youtube.com/vi/${videos[0].youtubeId}/hqdefault.jpg`;
@@ -198,9 +202,13 @@ export function VideoModal({ isOpen, onClose }: VideoModalProps) {
                       <Image
                         src={`https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`}
                         alt={video.title}
-                        width={640}
-                        height={360}
+                        width={1200}
+                        height={675}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px"
+                        quality={80}
+                        loading="lazy"
+                        decoding="async"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;

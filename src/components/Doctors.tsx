@@ -102,6 +102,8 @@ export function Doctors() {
                   transition={{ duration: 0.6 }}
                   src={doctor.image} 
                   alt={doctor.name}
+                  width={400}
+                  height={400}
                   className="w-full h-full object-cover"
                 />
                 {/* Gradient Overlay */}

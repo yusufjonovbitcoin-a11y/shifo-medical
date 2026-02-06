@@ -1,8 +1,9 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import dynamic from "next/dynamic";
-import { Footer } from "@/components/Footer";
-import { ScrollToTop } from "@/components/ScrollToTop";
+import AIChatMount from "@/components/AIChatMount";
+import FooterMount from "@/components/FooterMount";
+import ScrollToTopMount from "@/components/ScrollToTopMount";
 
 // Lazy load non-critical below-the-fold components
 const Features = dynamic(() => import("@/components/Features").then(mod => ({ default: mod.Features })), {
@@ -22,8 +23,9 @@ export default function Home() {
       </div>
       <Features />
       <FAQ />
-      <Footer />
-      <ScrollToTop />
+      <FooterMount />
+      <ScrollToTopMount />
+      <AIChatMount />
     </main>
   );
 }

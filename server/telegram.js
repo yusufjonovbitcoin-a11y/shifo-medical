@@ -17,56 +17,29 @@ export async function sendTelegram(state) {
   try {
     const name = state.name || 'Ko\'rsatilmagan';
     const symptoms = state.symptoms.join(', ') || 'Ko\'rsatilmagan';
-    const startedAt = state.startedAt || 'Ko\'rsatilmagan';
-    const location = state.location || 'Ko\'rsatilmagan';
-    const severity = state.severity || 'Ko\'rsatilmagan';
+    const duration = state.duration || state.startedAt || 'Ko\'rsatilmagan';
     const extraSymptoms = state.extraSymptoms.join(', ') || 'Yo\'q';
-    const suggestedDoctor = state.suggestedDoctor || 'Terapevt';
+    const aiDiagnosis = state.suggestedDoctor || 'Ko\'rsatilmagan';
     const phone = state.phone || 'Ko\'rsatilmagan';
 
-    let text;
+    const text = `🧑‍⚕️ <b>Yangi bemor (AI chat)</b>
 
-    if (state.redFlag) {
-      text = `🚨 <b>SHOSHILINCH HOLAT</b>
+👤 <b>Ism:</b> ${name}
 
-👤 <b>Bemor:</b> ${name}
-
-Alomatlar:
+🔹 <b>Shikoyat:</b>
 ${symptoms}
 
-⚠️ <b>XAVFLI BELGILAR ANIQLANDI</b>
-Bemor zudlik bilan shifokorga murojaat qilishi kerak.
-
-📞 <b>Telefon:</b> <code>${phone}</code>`;
-    } else {
-      text = `🧑‍⚕️ <b>Yangi bemor (AI chat)</b>
-
-👤 <b>Bemor:</b> ${name}
-
-🔹 <b>Alomatlar:</b>
-${symptoms}
-
-⏱ <b>Qachondan beri:</b>
-${startedAt}
-
-📍 <b>Joyi:</b>
-${location}
-
-🔥 <b>Og'riq darajasi:</b>
-${severity}
+⏱ <b>Davomiyligi:</b>
+${duration}
 
 ➕ <b>Qo'shimcha belgilar:</b>
 ${extraSymptoms}
 
-👨‍⚕️ <b>Tavsiya etilgan shifokor:</b>
-${suggestedDoctor}
+🤖 <b>AI tashxis:</b>
+${aiDiagnosis}
 
 📞 <b>Telefon:</b>
-<code>${phone}</code>
-
-📝 <b>Izoh:</b>
-Bu AI orqali dastlabki yo'naltirish`;
-    }
+<code>${phone}</code>`;
 
     const response = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: "POST",
