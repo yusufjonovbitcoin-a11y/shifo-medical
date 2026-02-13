@@ -120,6 +120,9 @@ export function DoctorsModal({ isOpen, onClose }: DoctorsModalProps) {
                         fill
                         className="object-cover object-top"
                         sizes="(max-width: 768px) 224px, 256px"
+                        quality={80}
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   ) : (

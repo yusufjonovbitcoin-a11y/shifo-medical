@@ -204,7 +204,11 @@ export function Logo({ size = 'medium', className = '', animate = true }: LogoPr
                         src={logoImage}
                         alt={index === Math.floor(segments / 2) ? t('logoImage.alt') : ""}
                         className={`${sizeClasses[size]} w-auto object-contain drop-shadow-2xl`}
+                        width={size === 'small' ? 120 : size === 'medium' ? 168 : 240}
+                        height={size === 'small' ? 40 : size === 'medium' ? 56 : 80}
                         draggable={false}
+                        loading="lazy"
+                        decoding="async"
                         initial={{
                           opacity: 0,
                           y: 50 + (index % 3) * 20,

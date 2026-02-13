@@ -479,8 +479,10 @@ export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
                                                             alt={`${serviceItemText} - ${imgIdx + 1}`}
                                                             fill
                                                             className="object-cover"
-                                                            sizes="(max-width: 640px) 100vw, 50vw"
-                                                            unoptimized
+                                                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px"
+                                                            quality={80}
+                                                            loading="lazy"
+                                                            decoding="async"
                                                             onError={(e) => {
                                                               console.error('Image load error:', img);
                                                               const target = e.target as HTMLImageElement;
@@ -541,8 +543,8 @@ export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
                                                           alt={`${serviceItemText} - ${imgIdx + 1}`}
                                                           fill
                                                           className="object-cover"
-                                                          sizes="(max-width: 640px) 100vw, 50vw"
-                                                          unoptimized
+                                                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px"
+                                                          quality={85}
                                                           onError={(e) => {
                                                             console.error('Image load error:', img);
                                                             const target = e.target as HTMLImageElement;

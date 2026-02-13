@@ -277,6 +277,8 @@ export function Hero() {
                 <img 
                   src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&h=600&fit=crop" 
                   alt="Klinika interyeri"
+                  width={800}
+                  height={600}
                   className="w-full h-full object-cover"
                 />
               </motion.div>
