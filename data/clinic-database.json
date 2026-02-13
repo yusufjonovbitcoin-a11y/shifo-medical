@@ -1,0 +1,469 @@
+{
+  "tibbiyot_markazi": {
+    "nomi": "SHIFOKOR-LDA",
+    "turi": "Tibbiyot markazi",
+    
+    "aloqa_malumotlari": {
+      "manzil": {
+        "shahar": "Samarqand",
+        "kocha": "Termiz ko'chasi 67A",
+        "moljal": "Limonadka"
+      },
+      "telefonlar": ["+998 97 611 06 04", "+998 66 235 33 44"],
+      "ish_vaqti": {
+        "mutaxassislar": "Dushanba-Shanba, 09:00-16:30",
+        "laboratoriya": "07:30-16:30",
+        "qabul_turi": "Jonli navbat"
+      }
+    },
+
+    "xizmatlar": {
+      "operatsiyalar": {
+        "umumiy": "50+ turdagi operatsiyalar",
+        "ixtisoslashgan": [
+          "Laparoskopik operatsiyalar",
+          "Endo-urologik operatsiyalar",
+          "LOR operatsiyalari",
+          "Ginekologik operatsiyalar",
+          "Proktologik operatsiyalar"
+        ]
+      },
+
+      "statsionar": {
+        "turi": ["24 soatlik statsionar", "Kunduzgi statsionar"],
+        "narx": {
+          "1_sutka": "450,000 so'm",
+          "nimalar_kiradi": [
+            "Tomchilatib dori yuborish (sistema)",
+            "Ukollar",
+            "Kuniga 3 mahal ovqat"
+          ]
+        }
+      },
+
+      "diagnostika": {
+        "uzi": {
+          "ish_vaqti": "09:00-16:30",
+          "turlar": [
+            "Qorin bo'shlig'i kompleks UZI",
+            "Bachadon va qo'shimchalar UZI",
+            "Sut bezlari UZI",
+            "Qalqonsimon bez UZI",
+            "Homiladorlik UZI (1-3 trimestr)",
+            "Dopplerografiya",
+            "Siydik-jinsiy tizim UZI",
+            "Prostata UZI",
+            "Buyraklar UZI"
+          ]
+        },
+        "ekg": {
+          "ish_vaqti": "08:30-16:30"
+        },
+        "uyga_chiqish": {
+          "mavjud": true,
+          "xizmatlar": ["UZI", "EKG", "Laboratoriya"],
+          "telefon": "+998 97 611 06 04"
+        }
+      },
+
+      "ukol_sistema": {
+        "ish_vaqti": "08:30-16:30",
+        "shartlar": "Shifokor tayinlovining asl nusxasi bo'lishi shart"
+      }
+    },
+
+    "mutaxassislar": {
+      "urolog": {
+        "ism": "Hamdamov Rustam Uktamovich",
+        "tajriba": "20+ yil",
+        "qabul": "Har kuni 09:00-16:30",
+        "xizmatlar": [
+          "Prostata adenomasi TUR-rezektsiyasi",
+          "Siydik pufagi TUR-rezektsiyasi",
+          "Tsistolitotripsiya (tosh maydalash)",
+          "TVT lenta (siydik tutolmaslik)",
+          "Tsistoskopiya",
+          "Varikotsele (Marmara usuli)",
+          "Gidrotsele",
+          "Orxiektomiya",
+          "Kriptorxizm"
+        ]
+      },
+
+      "ginekologlar": [
+        {
+          "ism": "Sultanova Rohila Naimovna",
+          "tajriba": "30+ yil",
+          "qabul": "Har kuni 09:00-16:30"
+        },
+        {
+          "ism": "Azizova Madina Sultonmurodovna",
+          "tajriba": "10+ yil",
+          "qabul": "Har kuni 09:00-16:30",
+          "qoshimcha": ["Mammolog", "Onkoginekolog"]
+        }
+      ],
+      
+      "ginekologiya_xizmatlari": [
+        "Kontratseptsiya (spiral)",
+        "Kolposkopiya",
+        "Bartolin bezlarini ochish",
+        "Bachadonni ekstirpatsiya",
+        "Gisteroskopiya (diagnostik, operativ)",
+        "Bachadon bo'yni eroziyasi davolash",
+        "Lazerli vaginal yoshartirish",
+        "Aspiratsion biopsiya",
+        "PAP-test"
+      ],
+
+      "jarroh_proktolog": {
+        "ism": "Muhammadiyev Xurshed Lutfillayevich",
+        "tajriba": "10+ yil",
+        "qabul": "Har kuni 09:00-16:30",
+        "xizmatlar": [
+          "Gemorroidektomiya (lazer)",
+          "Anal yoriq (lazer fotokoagulyatsiya)",
+          "Paraproktit fistulasi (FILAC usuli)",
+          "Xolesistektomiya",
+          "Sunnat (lazer)",
+          "Ateroma, lipoma, papilloma olib tashlash",
+          "Abssess ochish",
+          "Inguinal gersiya"
+        ]
+      },
+
+      "lor_shifokorlar": [
+        {
+          "ism": "Mirmuhammadov Baxrillo Xabibullaevich",
+          "tajriba": "15+ yil"
+        },
+        {
+          "ism": "Rafikova Hilola Bakhrillayevna",
+          "tajriba": "10+ yil"
+        }
+      ],
+
+      "lor_xizmatlari": [
+        "Adenoidlarni olib tashlash",
+        "Septoplastika (burun to'sig'i)",
+        "Tonsillektomiya",
+        "Gaymorotomiya",
+        "Burun poliplari olib tashlash",
+        "Yuqori jag' bo'shlig'i punksiyasi",
+        "Endoskopik ko'rik"
+      ],
+
+      "uzi_shifokorlar": [
+        {
+          "ism": "Vafaxodjayeva Iroda Rahmatullayevna",
+          "tajriba": "15+ yil",
+          "kunlar": ["Dushanba", "Chorshanba", "Juma"]
+        },
+        {
+          "ism": "Muminova Firuza Qurbanovna",
+          "tajriba": "8+ yil",
+          "kunlar": ["Seshanba", "Payshanba", "Shanba"]
+        }
+      ],
+
+      "kardiolog_terapevt_endokrinolog": {
+        "ism": "Tillyayeva Zamira Ziyadullayevna",
+        "tajriba": "15+ yil",
+        "mutaxassislik": ["Kardiolog-terapevt", "Endokrinolog"],
+        "qabul": "09:00-16:30"
+      },
+
+      "nevropatolog": {
+        "xizmatlari": [
+          "Manual terapiya",
+          "EHO-ES + konsultatsiya",
+          "EEG",
+          "Paravertebral blokada",
+          "Suyak ichiga terapiya",
+          "UZI nazorati ostida blokada"
+        ]
+      }
+    },
+
+    "laboratoriya": {
+      "ish_vaqti": "08:00-16:30",
+      "laborantlar": [
+        "Ergasheva Shoira Sherovna (10+ yil)",
+        "Sayfiyeva Kamola Xayrilloyevna (4+ yil)"
+      ],
+      
+      "tahlillar": {
+        "gormonlar": [
+          "TSH, T3, T4, FT3, FT4",
+          "FSH, LH, Prolaktin",
+          "Estradiol, Testosteron, Progesteron",
+          "Kortizol, Insulin, C-peptid",
+          "PSA total"
+        ],
+        
+        "infeksiyalar": [
+          "HBsAg (Gepatit B)",
+          "HCV (Gepatit C)",
+          "HIV (OIV)",
+          "RPR-test (RW)",
+          "Helikobakter",
+          "Brusella",
+          "Toxo IgG, CMV IgG, HSV-1 IgG"
+        ],
+
+        "biokimyo": [
+          "Jigar enzimlar (ASAT, ALAT, Bilirubin)",
+          "Buyrak funksiyasi (Kreatinin, Mochevina)",
+          "Lipid spektri (Xolesterin, Triglitseridlar, HDL, LDL)",
+          "Glyukoza, HbA1c",
+          "Minerallar (Kalsiy, Temir, Fosfor, Magniy, Kaliy, Natriy)",
+          "Umumiy oqsil, Albumin"
+        ],
+
+        "koagulogramma": [
+          "PT, APTT, INR",
+          "Fibrinogen",
+          "D-dimer",
+          "Trombin vaqti"
+        ],
+
+        "umumiy": [
+          "Qonning klinik tahlili + ECHT",
+          "Siydikning klinik tahlili"
+        ],
+
+        "onkomarkerlar": [
+          "CA-125 (tuxumdon, bachadon)",
+          "CA 15-3 (sut bezi)"
+        ],
+
+        "ginekologik": [
+          "Ginekologik surtma (flora)",
+          "Urologik surtma",
+          "PAP-test (sitologiya)",
+          "Bachadon aspiratsion biopsiya",
+          "Bioptat gistologiyasi"
+        ],
+
+        "parazitologiya": [
+          "Gelmintar (opistorx, trixinella, toksokara)",
+          "Lyambliya, Askarida, Exinokokk"
+        ],
+
+        "vitaminlar": [
+          "Vitamin D (25-OH)",
+          "Vitamin B12",
+          "Ferritin"
+        ]
+      }
+    },
+
+    "fizioterapiya": {
+      "xizmatlar": [
+        "UHF terapiya",
+        "Tuz xonasi",
+        "Elektroforez",
+        "UFO (ultrabinafsha)",
+        "Parafinoterapiya",
+        "Ultratovush terapiyasi",
+        "Limfodrenaj pressoterapiya",
+        "Elektromiostimulyatsiya",
+        "Umurtqa pog'onasi tortish (traksiya)",
+        "Autoplazmaterapiya",
+        "Infraqizil terapiya",
+        "Ultratovushli ingalyatsiya",
+        "Diyatermiya",
+        "Zarbali-to'lqinli terapiya",
+        "Darsonval",
+        "Kvant endovazal terapiya (KET)",
+        "Ozonoterapiya"
+      ]
+    },
+
+    "massaj": {
+      "turlar": [
+        "Yuz massaji (30 daq)",
+        "Qomatni korreksiya (kompleks)",
+        "Umurtqa pog'onasi nuqtali massaj (30 daq)",
+        "Artgich massaji",
+        "Umumiy massaj relaks (45 daq)",
+        "Bo'yin-yoqa va bosh massaji (30 daq)",
+        "Olovli massaj (60 daq)",
+        "Klassik massaj (60 daq)",
+        "Nuqtali davolovchi massaj (60 daq)",
+        "Oyoq massaji (30 daq)",
+        "Qo'l massaji (30 daq)"
+      ]
+    },
+
+    "tayyorgarlik": {
+      "operatsiya_oldidan": {
+        "tahlillar": [
+          "Qon va siydik umumiy tahlili",
+          "Koagulogramma",
+          "Gepatit B, C va OIV",
+          "Qon guruhi",
+          "Buyrak va jigar biokimyosi",
+          "Qondagi glyukoza",
+          "Ko'krak qafasi rentgeni",
+          "Ichki a'zolar UZI",
+          "Kardiolog-terapevt ko'rigi",
+          "Anesteziolog ko'rigi"
+        ]
+      },
+
+      "konsultatsiya_uchun": {
+        "olib_kelish": [
+          "Ambulator karta",
+          "Statsionar epikrizlar",
+          "UZI, KT, MRT natijalari",
+          "Oldingi davolash sxemalari"
+        ]
+      },
+
+      "uzi_tayyorgarlik": {
+        "och_qoringa": [
+          "Qorin bo'shlig'i kompleks UZI (5 soat ochlik)",
+          "Jigar va o't pufagi UZI (8 soat ochlik)"
+        ],
+        "tola_siydik_pufagi": [
+          "Bachadon va qo'shimchalar UZI",
+          "Siydik-jinsiy tizim UZI",
+          "Siydik pufagi UZI",
+          "Prostata UZI",
+          "Buyrak UZI"
+        ],
+        "bosh_siydik_pufagi": [
+          "Transvaginal tekshiruv"
+        ],
+        "maxsus_tayyorgarlik_shart_emas": [
+          "Qalqonsimon bez UZI",
+          "Sut bezlari UZI",
+          "Moyak skanerlash"
+        ]
+      },
+
+      "qon_tahlili_tayyorgarlik": {
+        "vaqt": "Ertalab 8:00-11:00, och qoringa",
+        "ochlik_muddati": "8-14 soat",
+        "qoidalar": [
+          "Oldingi kun ortiqcha ovqat iste'mol qilmaslik",
+          "Dorilar haqida shifokor bilan maslahatlashish",
+          "Alkogol ichmaslik",
+          "Tekshiruvdan 1 soat oldin chekmaslik",
+          "Jismoniy va hissiy stresslarni cheklash",
+          "Laboratoriyada 10-20 daqiqa dam olish"
+        ]
+      }
+    },
+
+    "narxlar": {
+      "eslatma": "Operatsiya narxi murakkablikka va asbob-uskunalarga bog'liq",
+      "operatsiya_narxiga_kiradi": [
+        "Operatsiyaning o'zi",
+        "Statsionarda yotish",
+        "Dori-darmonlar",
+        "Kuniga 3 mahal ovqat"
+      ],
+      "batafsil_uchun": "+998 97 611 06 04"
+    },
+
+    "mashhur_operatsiyalar": {
+      "urologija": [
+        {
+          "nomi": "Prostata adenomasi olib tashlash",
+          "usul": "Lazer yordamida TUR-rezektsiya"
+        },
+        {
+          "nomi": "Siydikni tutolmaslik (ayollarda)",
+          "usul": "TVT lenta usuli"
+        },
+        {
+          "nomi": "Varikotsele",
+          "usul": "Marmara usuli"
+        },
+        {
+          "nomi": "Siydik pufagi biopsiyasi"
+        },
+        {
+          "nomi": "Gidrotsele (vod'yanka)"
+        },
+        {
+          "nomi": "Siydik pufagi toshlarini maydalash",
+          "usul": "Tsistolitotripsiya"
+        },
+        {
+          "nomi": "Sunnat",
+          "usul": "Lazer yordamida"
+        }
+      ],
+
+      "ginekologija": [
+        {
+          "nomi": "Gisteroskopiya",
+          "turlar": ["Diagnostik", "Operativ"]
+        },
+        {
+          "nomi": "Kolposkopiya"
+        },
+        {
+          "nomi": "Bachadon olib tashlash"
+        },
+        {
+          "nomi": "Bachadon bo'yni eroziyasi",
+          "usul": "Lazer fotokoagulyatsiya"
+        },
+        {
+          "nomi": "Bachadon endometri biopsiyasi",
+          "usul": "Aspiratsion"
+        },
+        {
+          "nomi": "Bartolin bezlarini ochish"
+        }
+      ],
+
+      "lor": [
+        {
+          "nomi": "Adenoidlarni olib tashlash"
+        },
+        {
+          "nomi": "Septoplastika (burun to'sig'i)"
+        },
+        {
+          "nomi": "Tonsillektomiya"
+        },
+        {
+          "nomi": "Gaymorotomiya (yuqori jag' bo'shlig'i)"
+        },
+        {
+          "nomi": "Burun poliplari olib tashlash"
+        }
+      ],
+
+      "proktologija": [
+        {
+          "nomi": "Gemorroy",
+          "usul": "Lazer yordamida"
+        },
+        {
+          "nomi": "Anal yoriq",
+          "usul": "Lazer fotokoagulyatsiya"
+        },
+        {
+          "nomi": "Pararektal fistula",
+          "usul": "FILAC usuli",
+          "telefon": "+99897 611 06 04"
+        },
+        {
+          "nomi": "Inguinal gersiya"
+        }
+      ]
+    },
+
+    "qoshimcha_malumot": {
+      "profilaktik_koriklar": true,
+      "profilaktik_koriklar_tavsif": "Mutaxassislar professional xulosalar beradi. Agar davolash kerak bo'lmasa, sog'liqni saqlash bo'yicha tavsiyalar beriladi. Biz qimmatbaho muolajalarni majburlamaymiz."
+    }
+  }
+}
+
