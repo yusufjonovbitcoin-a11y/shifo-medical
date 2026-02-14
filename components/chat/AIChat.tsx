@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { X, Send, Bot, MessageCircle } from 'lucide-react';
+import { X, Send, Bot, MessageCircle, Download } from 'lucide-react';
 import { useLocale } from 'next-intl';
 
 interface Message {
@@ -96,43 +96,73 @@ export function AIChat() {
     const message = inputText.trim();
     if (!message || isTyping) return;
 
-    setMessages(prev => [...prev, {
+    // Foydalanuvchi xabarini qo'shish
+    const userMessage: Message = {
       id: Date.now(),
       text: message,
       isBot: false
-    }]);
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
     setInputText('');
     setIsTyping(true);
 
     try {
-      const res = await fetch('/api/chat', {
+      // Chat history formatlash (oxirgi 10 ta xabar)
+      const recentMessages = messages.slice(-10).map(msg => ({
+        text: msg.text,
+        isBot: msg.isBot
+      }));
+
+      // AI API ga so'rov
+      const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           message: message,
-          sessionId: sessionIdRef.current
-        })
+          chatHistory: recentMessages,
+          sessionId: sessionIdRef.current,
+          allMessages: [...messages, userMessage].map(msg => ({
+            id: msg.id,
+            text: msg.text,
+            isBot: msg.isBot
+          }))
+        }),
       });
 
-      if (!res.ok) {
-        throw new Error(`Server xatosi: ${res.status}`);
+      if (!response.ok) {
+        throw new Error(`API xatosi: ${response.status}`);
       }
 
-      const data = await res.json();
+      const data = await response.json();
       setIsTyping(false);
-      
-      setMessages(prev => [...prev, {
+
+      // AI javobini qo'shish
+      const botMessage: Message = {
         id: Date.now() + 1,
         text: data.reply || 'Kechirasiz, javob topilmadi.',
         isBot: true
-      }]);
+      };
+
+      setMessages(prev => [...prev, botMessage]);
     } catch (error) {
+      console.error('Chat xatosi:', error);
       setIsTyping(false);
-      setMessages(prev => [...prev, {
+      
+      // Xatolik xabarini qo'shish
+      const errorMessage: Message = {
         id: Date.now() + 1,
-        text: 'Xatolik yuz berdi. Qayta urinib ko\'ring.',
+        text: locale === 'ru'
+          ? 'Xatolik yuz berdi. Iltimos, telefon orqali bog\'laning: +998 97 611 06 04'
+          : locale === 'en'
+          ? 'An error occurred. Please contact us by phone: +998 97 611 06 04'
+          : 'Xatolik yuz berdi. Iltimos, telefon orqali bog\'laning: +998 97 611 06 04',
         isBot: true
-      }]);
+      };
+      
+      setMessages(prev => [...prev, errorMessage]);
     }
   };
 
@@ -141,6 +171,63 @@ export function AIChat() {
       e.preventDefault();
       handleSendMessage();
     }
+  };
+
+  const handleDownloadChat = () => {
+    const chatContent = messages.map((msg, index) => {
+      const timestamp = new Date(msg.id).toLocaleString('uz-UZ', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      const sender = msg.isBot ? 'AI Xodim' : 'Bemor';
+      return `[${timestamp}] ${sender}: ${msg.text}`;
+    }).join('\n\n');
+
+    const fullChat = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SHIFOKOR-LDA TIBBIY MARKAZ
+AI CHAT SUHBAT TARIXI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sana: ${new Date().toLocaleString('uz-UZ', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })}
+Session ID: ${Date.now()}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SUHBAT TARIXI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${chatContent}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MARKAZ MA'LUMOTLARI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Manzil: Samarqand, Termiz ko'chasi 67A (Mo'ljal: Limonadka)
+Telefon: +998 97 611 06 04 | +998 66 235 33 44
+Sayt: http://www.shifokorlda.uz
+Xarita: https://yandex.uz/maps/-/CDRIEJYF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+`;
+
+    const blob = new Blob([fullChat], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `shifokor-lda-chat-${new Date().toISOString().split('T')[0]}-${Date.now().toString().slice(-6)}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -177,13 +264,25 @@ export function AIChat() {
                     <h3 className="text-base md:text-lg font-semibold">{getChatTitle(locale)}</h3>
                   </div>
                 </div>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="hover:bg-white/20 p-1.5 md:p-2 rounded-xl transition-all duration-300 hover:rotate-90"
-                  aria-label="Yopish"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+                <div className="flex items-center gap-2">
+                  {messages.length > 1 && (
+                    <button
+                      onClick={handleDownloadChat}
+                      className="hover:bg-white/20 p-1.5 md:p-2 rounded-xl transition-all duration-300"
+                      aria-label="Suhbatni yuklab olish"
+                      title="Suhbatni fayl sifatida yuklab olish"
+                    >
+                      <Download className="w-5 h-5" />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="hover:bg-white/20 p-1.5 md:p-2 rounded-xl transition-all duration-300 hover:rotate-90"
+                    aria-label="Yopish"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             </div>
 
