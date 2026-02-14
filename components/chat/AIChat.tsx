@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { X, Send, Bot, MessageCircle, Download } from 'lucide-react';
+import { X, Send, Bot, MessageCircle } from 'lucide-react';
 import { useLocale } from 'next-intl';
 
 interface Message {
@@ -108,18 +108,22 @@ export function AIChat() {
     setIsTyping(true);
 
     try {
-      // Chat history formatlash (oxirgi 10 ta xabar)
-      const recentMessages = messages.slice(-10).map(msg => ({
+      // Chat history formatlash (oxirgi 6 ta xabar - optimallashtirilgan)
+      const recentMessages = messages.slice(-6).map(msg => ({
         text: msg.text,
         isBot: msg.isBot
       }));
 
-      // AI API ga so'rov
+      // AI API ga so'rov (timeout bilan)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 35000); // 35 soniya timeout
+      
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        signal: controller.signal,
         body: JSON.stringify({
           message: message,
           chatHistory: recentMessages,
@@ -131,9 +135,16 @@ export function AIChat() {
           }))
         }),
       });
+      
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error(`API xatosi: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        // Agar API key yo'q bo'lsa, maxsus xabar ko'rsatish
+        if (response.status === 503) {
+          throw new Error('OPENAI_API_KEY_NOT_SET');
+        }
+        throw new Error(errorData.reply || `API xatosi: ${response.status}`);
       }
 
       const data = await response.json();
@@ -147,18 +158,30 @@ export function AIChat() {
       };
 
       setMessages(prev => [...prev, botMessage]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Chat xatosi:', error);
       setIsTyping(false);
       
       // Xatolik xabarini qo'shish
-      const errorMessage: Message = {
-        id: Date.now() + 1,
-        text: locale === 'ru'
+      let errorText = '';
+      
+      if (error?.message === 'OPENAI_API_KEY_NOT_SET') {
+        errorText = locale === 'ru'
+          ? '⚠️ OpenAI API ключ не настроен. Пожалуйста, добавьте OPENAI_API_KEY в файл .env.local и перезапустите сервер.'
+          : locale === 'en'
+          ? '⚠️ OpenAI API key is not configured. Please add OPENAI_API_KEY to .env.local file and restart the server.'
+          : '⚠️ OpenAI API kaliti sozlanmagan. Iltimos, .env.local fayliga OPENAI_API_KEY qo\'shing va serverni qayta ishga tushiring.';
+      } else {
+        errorText = locale === 'ru'
           ? 'Xatolik yuz berdi. Iltimos, telefon orqali bog\'laning: +998 97 611 06 04'
           : locale === 'en'
           ? 'An error occurred. Please contact us by phone: +998 97 611 06 04'
-          : 'Xatolik yuz berdi. Iltimos, telefon orqali bog\'laning: +998 97 611 06 04',
+          : 'Xatolik yuz berdi. Iltimos, telefon orqali bog\'laning: +998 97 611 06 04';
+      }
+      
+      const errorMessage: Message = {
+        id: Date.now() + 1,
+        text: errorText,
         isBot: true
       };
       
@@ -173,62 +196,6 @@ export function AIChat() {
     }
   };
 
-  const handleDownloadChat = () => {
-    const chatContent = messages.map((msg, index) => {
-      const timestamp = new Date(msg.id).toLocaleString('uz-UZ', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-      const sender = msg.isBot ? 'AI Xodim' : 'Bemor';
-      return `[${timestamp}] ${sender}: ${msg.text}`;
-    }).join('\n\n');
-
-    const fullChat = `
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SHIFOKOR-LDA TIBBIY MARKAZ
-AI CHAT SUHBAT TARIXI
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Sana: ${new Date().toLocaleString('uz-UZ', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })}
-Session ID: ${Date.now()}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SUHBAT TARIXI
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-${chatContent}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-MARKAZ MA'LUMOTLARI
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Manzil: Samarqand, Termiz ko'chasi 67A (Mo'ljal: Limonadka)
-Telefon: +998 97 611 06 04 | +998 66 235 33 44
-Sayt: http://www.shifokorlda.uz
-Xarita: https://yandex.uz/maps/-/CDRIEJYF
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-`;
-
-    const blob = new Blob([fullChat], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `shifokor-lda-chat-${new Date().toISOString().split('T')[0]}-${Date.now().toString().slice(-6)}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
 
   return (
     <>
@@ -265,16 +232,6 @@ Xarita: https://yandex.uz/maps/-/CDRIEJYF
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  {messages.length > 1 && (
-                    <button
-                      onClick={handleDownloadChat}
-                      className="hover:bg-white/20 p-1.5 md:p-2 rounded-xl transition-all duration-300"
-                      aria-label="Suhbatni yuklab olish"
-                      title="Suhbatni fayl sifatida yuklab olish"
-                    >
-                      <Download className="w-5 h-5" />
-                    </button>
-                  )}
                   <button
                     onClick={() => setIsOpen(false)}
                     className="hover:bg-white/20 p-1.5 md:p-2 rounded-xl transition-all duration-300 hover:rotate-90"

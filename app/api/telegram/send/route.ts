@@ -1,95 +1,98 @@
 import { NextResponse } from 'next/server';
 
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const ADMIN_CHAT_ID = process.env.TELEGRAM_ADMIN_CHAT_ID || process.env.TELEGRAM_ADMIN_ID;
-
-function chunkText(text: string, max: number = 4000): string[] {
-  const chunks: string[] = [];
-  let i = 0;
-  while (i < text.length) {
-    chunks.push(text.slice(i, i + max));
-    i += max;
-  }
-  return chunks;
-}
-
-async function tg(method: string, body: any) {
-  if (!BOT_TOKEN) throw new Error('BOT_TOKEN sozlanmagan');
-  
-  const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/${method}`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  const data = await res.json();
-  if (!data.ok) throw new Error(data.description || 'Telegram error');
-  return data.result;
-}
-
+// Node.js runtime'ni ishlatish (Edge runtime emas)
 export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
   try {
-    if (!BOT_TOKEN || !ADMIN_CHAT_ID) {
+    const body = await req.json();
+    const { phone, transcript, name, complaint, sessionId } = body;
+
+    // Telegram Bot Token va Chat ID ni environment variables dan olish
+    const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+    const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+
+    // Telegram konfiguratsiyasini tekshirish
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+      console.error('❌ Telegram konfiguratsiyasi to\'liq emas:', {
+        hasToken: !!TELEGRAM_BOT_TOKEN,
+        hasChatId: !!TELEGRAM_CHAT_ID
+      });
       return NextResponse.json(
-        { ok: false, error: 'TELEGRAM_BOT_TOKEN va TELEGRAM_ADMIN_CHAT_ID sozlanmagan' },
+        { ok: false, error: 'Telegram konfiguratsiyasi to\'liq emas' },
         { status: 500 }
       );
     }
 
-    const { phone, transcript, name, complaint, sessionId } = await req.json();
+    // Xabar formatlash
+    let messageText = `🔔 <b>Yangi mijoz ma'lumotlari</b>\n\n`;
+    
+    if (name) {
+      messageText += `👤 <b>Ism:</b> ${name}\n`;
+    }
+    
+    if (phone) {
+      messageText += `📱 <b>Telefon:</b> ${phone}\n`;
+    }
+    
+    if (complaint) {
+      messageText += `\n🏥 <b>Shikoyat/Muammo:</b>\n${complaint}\n`;
+    }
+    
+    if (sessionId) {
+      messageText += `\n🆔 <b>Session ID:</b> <code>${sessionId}</code>\n`;
+    }
+    
+    messageText += `\n━━━━━━━━━━━━━━━━━━━━\n`;
+    messageText += `\n💬 <b>To'liq chat tarixi:</b>\n\n`;
+    messageText += transcript;
 
-    if (!phone || !transcript) {
+    // Telegram Bot API ga so'rov yuborish
+    const telegramApiUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    
+    const telegramResponse = await fetch(telegramApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: messageText,
+        parse_mode: 'HTML',
+        disable_web_page_preview: true,
+      }),
+    });
+
+    const telegramResult = await telegramResponse.json();
+
+    if (!telegramResponse.ok || !telegramResult.ok) {
+      console.error('❌ Telegram xabar yuborish xatosi:', {
+        status: telegramResponse.status,
+        result: telegramResult,
+      });
       return NextResponse.json(
-        { ok: false, error: 'phone va transcript kerak' },
-        { status: 400 }
+        { ok: false, error: 'Telegram xabar yuborishda xatolik', details: telegramResult },
+        { status: 500 }
       );
     }
 
-    // Vaqtni formatlash
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('uz-UZ', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
+    console.log('✅ Telegram xabari muvaffaqiyatli yuborildi:', {
+      messageId: telegramResult.result?.message_id,
+      phone,
+      name,
     });
-    const timeStr = now.toLocaleTimeString('uz-UZ', {
-      hour: '2-digit',
-      minute: '2-digit'
+
+    return NextResponse.json({ 
+      ok: true, 
+      messageId: telegramResult.result?.message_id 
     });
-    const dateTime = `${dateStr}, ${timeStr}`;
-
-    // To'liq xabar (preview + transcript)
-    const fullMessage =
-      `🆕 <b>Yangi murojaat!</b>\n\n` +
-      `👤 <b>Ism:</b> ${name || 'Ko\'rsatilmagan'}\n` +
-      `👨‍⚕️ <b>AI Tashxisi:</b> ${complaint || 'Ko\'rsatilmagan'}\n` +
-      `📞 <b>Telefon:</b> <code>${phone}</code>\n` +
-      `⏰ <b>Vaqt:</b> ${dateTime}\n` +
-      `💬 <b>Chat ID:</b> ${sessionId || 'Noma\'lum'}\n\n` +
-      `━━━━━━━━━━━━━━━━━━━\n` +
-      `💬 <b>TO'LIQ SUHBAT:</b>\n\n` +
-      `${transcript}`;
-
-    // Transcriptni sahifalarga bo'lish (Telegram limiti 4096)
-    const pages = chunkText(fullMessage, 4000);
-
-    // Har bir sahifani yuborish
-    for (let i = 0; i < pages.length; i++) {
-      await tg('sendMessage', {
-        chat_id: ADMIN_CHAT_ID,
-        text: pages[i],
-        parse_mode: 'HTML',
-      });
-    }
-
-    console.log('✅ Telegram xabari yuborildi:', { phone, pages: pages.length });
-
-    return NextResponse.json({ ok: true });
   } catch (error: any) {
-    console.error('❌ Telegram yuborish xatosi:', error);
+    console.error('❌ Telegram endpoint xatosi:', {
+      error: error.message,
+      stack: error.stack?.substring(0, 500),
+    });
     return NextResponse.json(
-      { ok: false, error: error.message || 'Noma\'lum xatolik' },
+      { ok: false, error: 'Server xatosi', details: error.message },
       { status: 500 }
     );
   }
