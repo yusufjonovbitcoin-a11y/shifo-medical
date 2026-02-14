@@ -3,6 +3,7 @@
 import { Microscope, Building2, Pill, Sparkles, Shield, Hand, LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useIntersectionObserver } from './utils/useIntersectionObserver';
 
@@ -38,7 +39,7 @@ export function Features() {
   ];
 
   return (
-    <section id="xizmatlar" className="py-16 md:py-24 bg-gradient-to-b from-white via-emerald-50 to-white relative overflow-hidden">
+    <section id="xizmatlar" className="pt-12 pb-16 md:pt-16 md:pb-24 bg-gradient-to-b from-white via-emerald-50 to-white relative overflow-hidden">
       {/* Static Background Decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-100 rounded-full blur-3xl opacity-50" />
@@ -111,52 +112,15 @@ export function Features() {
               className="text-center cursor-pointer transition-transform duration-300 hover-scale active:scale-95"
               style={{ transitionDelay: `${800 + index * 100}ms` }}
             >
-              <div className={`w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br ${item.color} rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-lg transition-transform duration-300 hover:rotate-12`}>
+              <div className={`${item.titleKey === 'ultrasound' ? 'w-16 h-16 md:w-20 md:h-[75px]' : 'w-12 h-12 md:w-16 md:h-16'} ${item.titleKey === 'ultrasound' ? 'bg-transparent' : `bg-gradient-to-br ${item.color}`} rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 md:mb-4 ${item.titleKey === 'ultrasound' ? '' : 'shadow-lg'} transition-transform duration-300 hover:rotate-12 overflow-hidden`}>
                 {item.titleKey === 'ultrasound' ? (
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="text-white"
-                  >
-                    {/* Ultratovush sensor (probe) */}
-                    <path
-                      d="M12 2C8.13 2 5 5.13 5 9c0 2.5 1.2 4.7 3.1 6.1L8 18c0 1.1 0.9 2 2 2h4c1.1 0 2-0.9 2-2v-2.9c1.9-1.4 3.1-3.6 3.1-6.1 0-3.87-3.13-7-7-7zm0 10c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-                      fill="currentColor"
-                    />
-                    {/* Ultratovush to'lqinlari (ultrasound waves) */}
-                    <path
-                      d="M3 12C3 12 5 14 7 14C9 14 11 12 12 12C13 12 15 14 17 14C19 14 21 12 21 12"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      opacity="0.8"
-                    />
-                    <path
-                      d="M4 15C4 15 5.5 16.5 7 16.5C8.5 16.5 10 15 11.5 15C13 15 14.5 16.5 16 16.5C17.5 16.5 19 15 20 15"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      opacity="0.7"
-                    />
-                    <path
-                      d="M5 18C5 18 6 19 7 19C8 19 9 18 10 18C11 18 12 19 13 19C14 19 15 18 19 18"
-                      stroke="currentColor"
-                      strokeWidth="1"
-                      strokeLinecap="round"
-                      opacity="0.6"
-                    />
-                    {/* Markazda nuqta (sensor markazi) */}
-                    <circle cx="12" cy="9" r="1.5" fill="currentColor" opacity="0.9" />
-                  </svg>
+                  <Image src="/icon/uzi1.png.png" alt="UZI" width={96} height={96} className="w-16 h-16 md:w-20 md:h-[75px] object-contain" />
                 ) : item.icon !== 'injection' ? (
                 <item.icon className="w-6 h-6 md:w-8 md:h-8 text-white" />
                 ) : null}
               </div>
-              <p className="text-sm md:text-base text-gray-900 mb-1 font-semibold">{t(`features.trust.${item.titleKey}`)}</p>
-              <p className="text-xs md:text-sm text-gray-600">{t(`features.trust.${item.subtitleKey}`)}</p>
+              <p className={`text-sm md:text-base text-gray-900 mb-1 font-semibold ${item.titleKey === 'massage' ? 'mt-3 md:mt-4' : 'mt-2 md:mt-3'}`}>{t(`features.trust.${item.titleKey}`)}</p>
+              <p className={`text-xs md:text-sm text-gray-600 ${item.titleKey !== 'ultrasound' ? 'mt-0' : ''}`}>{t(`features.trust.${item.subtitleKey}`)}</p>
             </div>
           ))}
         </div>

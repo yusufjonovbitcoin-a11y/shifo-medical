@@ -208,31 +208,31 @@ export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-start gap-3 md:gap-4 flex-1">
-                        <div className={`w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br ${service.gradient} rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-300 hover:rotate-12 flex-shrink-0`}>
+                        <div className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-xl md:rounded-2xl flex items-center justify-center transition-transform duration-300 hover:rotate-12 flex-shrink-0 overflow-hidden">
                           {service.serviceKey === "urology" ? (
-                            <KidneyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                            <Image src="/icon/urologiya.png.png" alt="Urologiya" width={96} height={96} className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain" />
                           ) : service.serviceKey === "gynecology" ? (
-                            <GynecologyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                            <Image src="/icon/ginokologiya.png.png" alt="Ginekologiya" width={96} height={96} className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain" />
                           ) : service.serviceKey === "neurology" ? (
-                            <NeurologyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                            <Image src="/icon/nevrologiya.pnb.png" alt="Nevrologiya" width={96} height={96} className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain" />
                           ) : service.serviceKey === "proctology" ? (
-                            <ProctologyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                            <Image src="/icon/protologiya.png.png" alt="Proktologiya" width={96} height={96} className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain" />
                           ) : service.serviceKey === "otolaryngology" ? (
-                            <OtolaryngologyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                            <Image src="/icon/otorinolaringologiya.png.png" alt="Otorinolaringologiya" width={96} height={96} className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain" />
                           ) : service.serviceKey === "homeVisit" ? (
-                            <HomeVisitIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                            <Image src="/icon/uytgatezyordam.png.png" alt="Uyga tezyordam" width={96} height={96} className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain" />
                           ) : service.serviceKey === "laboratory" ? (
-                            <Microscope className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                            <Image src="/icon/lobaratoriya.png.png" alt="Laboratoriya" width={96} height={96} className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain" />
                           ) : service.serviceKey === "mammology" ? (
-                            <MammologyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                            <Image src="/icon/mommologiya.png.png" alt="Mammologiya" width={96} height={96} className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain" />
                           ) : service.serviceKey === "dentistry" ? (
-                            <DentistryIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                            <Image src="/icon/dentist.png.png" alt="Stomatologiya" width={96} height={96} className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain" />
                           ) : service.serviceKey === "ultrasound" ? (
-                            <UltrasoundIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                            <Image src="/icon/uzi.png.png" alt="UZI" width={96} height={96} className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain" />
                           ) : service.serviceKey === "electrocardiography" ? (
-                            <ElectrocardiographyIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                            <Image src="/icon/elektok.png.png" alt="Elektrokardiografiya" width={96} height={96} className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain" />
                           ) : (
-                            <service.icon className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                            <service.icon className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 text-gray-600" />
                           )}
                         </div>
                         <div className="flex-1">
