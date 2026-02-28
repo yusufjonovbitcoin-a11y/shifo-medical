@@ -10,19 +10,22 @@ export async function POST(req: Request) {
 
     // Telegram Bot Token va Chat ID ni environment variables dan olish
     const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-    const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+    const TELEGRAM_CHAT_IDS = process.env.TELEGRAM_CHAT_ID;
 
     // Telegram konfiguratsiyasini tekshirish
-    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_IDS) {
       console.error('❌ Telegram konfiguratsiyasi to\'liq emas:', {
         hasToken: !!TELEGRAM_BOT_TOKEN,
-        hasChatId: !!TELEGRAM_CHAT_ID
+        hasChatId: !!TELEGRAM_CHAT_IDS
       });
       return NextResponse.json(
         { ok: false, error: 'Telegram konfiguratsiyasi to\'liq emas' },
         { status: 500 }
       );
     }
+
+    // Bir nechta chat ID'larni vergul bilan ajratib olish
+    const chatIdArray = TELEGRAM_CHAT_IDS.split(',').map(id => id.trim()).filter(id => id);
 
     // Xabar formatlash
     let messageText = `🔔 <b>Yangi mijoz ma'lumotlari</b>\n\n`;
@@ -47,44 +50,69 @@ export async function POST(req: Request) {
     messageText += `\n💬 <b>To'liq chat tarixi:</b>\n\n`;
     messageText += transcript;
 
-    // Telegram Bot API ga so'rov yuborish
+    // Telegram Bot API ga barcha chat ID'larga so'rov yuborish
     const telegramApiUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
     
-    const telegramResponse = await fetch(telegramApiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: messageText,
-        parse_mode: 'HTML',
-        disable_web_page_preview: true,
-      }),
+    // Har bir chat ID uchun xabar yuborish
+    const sendPromises = chatIdArray.map(async (chatId) => {
+      const telegramResponse = await fetch(telegramApiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: messageText,
+          parse_mode: 'HTML',
+          disable_web_page_preview: true,
+        }),
+      });
+
+      return {
+        chatId,
+        response: telegramResponse,
+        result: await telegramResponse.json()
+      };
     });
 
-    const telegramResult = await telegramResponse.json();
+    // Barcha so'rovlar tugashini kutish
+    const results = await Promise.all(sendPromises);
 
-    if (!telegramResponse.ok || !telegramResult.ok) {
-      console.error('❌ Telegram xabar yuborish xatosi:', {
-        status: telegramResponse.status,
-        result: telegramResult,
-      });
-      return NextResponse.json(
-        { ok: false, error: 'Telegram xabar yuborishda xatolik', details: telegramResult },
-        { status: 500 }
-      );
+    // Xatolarni tekshirish
+    const failedResults = results.filter(r => !r.response.ok || !r.result.ok);
+    
+    if (failedResults.length > 0) {
+      console.error('❌ Ba\'zi chat ID\'larga xabar yuborishda xatolik:', failedResults);
+      
+      // Agar hammasi xato bo'lsa
+      if (failedResults.length === results.length) {
+        return NextResponse.json(
+          { ok: false, error: 'Hech bir chat ID\'ga xabar yuborib bo\'lmadi', details: failedResults },
+          { status: 500 }
+        );
+      }
+      
+      // Qisman muvaffaqiyat
+      const successCount = results.length - failedResults.length;
+      console.log(`⚠️ ${successCount}/${results.length} chat ID\'ga xabar yuborildi`);
     }
 
-    console.log('✅ Telegram xabari muvaffaqiyatli yuborildi:', {
-      messageId: telegramResult.result?.message_id,
+    const successfulResults = results.filter(r => r.response.ok && r.result.ok);
+    const messageIds = successfulResults.map(r => r.result.result?.message_id);
+
+    console.log('✅ Telegram xabarlari muvaffaqiyatli yuborildi:', {
+      messageIds,
+      totalSent: successfulResults.length,
+      totalFailed: failedResults.length,
       phone,
       name,
     });
 
     return NextResponse.json({ 
       ok: true, 
-      messageId: telegramResult.result?.message_id 
+      messageIds,
+      sentCount: successfulResults.length,
+      failedCount: failedResults.length
     });
   } catch (error: any) {
     console.error('❌ Telegram endpoint xatosi:', {
