@@ -254,10 +254,13 @@ export async function POST(req: Request) {
 
         // To'g'ridan-to'g'ri Telegram API'ga yuborish (server-side)
         const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-        const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+        const TELEGRAM_CHAT_IDS = process.env.TELEGRAM_CHAT_ID;
 
-        if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+        if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_IDS) {
           try {
+            // Bir nechta chat ID'larni vergul bilan ajratib olish
+            const chatIdArray = TELEGRAM_CHAT_IDS.split(',').map(id => id.trim()).filter(id => id);
+            
             // Xabar formatlash
             let messageText = `🔔 <b>Yangi mijoz ma'lumotlari</b>\n\n`;
             
@@ -281,47 +284,55 @@ export async function POST(req: Request) {
             // Telegram Bot API ga so'rov yuborish
             const telegramApiUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
             
-            console.log('📤 Telegram\'ga to\'g\'ridan-to\'g\'ri yuborilmoqda...', {
+            console.log('📤 Telegram\'ga barcha chat ID\'larga yuborilmoqda...', {
               phone: extractedPhone,
               name: extractedName,
+              chatIdCount: chatIdArray.length,
               transcriptLength: transcript.length
             });
             
-            const telegramResponse = await fetch(telegramApiUrl, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: messageText,
-                parse_mode: 'HTML',
-                disable_web_page_preview: true,
-              }),
+            // Har bir chat ID uchun xabar yuborish
+            const sendPromises = chatIdArray.map(async (chatId) => {
+              const telegramResponse = await fetch(telegramApiUrl, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  chat_id: chatId,
+                  text: messageText,
+                  parse_mode: 'HTML',
+                  disable_web_page_preview: true,
+                }),
+              });
+
+              return {
+                chatId,
+                response: telegramResponse,
+                result: await telegramResponse.json()
+              };
             });
 
-            let telegramResult: any = {};
-            try {
-              telegramResult = await telegramResponse.json();
-            } catch (parseError) {
-              const text = await telegramResponse.text();
-              console.error('❌ Telegram API javobini parse qilishda xatolik:', {
-                status: telegramResponse.status,
-                statusText: telegramResponse.statusText,
-                responseText: text.substring(0, 500),
-              });
-              // Xatolik bo'lsa ham chat javobini qaytarish kerak
+            // Barcha so'rovlar tugashini kutish
+            const results = await Promise.all(sendPromises);
+
+            // Xatolarni tekshirish
+            const failedResults = results.filter(r => !r.response.ok || !r.result.ok);
+            const successfulResults = results.filter(r => r.response.ok && r.result.ok);
+            
+            if (failedResults.length > 0) {
+              console.error('❌ Ba\'zi chat ID\'larga xabar yuborishda xatolik:', failedResults.map(r => ({
+                chatId: r.chatId,
+                status: r.response.status,
+                error: r.result.description
+              })));
             }
 
-            if (!telegramResponse.ok || !telegramResult.ok) {
-              console.error('❌ Telegram xabar yuborish xatosi:', {
-                status: telegramResponse.status,
-                result: telegramResult,
-                description: telegramResult.description,
-              });
-            } else {
-              console.log('✅ Telegram xabari muvaffaqiyatli yuborildi:', {
-                messageId: telegramResult.result?.message_id,
+            if (successfulResults.length > 0) {
+              console.log('✅ Telegram xabarlari muvaffaqiyatli yuborildi:', {
+                successCount: successfulResults.length,
+                failedCount: failedResults.length,
+                messageIds: successfulResults.map(r => r.result.result?.message_id),
                 phone: extractedPhone,
                 name: extractedName,
               });
@@ -335,7 +346,7 @@ export async function POST(req: Request) {
         } else {
           console.warn('⚠️ Telegram konfiguratsiyasi to\'liq emas:', {
             hasToken: !!TELEGRAM_BOT_TOKEN,
-            hasChatId: !!TELEGRAM_CHAT_ID
+            hasChatId: !!TELEGRAM_CHAT_IDS
           });
         }
       } catch (error) {
