@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useMotionValue, useTransform, useSpring } from 'motion/react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
@@ -12,10 +12,61 @@ interface LogoProps {
   animate?: boolean;
 }
 
+// Simple Stats Modal Component
+function StatsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  if (!isOpen) return null;
+
+  return (
+    <div 
+      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white rounded-2xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">📊 Sayt Statistikasi</h2>
+          <button 
+            onClick={onClose}
+            className="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="bg-gradient-to-r from-blue-50 to-cyan-50 p-4 rounded-xl">
+            <p className="text-sm text-gray-600 mb-1">Bu oy tashrif buyurganlar</p>
+            <p className="text-3xl font-bold text-blue-600">Loading...</p>
+          </div>
+          
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 rounded-xl">
+            <p className="text-sm text-gray-600 mb-1">O'tgan oy</p>
+            <p className="text-3xl font-bold text-emerald-600">Loading...</p>
+          </div>
+          
+          <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-xl">
+            <p className="text-sm text-gray-600 mb-1">Jami tashrif buyurganlar</p>
+            <p className="text-3xl font-bold text-purple-600">Loading...</p>
+          </div>
+        </div>
+        
+        <p className="text-xs text-gray-500 text-center mt-6">
+          * Ma'lumotlar Google Analytics dan olinadi
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function Logo({ size = 'medium', className = '', animate = true }: LogoProps) {
   const t = useTranslations();
   const locale = useLocale();
   const [isHovered, setIsHovered] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
+  const [showStatsModal, setShowStatsModal] = useState(false);
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -23,6 +74,33 @@ export function Logo({ size = 'medium', className = '', animate = true }: LogoPr
   const springConfig = { damping: 25, stiffness: 200 };
   const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), springConfig);
   const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), springConfig);
+  
+  const handleLogoClick = (e: React.MouseEvent) => {
+    // Clear existing timeout
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current);
+    }
+    
+    const newCount = clickCount + 1;
+    setClickCount(newCount);
+    
+    if (newCount === 5) {
+      // Show stats modal
+      e.preventDefault();
+      setShowStatsModal(true);
+      setClickCount(0);
+    } else if (newCount === 3) {
+      // Refresh the page (keeping old functionality)
+      e.preventDefault();
+      window.location.reload();
+      setClickCount(0);
+    } else {
+      // Reset counter after 1 second if not clicked enough times
+      clickTimeoutRef.current = setTimeout(() => {
+        setClickCount(0);
+      }, 1000);
+    }
+  };
   
   const sizeClasses = {
     small: 'h-10',
@@ -67,7 +145,7 @@ export function Logo({ size = 'medium', className = '', animate = true }: LogoPr
         transformStyle: 'preserve-3d'
       }}
     >
-      <Link href={`/${locale}`} className="block">
+      <Link href={`/${locale}`} className="block" onClick={handleLogoClick}>
         {/* Ambient light background layers */}
         {animate && (
           <>
@@ -456,6 +534,8 @@ export function Logo({ size = 'medium', className = '', animate = true }: LogoPr
         </motion.div>
       </Link>
       
+      {/* Stats Modal */}
+      <StatsModal isOpen={showStatsModal} onClose={() => setShowStatsModal(false)} />
     </motion.div>
   );
 }

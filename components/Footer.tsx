@@ -3,19 +3,117 @@
 import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Send } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Logo } from './Logo';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 const ServicesModal = dynamic(() => import('./ServicesModal').then(mod => ({ default: mod.ServicesModal })), { ssr: false });
+
+// Stats Modal Component
+function StatsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const [visitors, setVisitors] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isSimulated, setIsSimulated] = useState(false);
+
+  // Load stats when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setLoading(true);
+      
+      // Fetch real data from API
+      fetch('/api/analytics')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            setVisitors(data.data.currentMonthVisitors);
+            setIsSimulated(data.data.isSimulated || false);
+          }
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error('Failed to load analytics:', error);
+          // Fallback to simulated data
+          setVisitors(Math.floor(Math.random() * 5000) + 1000);
+          setIsSimulated(true);
+          setLoading(false);
+        });
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div 
+      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white rounded-2xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl animate-scale-in"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">📊 Sayt Statistikasi</h2>
+          <button 
+            onClick={onClose}
+            className="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+        
+        <div className="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-xl">
+          <p className="text-sm text-gray-600 mb-2">Bu oy tashrif buyurganlar</p>
+          <p className="text-2xl font-bold text-blue-600">
+            1 Aprelda ma'lumot yangilanadi
+          </p>
+          <p className="text-xs text-gray-500 mt-2">
+            Statistika tez orada taqdim etiladi
+          </p>
+        </div>
+        
+        <p className="text-xs text-gray-500 text-center mt-6">
+          * Ma'lumotlar Google Analytics dan olinadi
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export function Footer() {
   const t = useTranslations();
   const [isServicesModalOpen, setIsServicesModalOpen] = useState(false);
   const [selectedServiceId, setSelectedServiceId] = useState<string | undefined>(undefined);
+  const [showStatsModal, setShowStatsModal] = useState(false);
+  const longPressTimerRef = useRef<NodeJS.Timeout | null>(null);
   
   const openServiceModal = (serviceId?: string) => {
     setSelectedServiceId(serviceId);
     setIsServicesModalOpen(true);
+  };
+
+  const handleCopyrightMouseDown = () => {
+    longPressTimerRef.current = setTimeout(() => {
+      setShowStatsModal(true);
+    }, 1000); // 1 second long press
+  };
+
+  const handleCopyrightMouseUp = () => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
+
+  const handleCopyrightTouchStart = () => {
+    longPressTimerRef.current = setTimeout(() => {
+      setShowStatsModal(true);
+    }, 1000); // 1 second long press
+  };
+
+  const handleCopyrightTouchEnd = () => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
   };
   
   return (
@@ -143,8 +241,28 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="pt-8 md:pt-10 border-t border-gray-200 text-center">
-          <p className="text-gray-700 text-sm md:text-base">
+          <p 
+            className="text-gray-700 text-sm md:text-base cursor-pointer select-none transition-colors hover:text-emerald-600 mb-2"
+            onMouseDown={handleCopyrightMouseDown}
+            onMouseUp={handleCopyrightMouseUp}
+            onMouseLeave={handleCopyrightMouseUp}
+            onTouchStart={handleCopyrightTouchStart}
+            onTouchEnd={handleCopyrightTouchEnd}
+            onTouchCancel={handleCopyrightTouchEnd}
+            title="Bosib turing..."
+          >
             &copy; {new Date().getFullYear()} {t('header.logo')}. {t('footer.copyright')}
+          </p>
+          <p className="text-gray-500 text-xs md:text-sm mt-1">
+            Website developed by{' '}
+            <a 
+              href="https://t.me/RegistanMG" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-emerald-600 hover:text-emerald-700 transition-colors underline"
+            >
+              @RegistanMG
+            </a>
           </p>
         </div>
       </div>
@@ -160,6 +278,9 @@ export function Footer() {
           initialServiceId={selectedServiceId}
         />
       )}
+
+      {/* Stats Modal */}
+      <StatsModal isOpen={showStatsModal} onClose={() => setShowStatsModal(false)} />
     </footer>
   );
 }

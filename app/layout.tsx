@@ -114,6 +114,18 @@ export default function RootLayout({
             href={`/${loc}`}
           />
         ))}
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-S432B8C471"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-S432B8C471');
+            `,
+          }}
+        />
       </head>
       <body className={`${inter.variable} font-sans min-h-screen bg-white antialiased`}>
         {children}
