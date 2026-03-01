@@ -46,7 +46,7 @@ export function Features() {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-teal-100 rounded-full blur-3xl opacity-50" />
       </div>
 
-      <div ref={elementRef} className="container mx-auto px-4 relative z-10">
+      <div ref={elementRef} className="container mx-auto max-w-7xl px-4 md:px-6 xl:px-10 relative z-10">
         {/* Header Section */}
         <div className={`text-center mb-12 md:mb-16 fade-in-on-scroll ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: '100ms' }}>
           <div className="inline-flex items-center gap-2 bg-emerald-100 px-4 md:px-5 py-2 md:py-2.5 rounded-full mb-4 md:mb-6">
@@ -104,7 +104,7 @@ export function Features() {
         </div>
 
         {/* Trust Cards Section */}
-        <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 bg-white rounded-2xl md:rounded-3xl p-6 md:p-12 shadow-xl fade-in-on-scroll ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: '700ms' }}>
+        <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 xl:gap-8 bg-white rounded-2xl md:rounded-3xl p-6 md:p-10 xl:p-12 shadow-xl fade-in-on-scroll ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: '700ms' }}>
           {trustCards.map((item, index) => (
             <div
               key={index}

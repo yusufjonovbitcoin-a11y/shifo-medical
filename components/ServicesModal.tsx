@@ -10,6 +10,7 @@ import { services } from '@/data/services';
 interface ServicesModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialServiceId?: string;
 }
 
 // SVG Icon Components for each service
@@ -117,14 +118,30 @@ const ElectrocardiographyIcon = ({ className = "w-7 h-7 md:w-8 md:h-8" }: { clas
   </svg>
 );
 
-export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
+export function ServicesModal({ isOpen, onClose, initialServiceId }: ServicesModalProps) {
   const t = useTranslations();
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [expandedServices, setExpandedServices] = useState<Set<string>>(new Set());
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      
+      // Auto-scroll to specific service if initialServiceId is provided
+      if (initialServiceId) {
+        const serviceIndex = services.findIndex(s => s.id === initialServiceId);
+        if (serviceIndex !== -1) {
+          // Wait for modal to render
+          setTimeout(() => {
+            setExpandedCard(serviceIndex);
+            const element = document.getElementById(`service-${initialServiceId}`);
+            if (element && scrollContainerRef.current) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 100);
+        }
+      }
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -193,6 +210,7 @@ export function ServicesModal({ isOpen, onClose }: ServicesModalProps) {
               return (
                 <div
                   key={index}
+                  id={`service-${service.id}`}
                   className={`bg-white rounded-xl md:rounded-2xl border transition-all fade-in-on-scroll visible ${
                     isExpanded 
                       ? 'border-blue-300 shadow-xl col-span-full' 

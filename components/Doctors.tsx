@@ -33,7 +33,7 @@ export function Doctors() {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-teal-100 rounded-full blur-3xl opacity-50" />
       </div>
 
-      <div ref={elementRef} className="container mx-auto px-4 relative z-10">
+      <div ref={elementRef} className="container mx-auto max-w-7xl px-4 md:px-6 xl:px-10 relative z-10">
         {/* Header */}
         <div className={`text-center mb-12 md:mb-20 fade-in-on-scroll ${isVisible ? 'visible' : ''}`}>
           <div className="inline-flex items-center gap-2 bg-emerald-100 px-3 md:px-4 py-1.5 md:py-2 rounded-full mb-3 md:mb-4 animate-scale-in">

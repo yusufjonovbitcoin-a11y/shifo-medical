@@ -25,10 +25,10 @@ export function Hero() {
       </div>
 
       {/* Hero Content */}
-      <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+      <div className="container mx-auto max-w-7xl px-4 md:px-6 xl:px-10 py-12 md:py-20 relative z-10">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 xl:gap-16 items-start">
           <div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-4 md:mb-6 leading-tight animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+            <h1 className="text-4xl md:text-5xl text-gray-900 mb-4 md:mb-6 leading-tight animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
               {t('hero.title')} - <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 animate-gradient">
                 {t('hero.titleHighlight')}
@@ -39,7 +39,7 @@ export function Hero() {
               {t('hero.description')}
             </p>
             
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 mb-10 md:mb-16 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 xl:gap-5 mb-10 md:mb-16 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               <button
                 onClick={() => setIsServicesModalOpen(true)}
                 className="border-2 border-emerald-600 text-emerald-600 px-6 md:px-8 py-3 md:py-4 rounded-xl hover:bg-emerald-600 hover:text-white transition-all duration-300 text-center text-sm md:text-base font-medium active:scale-95"
@@ -49,7 +49,7 @@ export function Hero() {
             </div>
             
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+            <div className="grid grid-cols-3 gap-4 md:gap-8 xl:gap-10 mb-8 md:mb-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
               {[
                 { number: '50+', key: 'operations' },
                 { number: '15+', key: 'doctors' },
@@ -68,7 +68,7 @@ export function Hero() {
             </div>
 
             {/* Contact Info */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+            <div className="grid grid-cols-1 gap-3 md:gap-4 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
               {[
                 { icon: Phone, key: 'phone' },
                 { icon: Clock, key: 'hours' },
@@ -153,8 +153,8 @@ export function Hero() {
             </div>
           </div>
           
-          <div className="relative order-first lg:order-last animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            {/* Russian Menu Items - Above Image */}
+          <div className="relative order-first md:order-last animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+            {/* Menu Items - Above Image */}
             <div className="mb-3 md:mb-4">
               <nav className="flex items-center justify-center gap-2 md:gap-3 lg:gap-4 flex-wrap">
                   {[

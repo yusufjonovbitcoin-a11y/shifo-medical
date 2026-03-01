@@ -3,9 +3,21 @@
 import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Send } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Logo } from './Logo';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+
+const ServicesModal = dynamic(() => import('./ServicesModal').then(mod => ({ default: mod.ServicesModal })), { ssr: false });
 
 export function Footer() {
   const t = useTranslations();
+  const [isServicesModalOpen, setIsServicesModalOpen] = useState(false);
+  const [selectedServiceId, setSelectedServiceId] = useState<string | undefined>(undefined);
+  
+  const openServiceModal = (serviceId?: string) => {
+    setSelectedServiceId(serviceId);
+    setIsServicesModalOpen(true);
+  };
+  
   return (
     <footer id="aloqa" className="bg-white text-gray-900 pt-12 md:pt-20 pb-6 md:pb-8 relative overflow-hidden">
       {/* Background Pattern - using CSS instead of inline style */}
@@ -16,8 +28,8 @@ export function Footer() {
         }} aria-hidden="true" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-10 md:mb-16">
+      <div className="container mx-auto max-w-7xl px-4 md:px-6 xl:px-10 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 xl:gap-12 mb-10 md:mb-16">
           {/* About */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="mb-4 md:mb-6">
@@ -40,36 +52,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-base md:text-lg mb-4 md:mb-6 relative inline-block text-gray-900">
-              {t('footer.quickLinks')}
-              <span className="absolute -bottom-2 left-0 w-12 h-1 bg-emerald-600 rounded-full" />
-            </h3>
-            <ul className="space-y-2 md:space-y-3">
-              <li>
-                <a href="#xizmatlar" className="text-gray-700 hover:text-emerald-600 transition-colors duration-200">
-                  {t('footer.links.services')}
-                </a>
-              </li>
-              <li>
-                <a href="#laboratoriya" className="text-gray-700 hover:text-emerald-600 transition-colors duration-200">
-                  {t('footer.links.laboratory')}
-                </a>
-              </li>
-              <li>
-                <a href="#shifokorlar" className="text-gray-700 hover:text-emerald-600 transition-colors duration-200">
-                  {t('footer.links.doctors')}
-                </a>
-              </li>
-              <li>
-                <a href="#uchrashuv" className="text-gray-700 hover:text-emerald-600 transition-colors duration-200">
-                  {t('footer.links.appointment')}
-                </a>
-              </li>
-            </ul>
-          </div>
-
           {/* Services */}
           <div>
             <h3 className="text-base md:text-lg mb-4 md:mb-6 relative inline-block text-gray-900">
@@ -78,24 +60,24 @@ export function Footer() {
             </h3>
             <ul className="space-y-2 md:space-y-3">
               <li>
-                <a href="#xizmatlar" className="text-gray-700 hover:text-emerald-600 transition-colors duration-200">
+                <button onClick={() => openServiceModal('urology')} className="text-gray-700 hover:text-emerald-600 transition-colors duration-200 text-left">
                   {t('footer.serviceLinks.urology')}
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#xizmatlar" className="text-gray-700 hover:text-emerald-600 transition-colors duration-200">
+                <button onClick={() => openServiceModal('gynecology')} className="text-gray-700 hover:text-emerald-600 transition-colors duration-200 text-left">
                   {t('footer.serviceLinks.gynecology')}
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#xizmatlar" className="text-gray-700 hover:text-emerald-600 transition-colors duration-200">
+                <button onClick={() => openServiceModal('proctology')} className="text-gray-700 hover:text-emerald-600 transition-colors duration-200 text-left">
                   {t('footer.serviceLinks.proctology')}
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#xizmatlar" className="text-gray-700 hover:text-emerald-600 transition-colors duration-200">
+                <button onClick={() => openServiceModal('neurology')} className="text-gray-700 hover:text-emerald-600 transition-colors duration-200 text-left">
                   {t('footer.serviceLinks.neurology')}
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -166,6 +148,18 @@ export function Footer() {
           </p>
         </div>
       </div>
+
+      {/* Services Modal */}
+      {isServicesModalOpen && (
+        <ServicesModal 
+          isOpen={isServicesModalOpen} 
+          onClose={() => {
+            setIsServicesModalOpen(false);
+            setSelectedServiceId(undefined);
+          }} 
+          initialServiceId={selectedServiceId}
+        />
+      )}
     </footer>
   );
 }

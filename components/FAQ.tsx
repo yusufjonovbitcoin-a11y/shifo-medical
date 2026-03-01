@@ -35,7 +35,7 @@ export function FAQ() {
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-teal-100 rounded-full blur-3xl opacity-50" />
       </div>
 
-      <div ref={elementRef} className="container mx-auto px-4 relative z-10">
+      <div ref={elementRef} className="container mx-auto max-w-7xl px-4 md:px-6 xl:px-10 relative z-10">
         <div className={`text-center mb-12 md:mb-20 fade-in-on-scroll ${isVisible ? 'visible' : ''}`}>
           <h2 className="text-3xl md:text-4xl lg:text-5xl text-gray-900 mb-4 md:mb-6 px-4">
             {t('faq.title')}

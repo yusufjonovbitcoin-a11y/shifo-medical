@@ -2,6 +2,7 @@ import { Heart, Activity, Stethoscope, Brain, Baby, Droplets, Microscope, Home, 
 import { LucideIcon } from 'lucide-react';
 
 export interface Service {
+  id?: string; // Unique identifier for scrolling
   icon: LucideIcon;
   serviceKey?: string; // Key for translation (e.g., "urology", "gynecology") - optional, only for ServicesModal
   title: string; // Fallback (Russian)
@@ -14,6 +15,7 @@ export interface Service {
 
 export const services: Service[] = [
   {
+    id: "urology",
     icon: Droplets,
     serviceKey: "urology",
     title: "Урология",
@@ -509,6 +511,7 @@ SHIFOKOR – современный медицинский центр, расп�
     }
   },
   {
+    id: "gynecology",
     icon: Baby,
     serviceKey: "gynecology",
     title: "Гинекология",
@@ -1218,6 +1221,7 @@ SHIFOKOR – современный медицинский центр, расп�
     }
   },
   {
+    id: "neurology",
     icon: Brain,
     serviceKey: "neurology",
     title: "Неврология",
@@ -1614,6 +1618,7 @@ SHIFOKOR – современный медицинский центр, расп�
     }
   },
   {
+    id: "proctology",
     icon: Activity,
     serviceKey: "proctology",
     title: "Проктология",
